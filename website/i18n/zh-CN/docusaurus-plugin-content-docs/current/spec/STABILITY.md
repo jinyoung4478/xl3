@@ -67,7 +67,7 @@ TypeScript 参考实现在 1.0 时冻结以下 13 个运行时导出。新增导
 
 每个实验性类型都带有 `@experimental` JSDoc 标签。持有这些对象之一的宿主应当（**SHOULD**）基于 `kind` 进行派发（对于指令而言），或将其形态视为不透明；并且如果它们依赖某个具体的字段集，应当（**SHOULD**）锁定到特定的 xl3 minor 版本。对大多数工具需求而言，可序列化、变更更慢的替代方案是 `TemplateModel`（由 `analyzeModel` 返回）。
 
-`src/__tests__/api-surface.test.ts` 中的快照测试锁定了运行时列表，并在静默变更时使 CI 失败。新增导出需要主动更新快照**并**在 CHANGELOG 中留下记录。
+`impl/js/src/__tests__/api-surface.test.ts` 中的快照测试锁定了运行时列表，并在静默变更时使 CI 失败。新增导出需要主动更新快照**并**在 CHANGELOG 中留下记录。
 
 ### 1.0 冻结的内容
 

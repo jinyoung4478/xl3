@@ -37,8 +37,9 @@ corpus, on any host timezone, locale, or byte order.
 
 ### Public API surface (xl3 reference impl)
 
-The TypeScript reference impl freezes the following 13 runtime
-exports at 1.0. Adding a new export is backwards-compatible;
+The TypeScript reference impl freezes the following 15 runtime
+exports at 1.0 (13 through 0.10.0, plus `convertJson` / `previewJson`
+added in 0.11.0 per ADR-0075). Adding a new export is backwards-compatible;
 removing or renaming any of them is a 2.0-only change.
 
 **Conversion entry points**
@@ -87,7 +88,7 @@ xl3 minor version if they rely on a particular field set. The
 serializable, slower-moving alternative for most tooling needs is
 `TemplateModel` (returned by `analyzeModel`).
 
-The snapshot test in `src/__tests__/api-surface.test.ts` pins the
+The snapshot test in `impl/js/src/__tests__/api-surface.test.ts` pins the
 runtime list and fails CI on silent changes. New exports require
 deliberately updating the snapshot AND a CHANGELOG entry.
 

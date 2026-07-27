@@ -307,14 +307,14 @@ npm run conformance:stage2
 
 - `spec/` —— 规范性的 XTL 语言草案。
 - `conformance/` —— 实现无关的 fixture 语料库与 runner 协议。
-- `src/` —— TypeScript 参考实现。
+- `impl/js/src/` —— TypeScript 参考实现。
 
 规范是唯一的事实来源。Conformance fixture 把规范行为以可执行的形式
 固定下来。参考实现很有用,但并不具有规范效力。
 
 ## 许可证
 
-- 代码(`src/`、`conformance/`):[MIT](./LICENSE)
+- 代码(`impl/js/src/`、`conformance/`):[MIT](./LICENSE)
 - XTL 规范(`spec/`):[CC-BY-4.0](./spec/LICENSE)
 
 ---

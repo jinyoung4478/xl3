@@ -57,7 +57,7 @@ verified_by: [hand]            # or [excel-formulas, manual-script], etc.
 
 Fixture 027 通过手工改写已撰写的预期工作簿的 OOXML 序列化（保留相同的工作簿语义），增加了包级别的写出端差异覆盖。这仍不能替代由 Excel、LibreOffice 或其他独立 OOXML 写出端保存的工作簿；当撰写环境可用时，这样的 fixture 仍然是首选的后续补充。
 
-基本规则仍然适用：通过运行 JS 实现得到的阶段 2 `expected.xlsx` 是被禁止的。ExcelJS 仅作为脚手架是可接受的，因为该包写出端是通用的——它不是 XTL 实现。添加由 Excel 本身（或另一个 OOXML 写出端）保存了 `expected.xlsx` 的阶段 2 fixture，仍是更强的后续补充；在此之前，跨写出端行为由 fixture 027 的包级改写以及 `src/__tests__/conformance-runner.test.ts` 中的规范化器单元测试覆盖。
+基本规则仍然适用：通过运行 JS 实现得到的阶段 2 `expected.xlsx` 是被禁止的。ExcelJS 仅作为脚手架是可接受的，因为该包写出端是通用的——它不是 XTL 实现。添加由 Excel 本身（或另一个 OOXML 写出端）保存了 `expected.xlsx` 的阶段 2 fixture，仍是更强的后续补充；在此之前，跨写出端行为由 fixture 027 的包级改写以及 `impl/js/src/__tests__/conformance-runner.test.ts` 中的规范化器单元测试覆盖。
 
 对错误 fixture，省略 `expected.xlsx` 与 `expected/`，并声明预期诊断信息的稳定部分：
 

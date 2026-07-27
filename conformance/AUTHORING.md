@@ -76,7 +76,7 @@ scaffolding only because the package writer is generic — it is not the XTL
 implementation. Adding a Stage 2 fixture whose `expected.xlsx` is saved by
 Excel itself (or by another OOXML writer) remains a stronger follow-up; until
 then, cross-writer behavior is covered by fixture 027's package rewrite plus
-canonicalizer unit tests in `src/__tests__/conformance-runner.test.ts`.
+canonicalizer unit tests in `impl/js/src/__tests__/conformance-runner.test.ts`.
 
 For error fixtures, omit `expected.xlsx` and `expected/`, and declare the stable
 part of the expected diagnostic:

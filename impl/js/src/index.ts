@@ -413,6 +413,17 @@ export async function convertJson(
  * no workbook location.
  *
  * @stable Added in XTL 1.x (ADR-0075); additive to the frozen `preview`.
+ *
+ * @example
+ * ```ts
+ * const result = await previewJson(templateBuffer, {
+ *   version: 'xl3-source-json/0.1',
+ *   sources: {
+ *     default: { headers: ['Customer', 'Amount'], rows: [['Acme', 100]] },
+ *   },
+ * });
+ * console.log(result.files, result.warnings);
+ * ```
  */
 export async function previewJson(
   templateBuffer: ArrayBuffer,

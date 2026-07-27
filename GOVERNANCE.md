@@ -10,7 +10,7 @@ multi-stakeholder governance as adoption grows.
 
 xl3 is in its **formative phase**. A single maintainer is:
 
-- The author of `src/` (TypeScript reference implementation)
+- The author of `impl/js/src/` (TypeScript reference implementation)
 - The editor of `spec/` (XTL language definition)
 - The accepter of [ADRs](./spec/decisions/) in `spec/decisions/`
 - The reviewer for all PRs
@@ -86,7 +86,7 @@ Fixtures are how XTL is _executable_. New fixtures expand the corpus:
 |---|---|
 | Spec `XTL 1.0` (when cut) | Breaking changes require `XTL 2.0` with migration guide |
 | Spec `XTL 0.x` (current) | Breaking changes allowed; bump minor; ship fixture updates with the change |
-| `xl3` npm `1.x` (when cut) | Public API frozen at the snapshot in `src/__tests__/api-surface.test.ts`. Renames or removals require a major bump |
+| `xl3` npm `1.x` (when cut) | Public API frozen at the snapshot in `impl/js/src/__tests__/api-surface.test.ts`. Renames or removals require a major bump |
 | `xl3` npm `0.x` (current) | Public API may shift; the snapshot test catches accidental drift |
 | Error codes (`xl3/<category>/<id>`) | Append-only. Renames are breaking. Removal requires a major bump |
 

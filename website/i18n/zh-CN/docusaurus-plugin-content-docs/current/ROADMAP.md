@@ -26,11 +26,11 @@ slug: /roadmap
 |----|------|-------|--------|---------|---------|------|
 | G1 | 一致性语料 ≥ 140 | 维护者 | `conformance/fixtures/` | `ls conformance/fixtures/ \| wc -l` ≥ 140 | — | DONE（160 个；ADR-0066 在 0.7.x 中途新增 141-145，ADR-0067~0069 在 0.8.0 新增 146-155，156（#49 原生值保留）与 157（#51 分组场景的旁侧单元格）在 0.8.1 之后新增，158（#52 算术结合性）在 0.9.0，159-161（ADR-0073/0074 小计错误）在 0.10.0；编号 098 空缺，因此最大索引为 161 而总数为 160；ADR-0051~0065 另为 0.7.1 预留了更多编号） |
 | G2 | Stage 2 OOXML 规范化完成 | 维护者 | ADR-0006 + src/ 中的 canonicalizer | 由测试用例 024-027、093 + ADR-0006 修订覆盖 | — | DONE |
-| G3 | 错误码目录冻结 | 维护者 | `src/__tests__/error-codes.test.ts` 快照 | 目录快照 30 天保持不变 | — | ✅ 已于 2026-06-23 勾选（最后一次目录变更为 2026-05-24 `a8f7ad3` 新增 3 个错误码 `xl3/block/overlap`、`xl3/block/empty-table`、`xl3/directive/orphan`；`89bee51` 于 2026-05-23 新增 `xl3/expression/bracket-outside-block`。30 天冻结期已过——05-24 之后触及该文件的提交仅涉及注释/JSDoc，`EXPECTED_CODES` 未变） |
+| G3 | 错误码目录冻结 | 维护者 | `impl/js/src/__tests__/error-codes.test.ts` 快照 | 目录快照 30 天保持不变 | — | ✅ 已于 2026-06-23 勾选（最后一次目录变更为 2026-05-24 `a8f7ad3` 新增 3 个错误码 `xl3/block/overlap`、`xl3/block/empty-table`、`xl3/directive/orphan`；`89bee51` 于 2026-05-23 新增 `xl3/expression/bracket-outside-block`。30 天冻结期已过——05-24 之后触及该文件的提交仅涉及注释/JSDoc，`EXPECTED_CODES` 未变） |
 | G4 | 发布 JXLS 边界 | 维护者 | ADR-0048 | 文件存在并引用 PORTERS_GUIDE | — | DONE |
 | G5 | 延期实现的 ADR 落地 | 维护者 | ADR-0038 实现 ✅（2026-05-18）+ ADR-0040 PE 实现 | ADR-0038 部分已发布（测试用例 132-135）；ADR-0040 CF/DV 区间扩展仍在进行中 | — | 0.6（部分）/ 0.7.1 |
-| G6 | 公开 API 表面冻结 | 维护者 | `src/__tests__/api-surface.test.ts` 快照 | 快照 30 天保持不变 | — | ✅ 已于 2026-06-17 勾选（快照自 2026-05-18 `16f0608` 起未变） |
-| G7 | @stable 导出项的 JSDoc 示例 | 维护者 | TypeDoc 输出 | 每一个 `@stable` 符号都附带 `@example` 区块 | — | ✅ 已于 2026-06-21 完成——13/13 个 `@stable` 可调用项均带 `@example`（PR #59） |
+| G6 | 公开 API 表面冻结 | 维护者 | `impl/js/src/__tests__/api-surface.test.ts` 快照 | 快照 30 天保持不变 | — | ✅ 已于 2026-06-17 勾选（快照自 2026-05-18 `16f0608` 起未变） |
+| G7 | @stable 导出项的 JSDoc 示例 | 维护者 | TypeDoc 输出 | 每一个 `@stable` 符号都附带 `@example` 区块 | — | ✅ 已于 2026-06-21 完成——13/13 个 `@stable` 可调用项均带 `@example`（PR #59）；0.11.0 新增 `convertJson` / `previewJson` 后以 **15/15** 复核（`previewJson` 发布时缺 `@example`，已于 2026-07-27 修复） |
 | G8 | 性能特性描述 | 维护者 | `scripts/BENCH.md` | 发布 1k/10k/100k 行 × 5/10/20 列矩阵 + 内存上限 + parse/eval/write 分项数据 | — | 0.7.1 |
 | G9 | 性能回归测试用例 | 维护者 | 一致性语料 | ≥ 2 个大体量 fixture，使用基于比率的断言 | — | 0.7.1 |
 | G10 | 跨浏览器冒烟测试 | 维护者 | `ci.yml` | Safari + Firefox bundle 加载 + 每次运行至少一次 convert() | — | 0.7.1 |
@@ -40,12 +40,12 @@ slug: /roadmap
 | G14 | 外部贡献者 ADR | 外部 | `spec/decisions/NNNN-*.md` | ≥ 1 份 ADR 的 Author 是非维护者（按行数计，Context/Decision 章节 ≥ 60% 由其撰写） | 18 个月时间盒，到期后：≥ 2 份外部作者撰写的 cookbook 配方，或 ≥ 5 份外部作者撰写的一致性测试用例 | 0.8 |
 | G15 | 生产参考案例 | 外部（维护者协助） | `IMPLEMENTATIONS.md` 中"生产用户"一行 | ≥ 1 名具名用户，满足以下任一：(a) 外部公司允许公开列出，或 (b) 维护者所在公司在生产中按计划运行 xl3 并发布公开案例研究 | — | 0.8.x——**进行中**，通过维护者所在公司的生产部署（模板搭建已于 2026-05-24 完成，实际使用自 2026-05-26 那一周开始）；案例研究公开发布时 G15 即勾选 |
 | G16 | 维护者集合扩大 | 维护者 | `GOVERNANCE.md` | ≥ 2 人拥有 ADR 和实现 PR 的接受/拒绝权限 | 通过对 GOVERNANCE 的修订，显式接受单维护者形态的 1.0 治理结构 | 0.8 |
-| G17 | 韩文 cookbook 国际化完成 | 维护者 | `website/i18n/ko/.../guides/` | 全部 cookbook 配方均有韩文翻译 | — | DONE（0.6） |
+| G17 | 韩文 cookbook 国际化完成 | 维护者 | `website/i18n/ko/.../guides/` | 全部 cookbook 配方均有韩文翻译 | — | 配方 01-18 已完成（0.6）——**1.0 前的待决问题：** `docs/guides/19-jxls-to-xl3.md` 是后来新增的，没有 ko / ja / zh-CN 翻译。需要先确定迁移指南是否算作 "cookbook 配方"；若算，则 G17 需重新勾选 |
 | G18 | README 中的生产用例 | 维护者 | `README.md` | 用具体的生产参考案例替换 "alpha" 状态（与 G15 绑定） | — | 1.0（与 G15 同步） |
 | G19 | 0.x → 1.0 迁移指南 | 维护者 | `docs/migration-0.x-to-1.0.md` | 记录每一个行为变更，或确认是纯新增式变更 | 若确认为纯新增式变更，则降级为 CHANGELOG 备注 | 0.8 |
 | G20 | SECURITY.md + 威胁模型 | 维护者 | `SECURITY.md` + 规范修订 | 文档化对 zip 炸弹 / 超大工作簿 / 公式执行的立场和 limits API | — | 0.7.1 |
 | G21 | 硬限制文档化（1.1 前不支持流式） | 维护者 | spec/evaluation.md | 行数 / 内存的硬限制值 + AbortSignal API 已记录在文档中 | — | 0.7.1 |
-| G22 | API 表面——内部模型类型剥离 | 维护者 | `src/index.ts` 导出 + STABILITY.md | 只保留 `convert`/`preview`/`analyze` + 标注为 `@stable` 的稳定接口；模型/解析器类型标注为 `@experimental` 或迁移到 `xl3/internal` | — | DONE（0.6） |
+| G22 | API 表面——内部模型类型剥离 | 维护者 | `impl/js/src/index.ts` 导出 + STABILITY.md | 只保留 `convert`/`preview`/`analyze` + 标注为 `@stable` 的稳定接口；模型/解析器类型标注为 `@experimental` 或迁移到 `xl3/internal` | — | DONE（0.6） |
 | G23 | RC 浸泡期 | 维护者 | git 标签 | RC 已发布；浸泡期 ≥ 21 天（根据评审反馈，从 7 天延长）；0 个严重问题 | — | ✅ 已于 2026-06-16 勾选（自 rc.1 2026-05-26 起浸泡 21 天；0 个严重问题——浸泡期修复 #49–52 已并入 0.9.0，按 G23 的不兼容变更定义均不重置时钟） |
 | G24 | "稳定季度"发布前清单 | 维护者 | 发布日历 | 最后一个关卡 ✅ 后的 90 天窗口；窗口内不发生规范/API/错误码的不兼容变更 | 发生不兼容变更 → 重置时钟 | ⏳ 季度时钟已于 **2026-06-23** 启动（G3 是最后一个勾选的关卡）；若窗口内不发生规范/API/错误码的不兼容变更，1.0 最早约为 **2026-09-21** |
 
@@ -208,7 +208,7 @@ G23 启动后，G24 的季度时钟开始（它必须在 G3/G6/G7 等关卡关�
 | G13 第二实现 ≥ 80% | 参与 [xl3-py](https://github.com/xl3-lang/xl3-py)，或启动一个新的移植（Rust、Java、Go）。参见 [PORTERS_GUIDE.md](https://xl3.io/porters-guide)。 |
 | G14 外部 ADR | 挑选一个延期项（pivot 表保留、分页符、ADR-0045 切出的函数等），在 `spec/decisions/` 中起草一份 ADR。参见 [GOVERNANCE.md](/governance) 中"变更如何进入项目"。GitHub 上以 `good-first-ADR` 标签提供了若干"入门 ADR 草稿"议题。 |
 | G15 生产案例 | 在内部使用 xl3，并分享行得通 / 行不通的地方。如果合适，在 [IMPLEMENTATIONS.md](/implementations) 中加一行。如果维护者所在公司（Snack24h）发布公开案例研究，也可作为生产参考案例计入。 |
-| G17 韩文 cookbook 16+17 国际化 | 翻译最新的两篇配方（其余已完成）。 |
+| G17 指南国际化 | `docs/guides/19-jxls-to-xl3.md`（JXLS → xl3 迁移指南）没有 ko / ja / zh-CN 翻译；配方 01-18 已完成。 |
 | G8 基准测试 | 在有代表性的模板上运行 `npm run bench`，分享结果。 |
 | G10 跨浏览器 | 把 Safari + Firefox 加入 bundle 冒烟测试。 |
 | 函数再提案 | 如果你需要某个被 ADR-0045 拒绝的函数，请使用 [`Function re-proposal`](https://github.com/xl3-lang/xl3/issues/new?template=function-reproposal.md) 议题模板提交。 |

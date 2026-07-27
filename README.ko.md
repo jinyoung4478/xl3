@@ -282,7 +282,7 @@ npm run conformance:stage2
 
 - `spec/` — 정규 XTL 언어 초안
 - `conformance/` — 구현 중립적인 fixture 코퍼스와 runner protocol
-- `src/` — TypeScript 레퍼런스 구현
+- `impl/js/src/` — TypeScript 레퍼런스 구현
 
 스펙이 진실의 출처입니다. Conformance fixture 는 그 스펙 동작을 실행 가능한
 형태로 굳혀둡니다. 레퍼런스 구현은 유용한 도구이지만 그 자체가 기준은
@@ -290,7 +290,7 @@ npm run conformance:stage2
 
 ## 라이선스
 
-- Code (`src/`, `conformance/`): [MIT](./LICENSE)
+- Code (`impl/js/src/`, `conformance/`): [MIT](./LICENSE)
 - XTL spec (`spec/`): [CC-BY-4.0](./spec/LICENSE)
 
 ---

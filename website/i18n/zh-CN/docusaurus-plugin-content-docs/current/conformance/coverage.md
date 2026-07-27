@@ -1,6 +1,6 @@
 # ADR 覆盖矩阵
 
-由 `src/__tests__/spec-coverage.test.ts` 自动生成。请勿手工编辑。
+由 `impl/js/src/__tests__/spec-coverage.test.ts` 自动生成。请勿手工编辑。
 
 | ADR | 标题 | 覆盖的 fixture |
 |---|---|---|

@@ -287,7 +287,7 @@ explicit ROADMAP "next phase is sociological" gate.
 
 **MUST:**
 - Spec freeze — new ADRs deferred to 1.1 unless critical bug
-- Public API surface frozen — `src/__tests__/api-surface.test.ts`
+- Public API surface frozen — `impl/js/src/__tests__/api-surface.test.ts`
   snapshot becomes the gate
 - Error code catalog frozen — no new codes for the duration
 - RC published with `--tag rc` (per `RELEASING.md`)

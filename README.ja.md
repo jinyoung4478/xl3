@@ -290,13 +290,13 @@ npm run conformance:stage2
 
 - `spec/` — 規範的な XTL 言語ドラフト。
 - `conformance/` — 実装に依存しない fixture コーパスとランナープロトコル。
-- `src/` — TypeScript リファレンス実装。
+- `impl/js/src/` — TypeScript リファレンス実装。
 
 仕様 (spec) が真の出典です。Conformance fixture は仕様の挙動を実行可能な形で固定します。リファレンス実装は有用ですが、それ自体は規範ではありません。
 
 ## ライセンス
 
-- コード (`src/`、`conformance/`): [MIT](./LICENSE)
+- コード (`impl/js/src/`、`conformance/`): [MIT](./LICENSE)
 - XTL 仕様 (`spec/`): [CC-BY-4.0](./spec/LICENSE)
 
 ---

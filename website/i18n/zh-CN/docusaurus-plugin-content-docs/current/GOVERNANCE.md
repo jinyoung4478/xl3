@@ -12,7 +12,7 @@ XTL 规范与 xl3 参考实现的决策机制。
 
 xl3 处于**形成期**。一位维护者同时是：
 
-- `src/` 的作者（TypeScript 参考实现）
+- `impl/js/src/` 的作者（TypeScript 参考实现）
 - `spec/` 的编辑（XTL 语言定义）
 - `spec/decisions/` 中 [ADR](https://github.com/xl3-lang/xl3/tree/main/spec/decisions) 的接受者
 - 所有 PR 的评审者
@@ -72,7 +72,7 @@ xl3 处于**形成期**。一位维护者同时是：
 |---|---|
 | 规范 `XTL 1.0`（发布之后） | 不兼容变更需要 `XTL 2.0`，并配迁移指南 |
 | 规范 `XTL 0.x`（当前） | 允许不兼容变更；提升小版本号；变更与 fixture 更新一同发布 |
-| `xl3` npm `1.x`（发布之后） | 公开 API 冻结在 `src/__tests__/api-surface.test.ts` 的快照。重命名或移除需要提大版本号 |
+| `xl3` npm `1.x`（发布之后） | 公开 API 冻结在 `impl/js/src/__tests__/api-surface.test.ts` 的快照。重命名或移除需要提大版本号 |
 | `xl3` npm `0.x`（当前） | 公开 API 仍可能调整；快照测试用于捕获意外漂移 |
 | 错误码（`xl3/<category>/<id>`） | 只追加。重命名属于不兼容变更。移除需要提大版本号 |
 

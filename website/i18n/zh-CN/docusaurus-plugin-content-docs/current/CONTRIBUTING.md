@@ -21,12 +21,12 @@ npm test
 
 ## 三类贡献
 
-### 1. 实现 bug（本仓库，`src/`）
+### 1. 实现 bug（本仓库，`impl/js/src/`）
 
 参考实现与规范不一致的 bug 始终欢迎。步骤：
 
 1. 开一个议题，附最小复现（template.xlsx + data.xlsx + 实际输出 vs 期望输出）。
-2. 如果你有修复，提一个 PR，并在 `src/__tests__/` 中加一个回归测试。
+2. 如果你有修复，提一个 PR，并在 `impl/js/src/__tests__/` 中加一个回归测试。
 
 如果情形是"实现与规范一致，但规范本身是错的"，参见第 (3) 类。
 
@@ -55,7 +55,7 @@ npm test
 ## 编码规范（TypeScript 实现）
 
 - TypeScript 严格模式开启；PR 必须通过类型检查（`npm run typecheck`）。
-- 测试位于 `src/__tests__/`。用 `npm test` 运行。
+- 测试位于 `impl/js/src/__tests__/`。用 `npm test` 运行。
 - 新功能需要测试。bug 修复需要回归测试。
 - 除非必要，不要新增运行时依赖。当前依赖：`exceljs`、`jszip`。
 

@@ -342,13 +342,13 @@ with `npm run conformance:dashboard`.
 
 - `spec/` — normative XTL language draft.
 - `conformance/` — implementation-neutral fixture corpus and runner protocol.
-- `src/` — TypeScript reference implementation.
+- `impl/js/src/` — TypeScript reference implementation.
 
 The spec is the source of truth. Conformance fixtures make spec behavior executable. The reference implementation is useful, but not normative.
 
 ## License
 
-- Code (`src/`, `conformance/`): [MIT](./LICENSE)
+- Code (`impl/js/src/`, `conformance/`): [MIT](./LICENSE)
 - XTL spec (`spec/`): [CC-BY-4.0](./spec/LICENSE)
 
 ---

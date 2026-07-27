@@ -8,6 +8,27 @@ Implementations of the [XTL spec](./spec/). xl3 is the reference implementation.
 | Rust (WASM) | [`jinyoung4478/xl3-rs`](https://github.com/jinyoung4478/xl3-rs) | [`xl3-core`](https://crates.io/crates/xl3-core) + [`xl3-wasm`](https://www.npmjs.com/package/xl3-wasm) | XTL 0.1 (draft) | **partial 119/148** Stage 1 | Pure-Rust acceleration core (calamine + rust_xlsxwriter) wrapped for browser / Node hosts. Drives xl3 0.9.0's opt-in `engine: 'wasm'` path. Outstanding gaps: HYPERLINK function, shared formulas, ~20 validation error sites |
 | Python | [`jinyoung4478/xl3-py`](https://github.com/jinyoung4478/xl3-py) | _(unpublished)_ | XTL 0.1 (draft) | **draft**, in development | Tracked alongside the reference impl; drop a `--report=json` artifact under [`conformance/reports/`](./conformance/reports/) and `npm run conformance:dashboard` will pick it up |
 
+## Production users
+
+ROADMAP gate **G15** points at this section. It ticks when there is at
+least one named user — either an external company that has given
+permission to be listed, or the maintainer's own employer running xl3
+in scheduled production with a public case study.
+
+| Organization | Since | Workload | Case study |
+|---|---|---|---|
+| _none listed yet_ | — | — | — |
+
+G15 is **in progress**, not blocked: a production deployment at the
+maintainer's employer has been running since the week of 2026-05-26.
+The gate ticks when the case study is published and a row lands here —
+a running deployment alone does not satisfy it, because the gate's
+point is a reference a third party can verify.
+
+If you run xl3 in production and are willing to be named, open a PR
+adding a row. Partial detail is fine (organization + workload, no case
+study link) — say so in the PR and we will mark the row accordingly.
+
 ## Adding an implementation
 
 Read [`PORTERS_GUIDE.md`](./PORTERS_GUIDE.md) first — it distinguishes

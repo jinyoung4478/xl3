@@ -4,7 +4,7 @@ These scripts are **authoring-time aids**, not the conformance runner.
 
 ## `build-fixtures.mjs`
 
-Constructs `template.xlsx`, `data.xlsx`, and `expected.xlsx` for each fixture by writing every cell explicitly from the spec. The script never imports anything from `src/`; `exceljs` is used only as a generic xlsx writer, the same way Excel itself would be in a manual flow. This preserves the cardinal rule from [`../AUTHORING.md`](../AUTHORING.md): expected outputs are authored from the spec, not generated from the reference implementation.
+Constructs `template.xlsx`, `data.xlsx`, and `expected.xlsx` for each fixture by writing every cell explicitly from the spec. The script never imports anything from `impl/js/src/`; `exceljs` is used only as a generic xlsx writer, the same way Excel itself would be in a manual flow. This preserves the cardinal rule from [`../AUTHORING.md`](../AUTHORING.md): expected outputs are authored from the spec, not generated from the reference implementation.
 
 ```bash
 node conformance/scripts/build-fixtures.mjs

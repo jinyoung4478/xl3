@@ -1,6 +1,6 @@
 # ADR カバレッジマトリックス
 
-`src/__tests__/spec-coverage.test.ts` により自動生成されます。手作業で編集しないでください。
+`impl/js/src/__tests__/spec-coverage.test.ts` により自動生成されます。手作業で編集しないでください。
 
 | ADR | タイトル | カバーするフィクスチャ |
 |---|---|---|
