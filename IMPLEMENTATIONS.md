@@ -5,8 +5,24 @@ Implementations of the [XTL spec](./spec/). xl3 is the reference implementation.
 | Language | Repo | Package | Spec version | Conformance | Notes |
 |---|---|---|---|---|---|
 | TypeScript | [`xl3-lang/xl3`](https://github.com/xl3-lang/xl3) | [`@xl3-lang/xl3`](https://www.npmjs.com/package/@xl3-lang/xl3) | XTL 0.1 (draft) | reference; **160/160** fixtures pass (154 Stage 1 + 6 Stage 2 only) | Browser + Node ≥ 20.12; runner via `npx xl3-conformance`; 3-TZ matrix in CI |
-| Rust (WASM) | [`jinyoung4478/xl3-rs`](https://github.com/jinyoung4478/xl3-rs) | [`xl3-core`](https://crates.io/crates/xl3-core) + [`xl3-wasm`](https://www.npmjs.com/package/xl3-wasm) | XTL 0.1 (draft) | **partial 119/148** Stage 1 | Pure-Rust acceleration core (calamine + rust_xlsxwriter) wrapped for browser / Node hosts. Drives xl3 0.9.0's opt-in `engine: 'wasm'` path. Outstanding gaps: HYPERLINK function, shared formulas, ~20 validation error sites |
-| Python | [`jinyoung4478/xl3-py`](https://github.com/jinyoung4478/xl3-py) | _(unpublished)_ | XTL 0.1 (draft) | **draft**, in development | Tracked alongside the reference impl; drop a `--report=json` artifact under [`conformance/reports/`](./conformance/reports/) and `npm run conformance:dashboard` will pick it up |
+| Rust (WASM) | [`xl3-lang/xl3-rs`](https://github.com/xl3-lang/xl3-rs) | [`xl3-core`](https://crates.io/crates/xl3-core) + [`xl3-wasm`](https://www.npmjs.com/package/xl3-wasm) | XTL 0.1 (draft) | **partial 119/148** Stage 1 (see freshness note below) | Pure-Rust acceleration core (calamine + rust_xlsxwriter) wrapped for browser / Node hosts. Drives the opt-in `engine: 'wasm'` path introduced in xl3 0.9.0. Outstanding gaps: HYPERLINK function, shared formulas, ~20 validation error sites |
+| Python | [`xl3-lang/xl3-py`](https://github.com/xl3-lang/xl3-py) | _(unpublished)_ | XTL 0.1 (draft) | **133/133** Stage 1 on the corpus it ran (see freshness note below) | Tracked alongside the reference impl; drop a `--report=json` artifact under [`conformance/reports/`](./conformance/reports/) and `npm run conformance:dashboard` will pick it up |
+
+### Report freshness
+
+The two figures above come from the JSON reports committed under
+[`conformance/reports/`](./conformance/reports/), and **both predate the
+current 160-fixture corpus**:
+
+| Report | Ran against | Result |
+|---|---|---|
+| `xl3-wasm-0.1.0.json` (2026-06-08) | 154 fixtures | 119 passed, 29 failed, 6 skipped → 119/148 comparable |
+| `xl3-py-0.1.0a3.json` (2026-05-23) | 139 fixtures | 133 passed, 0 failed, 6 skipped |
+
+Neither has been re-run since the corpus grew to 160 (fixtures 158-161
+landed in 0.9.0 / 0.10.0), so a port's standing against **today's** corpus
+is unknown until it submits a fresh report. ROADMAP **G13** is judged on a
+current report, not on these.
 
 ## Production users
 

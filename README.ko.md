@@ -191,6 +191,29 @@ const outputs = await convert(templateBuffer, dataBuffer);
 
 브라우저와 Node 20.12 이상에서 동작합니다.
 
+### `data.xlsx` 대신 JSON 소스
+
+Excel이 아닌 호스트(Python 서비스, DB/ETL 작업)는 워크북 왕복을 건너뛰고
+언어 중립적인 `xl3-source-json/0.1` wire format을 그대로 넘길 수 있습니다.
+`convertJson`은 동등한 `data.xlsx`로 `convert`를 돌린 것과 정확히 같은
+결과를 렌더링합니다.
+
+```ts
+import { convertJson } from '@xl3-lang/xl3';
+
+const outputs = await convertJson(templateBuffer, {
+  version: 'xl3-source-json/0.1',
+  sources: {
+    default: { headers: ['Customer', 'Amount'], rows: [['Acme', 100]] },
+  },
+});
+```
+
+`previewJson`이 preview 쪽 짝입니다. 잘못된 입력은
+`xl3/source-json/invalid`를 발생시킵니다. 0.11.0에서
+[ADR-0075](./spec/decisions/0075-xl3-source-json.md)로 추가됐고, wire
+format은 구현 간 이식 가능하며 `.xlsx` 경로는 그대로입니다.
+
 ### 번들러 없이 `<script>`로 사용
 
 번들러를 쓰지 않는 환경에서는 자체 포함 IIFE 번들을 그대로 가져오면

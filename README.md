@@ -203,6 +203,29 @@ const outputs = await convert(templateBuffer, dataBuffer);
 
 Runs in browsers and Node (≥20.12).
 
+### JSON source instead of `data.xlsx`
+
+Non-Excel hosts (Python services, DB/ETL jobs) can skip the workbook
+round-trip and pass the language-neutral `xl3-source-json/0.1` wire
+format instead. `convertJson` renders exactly what `convert` produces
+from the equivalent `data.xlsx`.
+
+```ts
+import { convertJson } from '@xl3-lang/xl3';
+
+const outputs = await convertJson(templateBuffer, {
+  version: 'xl3-source-json/0.1',
+  sources: {
+    default: { headers: ['Customer', 'Amount'], rows: [['Acme', 100]] },
+  },
+});
+```
+
+`previewJson` is the preview counterpart. Malformed input raises
+`xl3/source-json/invalid`. Added in 0.11.0 per
+[ADR-0075](./spec/decisions/0075-xl3-source-json.md); the wire format is
+portable across implementations and the `.xlsx` path is unchanged.
+
 ### Acceleration (opt-in)
 
 `convert` and `preview` accept an `engine` option that selects the

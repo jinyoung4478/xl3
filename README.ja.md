@@ -196,6 +196,29 @@ const outputs = await convert(templateBuffer, dataBuffer);
 
 ブラウザと Node (20.12 以上) で動作します。
 
+### `data.xlsx` の代わりに JSON ソース
+
+Excel 以外のホスト(Python サービス、DB/ETL ジョブ)は、ワークブックの往復を
+省略し、言語非依存の `xl3-source-json/0.1` ワイヤフォーマットをそのまま
+渡せます。`convertJson` は、同等の `data.xlsx` に対する `convert` と
+まったく同じ出力をレンダリングします。
+
+```ts
+import { convertJson } from '@xl3-lang/xl3';
+
+const outputs = await convertJson(templateBuffer, {
+  version: 'xl3-source-json/0.1',
+  sources: {
+    default: { headers: ['Customer', 'Amount'], rows: [['Acme', 100]] },
+  },
+});
+```
+
+preview 側の対応物は `previewJson` です。不正な入力は
+`xl3/source-json/invalid` を送出します。0.11.0 で
+[ADR-0075](./spec/decisions/0075-xl3-source-json.md) として追加され、
+ワイヤフォーマットは実装間で可搬、`.xlsx` の経路は変更ありません。
+
 ### バンドラなしの `<script>` での利用
 
 バンドラを使わないプロジェクト向けに、自己完結型の IIFE バンドルを提供しています。読み込むと `window.xl3` として利用できます。

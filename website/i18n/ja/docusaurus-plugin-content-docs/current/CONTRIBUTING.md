@@ -99,7 +99,7 @@ npm test
 2. **ガイドの翻訳。** [`docs/guides/`](/guides) の 15 レシピから 1 つを選び、韓国語(あるいは他の任意の言語)に翻訳してください。ファイルを `docs/guides/<lang>/NN-*.md` に置き、PR を送るだけです。調整コストが低く価値の高い貢献です。
 3. **xl3 を実データのレポートに使い、引っかかった点を報告する。** `early-adopter-feedback` タグで短いイシューを立て、試したレポート、うまくいったこと、いかなかったこと、XTL に欲しかったものを書いてください。これが 1.0 の中身を形作ります。
 4. **仕様の明確化。** 仕様を読んで曖昧な文を見つけたら、`spec` タグで該当文と妥当な 2 種類の解釈を添えてイシューを立てください。受理されない報告でも、たいてい仕様改善のきっかけになります。
-5. **移植の進捗。** [xl3-py](https://github.com/jinyoung4478/xl3-py) や他のポートに取り組んでいるなら、[`conformance/runner-protocol.md`](/conformance/runner-protocol) に書式が定義されている `conformance/reports/<impl>-<version>.json` を投入してください。ダッシュボードが自動で取り込みます。
+5. **移植の進捗。** [xl3-py](https://github.com/xl3-lang/xl3-py) や他のポートに取り組んでいるなら、[`conformance/runner-protocol.md`](/conformance/runner-protocol) に書式が定義されている `conformance/reports/<impl>-<version>.json` を投入してください。ダッシュボードが自動で取り込みます。
 
 ## 行動規範
 

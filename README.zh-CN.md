@@ -183,6 +183,28 @@ const outputs = await convert(templateBuffer, dataBuffer);
 
 在浏览器和 Node(≥ 20.12)上都可以运行。
 
+### 用 JSON 源替代 `data.xlsx`
+
+非 Excel 宿主(Python 服务、DB/ETL 作业)可以跳过工作簿往返,直接传入与
+语言无关的 `xl3-source-json/0.1` 传输格式。`convertJson` 渲染出的结果与
+用等价的 `data.xlsx` 跑 `convert` 完全一致。
+
+```ts
+import { convertJson } from '@xl3-lang/xl3';
+
+const outputs = await convertJson(templateBuffer, {
+  version: 'xl3-source-json/0.1',
+  sources: {
+    default: { headers: ['Customer', 'Amount'], rows: [['Acme', 100]] },
+  },
+});
+```
+
+preview 侧的对应物是 `previewJson`。格式错误的输入会抛出
+`xl3/source-json/invalid`。该能力在 0.11.0 按
+[ADR-0075](./spec/decisions/0075-xl3-source-json.md) 加入;传输格式在各实现
+之间可移植,`.xlsx` 路径保持不变。
+
 ### 不依赖打包工具,直接用 `<script>`
 
 对于不使用打包工具的项目,可以直接引用自包含的 IIFE 构建,在

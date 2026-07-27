@@ -56,6 +56,11 @@ try {
 - **`xl3/filename/*`** ——输出文件名相关
 - **`xl3/parser/*`** ——解析器失败
 - **`xl3/lists/*`** ——`__lists__` 引用相关
+- **`xl3/expression/*`** ——表达式层面的拒绝（`bracket-outside-block`、`unknown-name`）
+- **`xl3/block/*`** ——数据块布局（`overlap`、`empty-table`）
+- **`xl3/group/*`** ——`@group` 相关（`missing-key`）
+- **`xl3/subtotal/*`** ——`@subtotal` 相关（`outside-group`、`bad-aggregate`、`mixed-row`、`explicit-block-unsupported`）
+- **`xl3/source-json/*`** ——JSON 源输入（`invalid`）——仅在 `convertJson` / `previewJson` 路径上出现
 
 完整列表见 [`impl/js/src/error-codes.ts`](https://github.com/xl3-lang/xl3/blob/main/impl/js/src/error-codes.ts)。
 

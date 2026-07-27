@@ -28,12 +28,14 @@ XTL のバージョンは **0.1** です。リファレンス実装は npm 上�
 
 ### 公開 API サーフェス（xl3 リファレンス実装）
 
-TypeScript リファレンス実装は、1.0 時点で次の 13 個のランタイムエクスポートを凍結します。新しいエクスポートを追加するのは後方互換ですが、これらのいずれかを削除・改名することは 2.0 でのみ許される変更です。
+TypeScript リファレンス実装は、1.0 時点で次の 15 個のランタイムエクスポートを凍結します(0.10.0 までで 13 個、加えて 0.11.0 で ADR-0075 により `convertJson` / `previewJson` が追加)。新しいエクスポートを追加するのは後方互換ですが、これらのいずれかを削除・改名することは 2.0 でのみ許される変更です。
 
 **変換エントリポイント**
 
 - `convert(template, source, options?) → Promise<OutputFile[]>`
 - `preview(template, source, options?) → Promise<PreviewResult>`
+- `convertJson(template, sourceJson, options?) → Promise<OutputFile[]>`（ADR-0075）
+- `previewJson(template, sourceJson, options?) → Promise<PreviewResult>`（ADR-0075）
 - `readTemplateInputs(template) → Promise<InputSpec[]>`
 - `analyze(template) → Promise<ParsedTemplate>`
 - `analyzeModel(template) → Promise<TemplateModel>`

@@ -56,6 +56,11 @@ try {
 - **`xl3/filename/*`** — 결과 파일명 관련 문제
 - **`xl3/parser/*`** — 파서 실패
 - **`xl3/lists/*`** — `__lists__` 참조 문제
+- **`xl3/expression/*`** — 표현식 수준 거부 (`bracket-outside-block`, `unknown-name`)
+- **`xl3/block/*`** — 데이터 블록 레이아웃 (`overlap`, `empty-table`)
+- **`xl3/group/*`** — `@group` 문제 (`missing-key`)
+- **`xl3/subtotal/*`** — `@subtotal` 문제 (`outside-group`, `bad-aggregate`, `mixed-row`, `explicit-block-unsupported`)
+- **`xl3/source-json/*`** — JSON 소스 입력 (`invalid`) — `convertJson` / `previewJson` 경로에서만 발생
 
 전체 목록은 [`impl/js/src/error-codes.ts`](https://github.com/xl3-lang/xl3/blob/main/impl/js/src/error-codes.ts) 에 있습니다.
 

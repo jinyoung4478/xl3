@@ -110,7 +110,7 @@ blocker in [ROADMAP.md](./ROADMAP.md).
    that's ambiguous, file an issue tagged `spec` with the offending
    sentence + two reasonable interpretations. Even unaccepted reports
    usually trigger spec improvements.
-5. **Port progress.** Working on [xl3-py](https://github.com/jinyoung4478/xl3-py)
+5. **Port progress.** Working on [xl3-py](https://github.com/xl3-lang/xl3-py)
    or another port? Drop a `conformance/reports/<impl>-<version>.json`
    file (format documented in
    [`conformance/runner-protocol.md`](./conformance/runner-protocol.md))

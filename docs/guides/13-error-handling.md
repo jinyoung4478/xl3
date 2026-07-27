@@ -57,6 +57,11 @@ current set:
 - **`xl3/filename/*`** — output filename issues
 - **`xl3/parser/*`** — parser failures
 - **`xl3/lists/*`** — `__lists__` reference issues
+- **`xl3/expression/*`** — expression-level rejections (`bracket-outside-block`, `unknown-name`)
+- **`xl3/block/*`** — data-block layout (`overlap`, `empty-table`)
+- **`xl3/group/*`** — `@group` issues (`missing-key`)
+- **`xl3/subtotal/*`** — `@subtotal` issues (`outside-group`, `bad-aggregate`, `mixed-row`, `explicit-block-unsupported`)
+- **`xl3/source-json/*`** — JSON source input (`invalid`) — only reachable via `convertJson` / `previewJson`
 
 Full list in [`impl/js/src/error-codes.ts`](https://github.com/xl3-lang/xl3/blob/main/impl/js/src/error-codes.ts).
 

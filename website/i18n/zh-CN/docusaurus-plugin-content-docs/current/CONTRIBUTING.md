@@ -100,7 +100,7 @@ npm test
 2. **指南翻译。** 从 [`docs/guides/`](/guides) 中的 15 篇配方里挑一篇，翻译成韩文（或其他任意语言）。文件放到 `docs/guides/<lang>/NN-*.md`，发 PR。协作成本低、价值高。
 3. **在真实报表数据上跑 xl3，反馈摩擦点。** 一个打了 `early-adopter-feedback` 标签的简短议题，说明：你试了什么报表、什么跑通了、什么没跑通、你希望 XTL 还有什么能力。这会塑造 1.0 的形态。
 4. **规范澄清。** 如果你读规范时发现一句话含混，开一个打 `spec` 标签的议题，附上有歧义的句子 + 两种合理的解读。即便未被接受的反馈，通常也能触发规范改进。
-5. **移植进度。** 在做 [xl3-py](https://github.com/jinyoung4478/xl3-py) 或其他移植？放一份
+5. **移植进度。** 在做 [xl3-py](https://github.com/xl3-lang/xl3-py) 或其他移植？放一份
    `conformance/reports/<impl>-<version>.json`（格式记录在
    [`conformance/runner-protocol.md`](/conformance/runner-protocol)），面板会自动把你包含进来。
 

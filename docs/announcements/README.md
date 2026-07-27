@@ -25,6 +25,8 @@ Before posting any of these:
    point at the latest version.
 4. Avoid claims this repo can't back up. Specifically:
    - Don't claim "production-ready" — the README says alpha.
-   - Don't claim more than the 119 fixtures cover.
+   - Don't claim more than the corpus covers. Check the live count with
+     `ls conformance/fixtures/ | wc -l` (160 as of 0.11.0) rather than
+     quoting a number from an older draft.
 5. Post during a low-traffic window (HN: weekday morning Pacific is
    conventional). Be ready to answer questions in-thread.

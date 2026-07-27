@@ -56,6 +56,11 @@ try {
 - **`xl3/filename/*`** ― 結果ファイル名関連の問題
 - **`xl3/parser/*`** ― パーサー失敗
 - **`xl3/lists/*`** ― `__lists__` 参照問題
+- **`xl3/expression/*`** ― 式レベルの拒否(`bracket-outside-block`、`unknown-name`)
+- **`xl3/block/*`** ― データブロックのレイアウト(`overlap`、`empty-table`)
+- **`xl3/group/*`** ― `@group` の問題(`missing-key`)
+- **`xl3/subtotal/*`** ― `@subtotal` の問題(`outside-group`、`bad-aggregate`、`mixed-row`、`explicit-block-unsupported`)
+- **`xl3/source-json/*`** ― JSON ソース入力(`invalid`)― `convertJson` / `previewJson` の経路でのみ発生
 
 完全なリストは [`impl/js/src/error-codes.ts`](https://github.com/xl3-lang/xl3/blob/main/impl/js/src/error-codes.ts) にあります。
 
