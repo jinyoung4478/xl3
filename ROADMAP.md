@@ -3,7 +3,7 @@
 What needs to happen for **XTL 1.0** (spec) and **xl3 1.0** (reference
 implementation).
 
-The current version is **0.8.0** (npm) targeting **XTL 0.1 (draft)**.
+The current version is **0.11.0** (npm) targeting **XTL 0.1 (draft)**.
 Breaking changes are still possible during 0.x. The 1.0 cut is gated on
 the items below, not on a calendar date.
 
@@ -36,7 +36,7 @@ milestone. Per-version step plan below references these gates by ID.
 
 | ID | Gate | Owner | Artifact | Pass criterion | Fallback | Target |
 |----|------|-------|----------|----------------|----------|--------|
-| G1 | Conformance corpus ≥ 140 | maintainer | `conformance/fixtures/` | `ls conformance/fixtures/ \| wc -l` ≥ 140 | — | DONE (156 fixtures; ADR-0066 added 141-145 mid-0.7.x; ADRs 0067-0069 added 146-155 in 0.8.0; 156 (#49 native value preservation) + 157 (#51 grouped side cells) added post-0.8.1; ADRs 0051-0065 reserved further numbers for 0.7.1) |
+| G1 | Conformance corpus ≥ 140 | maintainer | `conformance/fixtures/` | `ls conformance/fixtures/ \| wc -l` ≥ 140 | — | DONE (160 fixtures; ADR-0066 added 141-145 mid-0.7.x; ADRs 0067-0069 added 146-155 in 0.8.0; 156 (#49 native value preservation) + 157 (#51 grouped side cells) added post-0.8.1; 158 (#52 arithmetic associativity) in 0.9.0; 159-161 (ADR-0073/0074 subtotal errors) in 0.10.0; number 098 is unused, so the count is 160 while the highest index is 161; ADRs 0051-0065 reserved further numbers for 0.7.1) |
 | G2 | Stage 2 OOXML canonicalization spec'd | maintainer | ADR-0006 + canonicalizer in src/ | covered by fixtures 024-027, 093 + ADR-0006 amendment | — | DONE |
 | G3 | Error code catalog frozen | maintainer | `src/__tests__/error-codes.test.ts` snapshot | catalog snapshot unchanged for 30 days | — | ✅ ticked 2026-06-23 (last catalog change 2026-05-24 `a8f7ad3` +3 codes `xl3/block/overlap`·`xl3/block/empty-table`·`xl3/directive/orphan`; `89bee51` added `xl3/expression/bracket-outside-block` 2026-05-23; 30-day freeze elapsed — post-05-24 commits touched the file with comments/JSDoc only, `EXPECTED_CODES` unchanged) |
 | G4 | JXLS boundary published | maintainer | ADR-0048 | file exists, references PORTERS_GUIDE | — | DONE |
@@ -228,10 +228,56 @@ ticked while G3/G6/G7/etc. were closing — see definitions above).
 All four pre-1.0 freeze gates ticked: **G3** (2026-06-23 — last
 catalog change 2026-05-24 + 30 days), **G6** (2026-06-17), **G7**
 (2026-06-21, PR #59), **G23** (2026-06-16 — 21-day soak, 0 critical).
-RC-soak fixes #49–52 folded in; #54/#56/#57 deferred to the 0.10.0
-milestone (POST-1.0 additive). The **G24** 90-day quarter clock
-starts at the last gate tick (2026-06-23 via G3); 1.0 earliest
-≈ 2026-09-21 absent any breaking spec/API/error-code change.
+RC-soak fixes #49–52 folded in; #54/#56/#57 deferred to the
+`post-1.0` milestone (POST-1.0 additive — the milestone was titled
+"0.10.0" at this cut; renamed 2026-07-27 once 0.10.0 and 0.11.0 both
+shipped without these items, and #57 was closed as superseded by the
+host-driven `__inputs__` source metadata in #82). The **G24** 90-day
+quarter clock starts at the last gate tick (2026-06-23 via G3); 1.0
+earliest ≈ 2026-09-21 absent any breaking spec/API/error-code change.
+
+### 0.10.0 — Org move + `@subtotal` correctness (shipped 2026-07-19)
+
+Repository transferred to the **xl3-lang** GitHub organization and the
+npm package renamed `@jinyoung4478/xl3` → `@xl3-lang/xl3` (install name
+only; the old package is deprecated on npm with a pointer to the new
+one). Folds in the `@subtotal` correctness fixes #66 (ADR-0073) and
+#69 (ADR-0074): a `@subtotal` row carrying a current-row `[Column]`
+reference, and group + subtotal under explicit `@block` mode, both used
+to fail *silently* with plausible-but-wrong output — each now raises a
+dedicated error.
+
+Gate impact:
+
+- **G1** — corpus 157 → 160 fixtures (159 mixed-row error, 160
+  formula-cache-is-not-a-marker, 161 explicit-block rejection).
+- **G3 / G24** — 2 error codes **added** (`xl3/subtotal/mixed-row`,
+  `xl3/subtotal/explicit-block-unsupported`); none renamed, removed, or
+  repurposed. Additive per the breaking-change definition above, so the
+  quarter clock does **not** reset.
+- **G6** — public API surface snapshot unchanged. The rename affects the
+  install name only: `convert` / `preview` / `analyze`, the subpath
+  exports, and the `xl3-conformance` bin are identical.
+
+### 0.11.0 — JSON source input (shipped 2026-07-19)
+
+`convertJson` / `previewJson` accept the language-neutral
+`xl3-source-json/0.1` wire format in place of a `data.xlsx`, so
+non-Excel hosts (Python, DB/ETL services) skip the workbook round-trip
+(ADR-0075, #71, implemented in #80). The JS reference impl also moved to
+`impl/js/` under a root npm workspace (#79) — layout only, no behavior
+change.
+
+Gate impact:
+
+- **G3 / G24** — 1 error code **added** (`xl3/source-json/invalid`);
+  additive, clock not reset.
+- **G6** — the frozen surface gains two exports (`convertJson`,
+  `previewJson`, recorded in `spec/STABILITY.md`). Additive: no existing
+  export removed or re-signed, and the `.xlsx` path is untouched.
+- **G24 window** — both cuts landed 2026-07-19, inside the quarter that
+  started 2026-06-23. Neither was breaking under the definition above,
+  so 1.0 earliest stays ≈ 2026-09-21.
 
 ### 1.0.0 — Final cut
 
@@ -293,7 +339,7 @@ These remain candidates for **XTL 1.1, 1.2, 1.x** based on demand.
 
 | Item | How to help |
 |---|---|
-| G13 second-impl ≥ 80% | Contribute to [xl3-py](https://github.com/jinyoung4478/xl3-py), or start a new port (Rust, Java, Go). See [PORTERS_GUIDE.md](./PORTERS_GUIDE.md). |
+| G13 second-impl ≥ 80% | Contribute to [xl3-py](https://github.com/xl3-lang/xl3-py), or start a new port (Rust, Java, Go). See [PORTERS_GUIDE.md](./PORTERS_GUIDE.md). |
 | G14 external ADR | Pick a deferred item (pivot table preservation, page-break, ADR-0045 carved-out function), draft an ADR in `spec/decisions/`. See [GOVERNANCE.md](./GOVERNANCE.md) "How changes enter the project." A few "starter ADR stubs" are available as `good-first-ADR` issues on GitHub. |
 | G15 production case | Use xl3 internally, share what worked / didn't. Drop a row in [IMPLEMENTATIONS.md](./IMPLEMENTATIONS.md) if appropriate. The maintainer's own employer (Snack24h) qualifies if it ships a public case study. |
 | G17 Korean cookbook 16+17 i18n | Translate the two newest recipes (the rest are done). |
