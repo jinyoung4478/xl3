@@ -96,8 +96,16 @@ a pure impl refactor can ship as `xl3` patch with no spec change.
    | Remote git tag | `git ls-remote --tags origin \| grep v1.0.0-rc.1` returns a row |
    | GitHub Release | `gh release view v1.0.0-rc.1` resolves; appears in `gh release list` |
    | CHANGELOG | `[Unreleased]` is empty; the cut version has its own dated section |
+   | Version refs in docs | `git grep -n '@xl3-lang/xl3@[0-9]'` returns only versions that exist on npm, and the four READMEs' status line names the cut |
 
    If any row fails, fix that row before announcing the release.
+
+   The last row exists because the 0.10.0 scope rename
+   (`@jinyoung4478/xl3` → `@xl3-lang/xl3`) rewrote version-pinned
+   references too, leaving the README CDN snippet pointing at
+   `@xl3-lang/xl3@0.8.0` — a version that only ever existed under the
+   old scope, so the tag 404'd. Pinned references are only valid for
+   versions published under the current name.
 
 ## Final 1.0.0 cut
 

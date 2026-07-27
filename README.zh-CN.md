@@ -4,7 +4,7 @@
 > 作为一个与实现无关的开放标准,而不是单一的库。
 
 **状态:** alpha · **XTL spec 0.1 (draft)** · 参考实现
-`@xl3-lang/xl3` 0.9.0 · 1.0 之前可能存在 breaking change
+`@xl3-lang/xl3` 0.11.0 · 1.0 之前可能存在 breaking change
 
 **xl3** 是一个开放标准,用于把普通的 `.xlsx` 工作簿变成确定性的声明式
 转换模板:布局、样式、合并单元格与规则都放在 *工作簿内部*,任何符合
@@ -189,7 +189,7 @@ const outputs = await convert(templateBuffer, dataBuffer);
 `window.xl3` 上挂载所有 API:
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/@xl3-lang/xl3@0.8.0/dist/xl3.bundle.iife.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@xl3-lang/xl3@0.11.0/dist/xl3.bundle.iife.min.js"></script>
 <script>
   const tpl = await fetch('./template.xlsx').then((r) => r.arrayBuffer());
   const data = await fetch('./data.xlsx').then((r) => r.arrayBuffer());

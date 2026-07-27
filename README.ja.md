@@ -5,7 +5,7 @@
 > 依存しないオープンな標準として。
 
 **ステータス:** alpha · **XTL spec 0.1 (draft)** · リファレンス実装
-`@xl3-lang/xl3` 0.9.0 · 1.0 までは breaking change の可能性あり
+`@xl3-lang/xl3` 0.11.0 · 1.0 までは breaking change の可能性あり
 
 **xl3** は、普通の `.xlsx` ワークブックを決定論的で宣言的な変換テンプレート
 に変えるためのオープンな標準です。レイアウト・スタイル・結合セル・ルールは
@@ -201,7 +201,7 @@ const outputs = await convert(templateBuffer, dataBuffer);
 バンドラを使わないプロジェクト向けに、自己完結型の IIFE バンドルを提供しています。読み込むと `window.xl3` として利用できます。
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/@xl3-lang/xl3@0.8.0/dist/xl3.bundle.iife.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@xl3-lang/xl3@0.11.0/dist/xl3.bundle.iife.min.js"></script>
 <script>
   const tpl = await fetch('./template.xlsx').then((r) => r.arrayBuffer());
   const data = await fetch('./data.xlsx').then((r) => r.arrayBuffer());

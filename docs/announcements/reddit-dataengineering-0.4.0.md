@@ -74,7 +74,7 @@ const outputs = await convert(templateBuffer, dataBuffer);
 Repo: https://github.com/xl3-lang/xl3
 Spec: https://github.com/xl3-lang/xl3/tree/main/spec
 Guides: https://github.com/xl3-lang/xl3/tree/main/docs/guides
-npm: `npm install @xl3-lang/xl3@0.4.0`
+npm: `npm install @xl3-lang/xl3`
 
 Status: alpha. The audit pass that just landed in 0.4.0 closed every
 "silent fallthrough" the corpus exposed — either an error code or a
