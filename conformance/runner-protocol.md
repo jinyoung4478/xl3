@@ -57,10 +57,25 @@ because its tag set differs from another fixture's. The reference
 corpus uses lowercase, hyphen-separated tokens but does not enforce a
 canonical taxonomy.
 
+`verified_by` records how the expected output was independently arrived at,
+per `AUTHORING.md`. Two values were in use before being listed here and are
+documented now rather than left as drift:
+
+- `spec-derivation` — expected values were derived by hand from quoted spec
+  text rather than hand-computed in a spreadsheet. Used where the assertion
+  is about a value's *kind* or formatting rather than an arithmetic result,
+  so there is nothing to compute. Fixtures 162-170.
+- `synthetic-perturbation` — the authored expected workbook's OOXML was
+  hand-rewritten to a different but semantically equal serialization, to
+  exercise cross-writer canonicalization. Fixture 093.
+
+`reference-impl` alone is never sufficient: `AUTHORING.md` forbids expected
+outputs captured from the implementation.
+
 Optional fields:
 
 ```yaml
-verified_by: [hand | excel-formulas | manual-script | reference-impl]
+verified_by: [hand | excel-formulas | manual-script | spec-derivation | synthetic-perturbation | reference-impl]
 expected_warnings: [string, ...]   # warnings the impl should emit
 expected_error: string             # expected error message substring; no expected output is required
 expected_error_code: string        # optional ADR-0015 stable error code (e.g. "xl3/source/undeclared")

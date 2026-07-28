@@ -63,7 +63,7 @@ to `1`; fixtures that require canonical OOXML comparison declare
 | `spec_section` | yes | all fixtures | Spec or ADR section that defines the behavior. |
 | `spec_version` | yes | all fixtures | Minimum XTL version required by the fixture. |
 | `tags` | yes | all fixtures | Filterable categories for reports and focused runs. |
-| `verified_by` | no | all fixtures | Independent authoring checks, such as `hand` or `manual-script`. |
+| `verified_by` | no | all fixtures | How the expected output was independently arrived at — `hand`, `excel-formulas`, `manual-script`, `spec-derivation`, `synthetic-perturbation`. See `runner-protocol.md` for what each means. |
 | `expected_warnings` | no | all fixtures | Stable warning substrings the implementation should emit. |
 | `expected_error` | no | error fixtures | Stable error substring; omit static expected outputs. |
 | `expected_dynamic` | no | dynamic fixtures | Dynamic assertion kind; currently `utc_today`. |
