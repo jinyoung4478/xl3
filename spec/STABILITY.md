@@ -74,6 +74,22 @@ removing or renaming any of them is a 2.0-only change.
 `InputSpec`, `InputType`, `SourceSpec`, `XtlError`, `XtlErrorCode`,
 `XtlWarning`, `XtlWarningCode`.
 
+**Additive changes log.** ROADMAP gates G3 and G6 allow additions and
+require them recorded here. Adding an optional option property or an
+error code is backwards-compatible; removing, renaming, or re-signing
+one is 2.0-only and resets both gates.
+
+| Added | Change | Reference |
+|---|---|---|
+| 0.6.0 | `readInputsSheet` optional `configVars` argument | ADR-0050 |
+| 0.11.0 | `convertJson`, `previewJson` exports | ADR-0075 |
+| 0.11.0 | `xl3/source-json/invalid` error code | ADR-0075 |
+| unreleased | `ConvertOptions.signal` (`AbortSignal`) | ROADMAP G21, `spec/evaluation.md` "AbortSignal" |
+| unreleased | `xl3/abort/cancelled` error code | ROADMAP G21 |
+
+The export count is unchanged by the G21 work — `signal` is a property on
+the already-frozen `ConvertOptions`, not a new export.
+
 **Experimental type re-exports** (ROADMAP G22) — exported for
 tooling, but their shape MAY change between minor versions:
 `ParsedTemplate`, `SheetTemplate`, `TemplateVariable`, `DataBlock`,

@@ -756,12 +756,24 @@ SHOULD shard at the *source* boundary (split a 10M-row table into
 
 ### AbortSignal
 
-`convert()` and `preview()` accept an optional `AbortSignal` on
-their `options` argument (planned for 0.7-0.8 per gate G21). When
-the signal aborts, the in-flight conversion raises a stable error
-code (`xl3/abort/cancelled`); no partial output is emitted. Hosts
-that race conversions against a wall-clock budget use this hook
-to enforce timeouts deterministically.
+`convert()`, `preview()`, `convertJson()`, and `previewJson()` accept an
+optional `AbortSignal` as `options.signal`. When the signal has aborted,
+the in-flight conversion raises the stable error code
+`xl3/abort/cancelled`; no partial output is emitted. Hosts that race
+conversions against a wall-clock budget use this hook to enforce
+timeouts deterministically.
+
+A conversion is CPU-bound and single-threaded, so the signal is observed
+at the pipeline's existing suspension points — on entry, after the
+template parses, after sources are read, and between file groups — and
+not mid-row. An abort therefore cancels at a group boundary rather than
+part-way through a sheet. Implementations MUST NOT emit a partially
+rendered file group.
+
+Reference impl: the file-group loop accumulates into a local array and
+returns only after the loop completes, so a caller that observes the
+rejection provably received nothing. Implementations SHOULD get the
+same guarantee structurally rather than by cleanup after the fact.
 
 This API is **forward-compatible** — adding the optional argument
 to `ConvertOptions` does not affect existing callers; the error

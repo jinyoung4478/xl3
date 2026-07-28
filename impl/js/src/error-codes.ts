@@ -84,7 +84,11 @@ export type XtlErrorCode =
   | 'xl3/filename/empty'
   | 'xl3/filename/too-long'
   // Output filename collision (ADR-0031)
-  | 'xl3/filename/collision';
+  | 'xl3/filename/collision'
+  // Host-requested cancellation (ROADMAP gate G21, spec/evaluation.md
+  // "AbortSignal"). Raised when the `signal` passed to convert() or
+  // preview() aborts; no partial output is emitted.
+  | 'xl3/abort/cancelled';
 
 export interface XtlError extends Error {
   code: XtlErrorCode;

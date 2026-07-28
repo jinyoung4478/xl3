@@ -58,6 +58,7 @@ export { toTemplateModel } from './template-model.js';
 export { xtlError, isXtlError } from './error-codes.js';
 export type { XtlError, XtlErrorCode } from './error-codes.js';
 import { xtlError } from './error-codes.js';
+import { throwIfAborted } from './abort.js';
 import {
   tryLoadWasmEngine,
   wasmConvert,
@@ -99,7 +100,10 @@ async function prepareConversion(
   sourceBuffer: ArrayBuffer,
   options?: ConvertOptions,
 ) {
+  // G21: an already-aborted signal fails before any parsing work.
+  throwIfAborted(options?.signal);
   const parsed = await parseTemplate(templateBuffer);
+  throwIfAborted(options?.signal);
   applyResolvedInputs(parsed, options);
   // ADR-0012: read default + all named sources upfront.
   const sources = await readAllSources(
@@ -108,6 +112,7 @@ async function prepareConversion(
     { sourceTable: parsed.meta.source_table },
     parsed.sources,
   );
+  throwIfAborted(options?.signal);
 
   return prepareConversionFromSources(parsed, sources);
 }
@@ -123,7 +128,10 @@ function applyResolvedInputs(parsed: ParsedTemplate, options?: ConvertOptions): 
   parsed.resolvedInputs = resolveInputs(parsed.inputs, options?.inputs);
 }
 
-async function renderPreparedConversion(prepared: PreparedConversion): Promise<OutputFile[]> {
+async function renderPreparedConversion(
+  prepared: PreparedConversion,
+  signal?: AbortSignal,
+): Promise<OutputFile[]> {
   const files: OutputFile[] = [];
   // ADR-0031: detect filename collisions across file groups before
   // rendering any of them. Two distinct group keys that sanitize to
@@ -142,6 +150,10 @@ async function renderPreparedConversion(prepared: PreparedConversion): Promise<O
     seenFilenames.add(filename);
   }
   for (const fg of prepared.grouped.fileGroups) {
+    // G21: cancel between file groups. `files` is local and only
+    // returned below, so an abort here emits nothing — the spec's
+    // "no partial output" guarantee is structural, not best-effort.
+    throwIfAborted(signal);
     const outFile = await prepared.renderer.renderFile(fg);
     files.push(outFile);
   }
@@ -267,6 +279,21 @@ function buildPreviewFromPrepared(prepared: PreparedConversion): PreviewResult {
  *   inputs: { month: '2026-05' },
  * });
  * ```
+ *
+ * @example
+ * ```ts
+ * // Enforce a wall-clock budget. On abort the call rejects with
+ * // `xl3/abort/cancelled` and emits no partial output.
+ * const ctrl = new AbortController();
+ * const timer = setTimeout(() => ctrl.abort(), 30_000);
+ * try {
+ *   const outputs = await convert(templateBuffer, sourceBuffer, {
+ *     signal: ctrl.signal,
+ *   });
+ * } finally {
+ *   clearTimeout(timer);
+ * }
+ * ```
  */
 export async function convert(
   templateBuffer: ArrayBuffer,
@@ -278,6 +305,9 @@ export async function convert(
   //   'wasm': require wasm
   //   'js': force JS path
   const engineMode = options?.engine ?? 'auto';
+  // G21: the wasm render is a single uninterruptible call, so the signal
+  // is honoured on either side of it rather than during.
+  throwIfAborted(options?.signal);
   if (engineMode !== 'js') {
     const engine = await tryLoadWasmEngine();
     if (engine) {
@@ -289,13 +319,15 @@ export async function convert(
         // fallback) rather than reorganising the call sites.
         const parsed = await parseTemplate(templateBuffer);
         const manifest = extractManifest(parsed.workbook);
-        return wasmConvert(
+        const out = await wasmConvert(
           engine,
           templateBuffer,
           sourceBuffer,
           options?.inputs,
           manifest,
         );
+        throwIfAborted(options?.signal);
+        return out;
       } catch (e) {
         if (engineMode === 'wasm') throw e;
         // 'auto' — silently fall through to the JS path. The wasm
@@ -309,7 +341,7 @@ export async function convert(
     }
   }
   const prepared = await prepareConversion(templateBuffer, sourceBuffer, options);
-  return renderPreparedConversion(prepared);
+  return renderPreparedConversion(prepared, options?.signal);
 }
 
 /**
@@ -339,6 +371,7 @@ export async function preview(
   // engine: 'wasm'. The JS path produces the canonical warnings the
   // type contract promises (`xl3w/parser/missing-column` etc.) which
   // the wasm bridge cannot reconstruct from its abbreviated surface.
+  throwIfAborted(options?.signal);
   if (options?.engine === 'wasm') {
     const engine = await tryLoadWasmEngine();
     if (!engine) {
@@ -348,6 +381,7 @@ export async function preview(
     }
     const partial = wasmPreview(engine, templateBuffer, sourceBuffer);
     const inputs = wasmReadTemplateInputs(engine, templateBuffer);
+    throwIfAborted(options?.signal);
     return { ...partial, inputs, warnings: [] };
   }
   const prepared = await prepareConversion(templateBuffer, sourceBuffer, options);
@@ -363,9 +397,12 @@ async function prepareConversionFromJson(
   sourceJson: Xl3SourceJsonInput,
   options?: ConvertOptions,
 ): Promise<PreparedConversion> {
+  throwIfAborted(options?.signal);
   const parsed = await parseTemplate(templateBuffer);
+  throwIfAborted(options?.signal);
   applyResolvedInputs(parsed, options);
   const sources = readJsonSources(sourceJson, parsed.sources);
+  throwIfAborted(options?.signal);
   return prepareConversionFromSources(parsed, sources, 'json');
 }
 
@@ -403,7 +440,7 @@ export async function convertJson(
 ): Promise<OutputFile[]> {
   assertNoWasmForJson(options);
   const prepared = await prepareConversionFromJson(templateBuffer, sourceJson, options);
-  return renderPreparedConversion(prepared);
+  return renderPreparedConversion(prepared, options?.signal);
 }
 
 /**

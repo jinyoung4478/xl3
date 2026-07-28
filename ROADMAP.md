@@ -56,7 +56,7 @@ milestone. Per-version step plan below references these gates by ID.
 | G18 | Production use case in README | maintainer | `README.md` | replaces "alpha" status with concrete production reference (tied to G15) | — | ❌ **OPEN** — blocked on G15 | 1.0 (with G15) |
 | G19 | Migration guide 0.x → 1.0 | maintainer | `docs/migration-0.x-to-1.0.md` | documents every behavior change or confirms additive-only | downgrade to CHANGELOG note if confirmed additive-only | ❌ **OPEN** — `docs/migration-0.x-to-1.0.md` absent; CHANGELOG fallback not yet exercised | 0.8 |
 | G20 | SECURITY.md + threat model | maintainer | `SECURITY.md` + spec amendment | docs zip-bomb / oversized workbook / formula-execution stance + limits API | — | ✅ **DONE** — SECURITY.md covers zip bomb, large workbook, formula stance, and points at the limits table | 0.7.1 |
-| G21 | Hard limits documented (no streaming until 1.1) | maintainer | spec/evaluation.md | row / memory hard limit values + AbortSignal API documented | — | ❌ **OPEN** — `AbortSignal` is documented as "planned" but not implemented, and the `xl3/abort/cancelled` code it names is absent from the catalog (a docs↔runtime inconsistency). No memory hard-limit value is published, and the row cap is marked "draft" pending G8 | 0.7.1 |
+| G21 | Hard limits documented (no streaming until 1.1) | maintainer | spec/evaluation.md | row / memory hard limit values + AbortSignal API documented | — | 🟡 **PARTIAL** — `AbortSignal` shipped (`ConvertOptions.signal` on all four entry points, `xl3/abort/cancelled` catalogued, no partial output), closing the docs↔runtime inconsistency. Remaining: no memory hard-limit value is published and the row cap is still marked "draft" — both wait on G8 to supply measured numbers rather than invented ones | 0.7.1 |
 | G22 | API surface — internal model types separated | maintainer | `impl/js/src/index.ts` exports + STABILITY.md | only `convert`/`preview`/`analyze` + stable interfaces marked `@stable`; model/parser types marked `@experimental` or moved to `xl3/internal` | — | ✅ **DONE** | DONE (0.6) |
 | G23 | RC soak | maintainer | git tags | RC published; ≥ 21-day soak (extended from 7 day per review feedback); 0 critical issues | — | ✅ **DONE** — ticked 2026-06-16 | ✅ ticked 2026-06-16 (21-day soak from rc.1 2026-05-26; 0 critical — soak-period fixes #49–52 folded into 0.9.0, none reset the clock per the G23 breaking-change definition) |
 | G24 | "Stable quarter" post-checklist | maintainer | release calendar | 90-day window after the FINAL gate above ticks ✅; no breaking spec/API/error-code change during the window | breaking change → restart clock | ❌ **BLOCKED** — the `data-loss/` fixture group required by its own testable definition (≥ 8 fixtures) does not exist. Clock question resolved 2026-07-28 (#86): the quarter runs from 2026-06-23 uninterrupted, but G24 still cannot tick while 12 other gates are open | ⏳ quarter clock started **2026-06-23** (G3 = last gate to tick); 1.0 earliest ≈ **2026-09-21** if no breaking spec/API/error-code change in the window |
@@ -66,7 +66,8 @@ milestone. Per-version step plan below references these gates by ID.
 > where the two disagree, `Status` is the current fact.
 >
 > **12 gates are open:** G5, G8, G9, G10, G12, G14, G15, G16, G17, G18,
-> G19, G21 — plus G24, which cannot tick until the others do and is
+> G19, and G21 (partial — `AbortSignal` shipped, limit values pending G8)
+> — plus G24, which cannot tick until the others do and is
 > separately missing the `data-loss/` fixture group its own definition
 > requires. Two entries were stale in the *optimistic* direction beyond
 > that (G21 documents an `AbortSignal` API and an error code that do not

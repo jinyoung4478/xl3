@@ -42,6 +42,20 @@ export interface ConvertOptions {
    *   so for forward compatibility.
    */
   engine?: 'auto' | 'wasm' | 'js';
+  /**
+   * Host-supplied cancellation signal. When it aborts, the in-flight
+   * conversion raises `xl3/abort/cancelled` and emits no partial output.
+   *
+   * A conversion is CPU-bound and single-threaded, so the signal is
+   * observed at the pipeline's await boundaries — after the template
+   * parses, after sources are read, and between file groups — not
+   * mid-row. Hosts racing against a wall-clock budget get deterministic
+   * cancellation at those points rather than a torn result.
+   *
+   * @stable Frozen at 1.0 per `spec/STABILITY.md`. Additive: existing
+   *   callers that omit it are unaffected.
+   */
+  signal?: AbortSignal;
 }
 
 // ADR-0012: an external data source declaration parsed from

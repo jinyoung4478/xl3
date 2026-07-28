@@ -54,7 +54,7 @@ These are spec-normative, not impl quirks:
 | **Adversarial formula text** | Preserved verbatim, **never executed by xl3** | Risk transfers to Excel-open time; the document opener's Excel handles formula evaluation under its own security context |
 | **External link references** (workbook-to-workbook, web queries, etc.) | Preserved verbatim if present in input; xl3 never follows them | Excel/LibreOffice prompt the user on open; xl3 emits no network traffic |
 | **Untrusted `__inputs__` defaults** (post-ADR-0050) | Evaluated against a *constrained* context — only `__config__` + pure scalar functions; no source data, no system access | A malicious template cannot use `__inputs__` evaluation to exfiltrate data; the env has no I/O |
-| **DoS via pathological data** (many groups, deep formulas) | Host SHOULD wrap `convert()` in `Promise.race` against a timeout or pass an `AbortSignal` (planned per G21) | xl3 ships no timeout itself — a single conversion is single-threaded; the host process is the right place to enforce wall-clock |
+| **DoS via pathological data** (many groups, deep formulas) | Host SHOULD pass an `AbortSignal` as `options.signal`, or wrap `convert()` in `Promise.race` against a timeout | xl3 ships no timeout itself — a single conversion is single-threaded; the host process is the right place to enforce wall-clock |
 | **Path traversal in output filenames** | Mitigated — ADR-0002 sanitization strips forbidden chars and reserved device names | Hosts that write outputs to disk MAY still apply additional whitelists |
 | **CSV / formula injection** in *output* cells | Out of scope for xl3; the output is XLSX, not CSV | If a downstream consumer exports xl3 output to CSV, that consumer is responsible for CSV-injection mitigation |
 | **Supply chain (npm)** | `@xl3-lang/xl3` publishes with `npm publish --access=public --otp`. Maintainer 2FA via security key required at publish time | Per maintainer; reflected in `RELEASING.md` |
@@ -67,7 +67,7 @@ SHOULD include:
 
 1. **Total upload size cap** before parse.
 2. **Wall-clock timeout** around the `convert()` call (Promise.race
-   pattern; AbortSignal planned for 0.7-0.8 per G21).
+   pattern, or `options.signal` with an `AbortSignal`).
 3. **Memory cap** on the worker process (`--max-old-space-size`
    under Node; Worker `memoryLimit` in Cloudflare Workers; etc.).
 4. **Process isolation** — run conversion in a worker or subprocess
