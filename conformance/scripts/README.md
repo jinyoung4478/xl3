@@ -22,14 +22,22 @@ same workbook semantics.
 
 The committed `.xlsx` files in `conformance/fixtures/<NNN>-*/` are the artifacts of this script. The script itself is checked in as an audit trail so reviewers can re-derive the binaries from the source comments and confirm no spec-versus-impl shortcut was taken.
 
-## `verify-fixtures.mjs`
+## Verifying a fixture against the impl
 
-Runs the reference implementation on each static-output fixture's inputs and compares the result to the hand-authored `expected.xlsx` using cell-value equality. Error and dynamic fixtures are skipped because their assertions are runner responsibilities. This is the local "step 4" check from [`../AUTHORING.md`](../AUTHORING.md): if the impl disagrees with expected, do **not** change expected — investigate.
-
-This is **not** the conformance runner. The conformance runner is the protocol described in [`../runner-protocol.md`](../runner-protocol.md), which uses canonical OOXML comparison and is implementation-specific.
+`AUTHORING.md` step 4 — run the reference impl and confirm it agrees with
+the hand-authored `expected.xlsx`:
 
 ```bash
-npm run build              # produces dist/, required by the verifier
-node conformance/scripts/verify-fixtures.mjs
-rm -rf dist                # dist is a build artifact, not committed
+npm run build
+npm run conformance          # all fixtures
+npm run conformance:tz       # and under UTC / America/New_York / Asia/Seoul
 ```
+
+A `verify-fixtures.mjs` script used to live here for this. It was removed
+2026-07-28: it duplicated the runner, had been unrunnable since the impl
+moved to `impl/js` in #79, and — the reason it was deleted rather than
+repaired — its comparison collapsed dates to ISO strings, so it would
+have passed a fixture whose expected `Date` had been replaced by the
+equivalent text. A checker that cannot see that difference gives false
+assurance on exactly the fixtures that pin native value types.
+
