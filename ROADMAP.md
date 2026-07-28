@@ -38,10 +38,10 @@ milestone. Per-version step plan below references these gates by ID.
 |----|------|-------|----------|----------------|----------|--------|---------|
 | G1 | Conformance corpus ≥ 140 | maintainer | `conformance/fixtures/` | `ls conformance/fixtures/ \| wc -l` ≥ 140 | — | ✅ **DONE** — 160 fixtures | DONE (160 fixtures; ADR-0066 added 141-145 mid-0.7.x; ADRs 0067-0069 added 146-155 in 0.8.0; 156 (#49 native value preservation) + 157 (#51 grouped side cells) added post-0.8.1; 158 (#52 arithmetic associativity) in 0.9.0; 159-161 (ADR-0073/0074 subtotal errors) in 0.10.0; number 098 is unused, so the count is 160 while the highest index is 161; ADRs 0051-0065 reserved further numbers for 0.7.1) |
 | G2 | Stage 2 OOXML canonicalization spec'd | maintainer | ADR-0006 + canonicalizer in src/ | covered by fixtures 024-027, 093 + ADR-0006 amendment | — | ✅ **DONE** | DONE |
-| G3 | Error code catalog frozen | maintainer | `impl/js/src/__tests__/error-codes.test.ts` snapshot | catalog snapshot unchanged for 30 days | — | ❌ **RE-OPENED 2026-07-19** — `cabe0e1` added `xl3/source-json/invalid` (62→65 codes since `v0.9.0`). Earliest re-tick **2026-08-18** | ✅ ticked 2026-06-23 (last catalog change 2026-05-24 `a8f7ad3` +3 codes `xl3/block/overlap`·`xl3/block/empty-table`·`xl3/directive/orphan`; `89bee51` added `xl3/expression/bracket-outside-block` 2026-05-23; 30-day freeze elapsed — post-05-24 commits touched the file with comments/JSDoc only, `EXPECTED_CODES` unchanged) |
+| G3 | Error code catalog frozen | maintainer | `impl/js/src/__tests__/error-codes.test.ts` snapshot | no breaking catalog change for 30 days (additions allowed, logged — see "Frozen vs unchanged") | — | ✅ **DONE** — held through 0.11.0 under the amended criterion. `cabe0e1` added `xl3/source-json/invalid` (62→65 codes since `v0.9.0`); additive, so the gate stands. Last breaking catalog change: none since the gate ticked 2026-06-23 | ✅ ticked 2026-06-23 (last catalog change 2026-05-24 `a8f7ad3` +3 codes `xl3/block/overlap`·`xl3/block/empty-table`·`xl3/directive/orphan`; `89bee51` added `xl3/expression/bracket-outside-block` 2026-05-23; 30-day freeze elapsed — post-05-24 commits touched the file with comments/JSDoc only, `EXPECTED_CODES` unchanged) |
 | G4 | JXLS boundary published | maintainer | ADR-0048 | file exists, references PORTERS_GUIDE | — | ✅ **DONE** | DONE |
 | G5 | Deferred-impl ADRs landed | maintainer | ADR-0038 impl ✅ (2026-05-18) + ADR-0040 PE impl | ADR-0038 portion shipped (fixtures 132-135); ADR-0040 CF/DV range-extension still pending | — | ❌ **OPEN** — ADR-0040 CF/DV range-extension not implemented | 0.6 (partial) / 0.7.1 |
-| G6 | Public API surface frozen | maintainer | `impl/js/src/__tests__/api-surface.test.ts` snapshot | snapshot unchanged for 30 days | — | ❌ **RE-OPENED 2026-07-19** — `cabe0e1` added `convertJson`/`previewJson` to the snapshot. Earliest re-tick **2026-08-18** | ✅ ticked 2026-06-17 (snapshot unchanged since 2026-05-18 `16f0608`) |
+| G6 | Public API surface frozen | maintainer | `impl/js/src/__tests__/api-surface.test.ts` snapshot | no breaking surface change for 30 days (additions allowed, logged — see "Frozen vs unchanged") | — | ✅ **DONE** — held through 0.11.0 under the amended criterion. `cabe0e1` added `convertJson`/`previewJson`; additive, so the gate stands. Last breaking surface change: none since the gate ticked 2026-06-17 | ✅ ticked 2026-06-17 (snapshot unchanged since 2026-05-18 `16f0608`) |
 | G7 | JSDoc examples on @stable exports | maintainer | TypeDoc output | every `@stable` symbol has `@example` block | — | ✅ **DONE** — re-verified 15/15 `@stable` declarations carry `@example` | ✅ DONE 2026-06-21 — 13/13 `@stable` callables carried `@example` (PR #59); re-verified at **15/15** after 0.11.0 added `convertJson` / `previewJson` (`previewJson` shipped without one and was fixed 2026-07-27) |
 | G8 | Performance characterized | maintainer | `scripts/BENCH.md` | 1k/10k/100k row × 5/10/20 col matrix + memory-ceiling + parse/eval/write split published | — | ❌ **OPEN** — `BENCH.md` publishes 3 scenarios; no 1k/100k row tiers, no 5/10/20 col matrix, no memory ceiling, no parse/eval/write split | 0.7.1 |
 | G9 | Perf regression fixtures | maintainer | conformance corpus | ≥ 2 large fixtures with ratio-based assertion | — | ❌ **OPEN** — no fixture carries a ratio-based perf assertion | 0.7.1 |
@@ -59,22 +59,31 @@ milestone. Per-version step plan below references these gates by ID.
 | G21 | Hard limits documented (no streaming until 1.1) | maintainer | spec/evaluation.md | row / memory hard limit values + AbortSignal API documented | — | ❌ **OPEN** — `AbortSignal` is documented as "planned" but not implemented, and the `xl3/abort/cancelled` code it names is absent from the catalog (a docs↔runtime inconsistency). No memory hard-limit value is published, and the row cap is marked "draft" pending G8 | 0.7.1 |
 | G22 | API surface — internal model types separated | maintainer | `impl/js/src/index.ts` exports + STABILITY.md | only `convert`/`preview`/`analyze` + stable interfaces marked `@stable`; model/parser types marked `@experimental` or moved to `xl3/internal` | — | ✅ **DONE** | DONE (0.6) |
 | G23 | RC soak | maintainer | git tags | RC published; ≥ 21-day soak (extended from 7 day per review feedback); 0 critical issues | — | ✅ **DONE** — ticked 2026-06-16 | ✅ ticked 2026-06-16 (21-day soak from rc.1 2026-05-26; 0 critical — soak-period fixes #49–52 folded into 0.9.0, none reset the clock per the G23 breaking-change definition) |
-| G24 | "Stable quarter" post-checklist | maintainer | release calendar | 90-day window after the FINAL gate above ticks ✅; no breaking spec/API/error-code change during the window | breaking change → restart clock | ❌ **BLOCKED** — the `data-loss/` fixture group required by its own testable definition (≥ 8 fixtures) does not exist, and the clock-start precondition is disputed (see #86) | ⏳ quarter clock started **2026-06-23** (G3 = last gate to tick); 1.0 earliest ≈ **2026-09-21** if no breaking spec/API/error-code change in the window |
+| G24 | "Stable quarter" post-checklist | maintainer | release calendar | 90-day window after the FINAL gate above ticks ✅; no breaking spec/API/error-code change during the window | breaking change → restart clock | ❌ **BLOCKED** — the `data-loss/` fixture group required by its own testable definition (≥ 8 fixtures) does not exist. Clock question resolved 2026-07-28 (#86): the quarter runs from 2026-06-23 uninterrupted, but G24 still cannot tick while 12 other gates are open | ⏳ quarter clock started **2026-06-23** (G3 = last gate to tick); 1.0 earliest ≈ **2026-09-21** if no breaking spec/API/error-code change in the window |
 
 > **Status column audited 2026-07-28** against the tree at `2ca7ab0`.
 > The `Planned` column is the historical milestone plan and is kept as-is;
-> where the two disagree, `Status` is the current fact. 14 gates are open.
+> where the two disagree, `Status` is the current fact.
 >
-> **The 1.0 date in this file is not currently reliable.** G3 and G6 were
-> both re-opened by 0.11.0 on 2026-07-19, and G3 is the gate the G24 quarter
-> clock was started on. Two rules in G24 conflict about what follows — the
-> breaking-change rule says an additive error code does not reset the clock
-> (1.0 ≈ 2026-09-21), while the clock-start rule says the quarter begins the
-> day the *last* gate ticks (1.0 ≈ 2026-11-16). That decision is tracked in
-> [#86](https://github.com/xl3-lang/xl3/issues/86) and should be written into
-> the Definitions below, since every future additive release reopens it.
-> Until it is settled, treat the ≈ 2026-09-21 references in this file as
-> unverified.
+> **12 gates are open:** G5, G8, G9, G10, G12, G14, G15, G16, G17, G18,
+> G19, G21 — plus G24, which cannot tick until the others do and is
+> separately missing the `data-loss/` fixture group its own definition
+> requires. Two entries were stale in the *optimistic* direction beyond
+> that (G21 documents an `AbortSignal` API and an error code that do not
+> exist) and two in the *pessimistic* direction (G11 and G13 were already
+> satisfied).
+>
+> **The quarter clock runs from 2026-06-23, uninterrupted** (#86, decided
+> 2026-07-28). 0.11.0 added an export and an error code on 2026-07-19;
+> both are additive, so G3 and G6 stand. See "Frozen vs unchanged" and the
+> amendment note under `Breaking change` in the Definitions below — the
+> old wording made an added *export* breaking while an added *error code*
+> was not, which would have reset the clock by accident.
+>
+> **The clock is not the binding constraint.** 1.0 is gated on the 12 open
+> items, and the long poles are G8/G9 (benchmark matrix, perf fixtures) and
+> the G24 `data-loss/` group. Any date derived from the quarter alone is
+> meaningless until those land, so this file no longer asserts one.
 
 ### Definitions (testable)
 
@@ -83,10 +92,33 @@ milestone. Per-version step plan below references these gates by ID.
   time. Drive-by typo edits do not count; named Author in ADR
   front-matter; authored ≥ 60% of Context/Decision sections by line
   count.
-- **Breaking change (G24, G23):** any change to (a) public API
-  surface snapshot, (b) error code catalog (rename/removal/repurpose),
-  (c) ADR `accepted` → `rejected` or contradicting status flip.
-  Patch releases and additive ADRs do NOT reset the quarter clock.
+- **Breaking change (G24, G23):** (a) removal, rename, or signature
+  change of an existing export in the public API surface snapshot,
+  (b) error code catalog rename / removal / repurpose, (c) ADR
+  `accepted` → `rejected` or contradicting status flip. Patch releases
+  and additive ADRs do NOT reset the quarter clock.
+
+  *Amended 2026-07-28.* (a) previously read "any change to public API
+  surface snapshot", which made it asymmetric with (b) — an added error
+  code was additive but an added export was breaking. Read literally
+  that made 0.11.0's `convertJson` / `previewJson` a clock reset, which
+  contradicts the 0.11.0 note below. Both clauses are now scoped to
+  changes that can break a caller. Additions remain **append-only** per
+  ADR-0015 and MUST be recorded in `spec/STABILITY.md`.
+- **Frozen vs unchanged (G3, G6):** these gates guarantee the surface
+  does not *churn* before 1.0, not that it stops growing. Their pass
+  criterion is 30 days with no **breaking** change as defined above.
+  Adding an export or an error code does not un-tick them; removing,
+  renaming, or re-signing one does, and restarts both the 30-day
+  window and — via G24 — the quarter clock.
+
+  Rationale for scoping it this way rather than literal "unchanged":
+  under a literal reading, any additive fix delays 1.0 by up to 30 + 90
+  days, so fixing a real defect is penalised. G21 is exactly that case —
+  closing it requires *adding* `xl3/abort/cancelled`. A rule that
+  punishes that pushes work toward not fixing it. Scoping to breaking
+  changes keeps the criterion doing real work (a removal still resets
+  everything) without creating that incentive.
 - **Critical bug fix (G23 RC exception):** (a) silent data loss in
   `convert()`, (b) error code catalog inconsistency between docs and
   runtime, OR (c) an `accepted` ADR's MUST that cannot be implemented
@@ -248,10 +280,10 @@ RC-soak fixes #49–52 folded in; #54/#56/#57 deferred to the
 "0.10.0" at this cut; renamed 2026-07-27 once 0.10.0 and 0.11.0 both
 shipped without these items, and #57 was closed as superseded by the
 host-driven `__inputs__` source metadata in #82). The **G24** 90-day
-quarter clock starts at the last gate tick (2026-06-23 via G3); 1.0
-earliest ≈ 2026-09-21 absent any breaking spec/API/error-code change.
-(Superseded in part: G3 was re-opened on 2026-07-19 — see the audit note
-above the Definitions block and [#86](https://github.com/xl3-lang/xl3/issues/86).)
+quarter clock starts at the last gate tick (2026-06-23 via G3); the
+quarter runs uninterrupted from that date (confirmed by the 2026-07-28
+audit, #86). The 1.0 date is not derived from the quarter alone — see the
+audit note above the Definitions block for what actually gates it.
 
 ### 0.10.0 — Org move + `@subtotal` correctness (shipped 2026-07-19)
 
@@ -293,16 +325,17 @@ Gate impact:
   `previewJson`, recorded in `spec/STABILITY.md`). Additive: no existing
   export removed or re-signed, and the `.xlsx` path is untouched.
 - **G24 window** — both cuts landed 2026-07-19, inside the quarter that
-  started 2026-06-23. Neither was breaking under the definition above,
-  so 1.0 earliest stays ≈ 2026-09-21.
-- **Open point raised by the 2026-07-28 audit** — the breaking-change rule
-  and the clock-start rule are different tests. Nothing here was breaking,
-  but G3's and G6's own pass criterion is "snapshot unchanged for 30 days",
-  and both snapshots changed on 2026-07-19. So both gates are currently
-  un-ticked (earliest re-tick 2026-08-18) even though the clock was never
-  *reset*. Whether the clock can run while a gate is un-ticked is not
-  answered anywhere in this file — tracked in
-  [#86](https://github.com/xl3-lang/xl3/issues/86).
+  started 2026-06-23. Neither was breaking under the definition above, so
+  the quarter is undisturbed and completes ≈ 2026-09-21. That is when the
+  *clock* clears, not a ship date: 12 gates are still open, so the quarter
+  stops being the binding constraint.
+- **Resolved by the 2026-07-28 audit (#86)** — the conclusion above is
+  correct, but it rested on a definition that did not say so. `Breaking
+  change` clause (a) read "any change to public API surface snapshot",
+  which made `convertJson` breaking while an added error code was not.
+  Clause (a) is now scoped to removal / rename / re-signature, matching
+  (b), and G3/G6 carry an explicit "additions allowed" criterion. G3 and
+  G6 therefore held through this cut and the quarter was never reset.
 
 ### 1.0.0 — Final cut
 
