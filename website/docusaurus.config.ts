@@ -92,6 +92,17 @@ const config: Config = {
   // `docusaurus build` runs.
   plugins: ['./plugins/xl3-alias/index.cjs'],
 
+  customFields: {
+    // PostHog project key, read by src/theme/Root.tsx. Set as a repository
+    // *variable* (not a secret) on the Pages workflow — `phc_` keys are
+    // public by design, they only permit writes.
+    //
+    // Leaving it unset is the switch that keeps analytics off: local `docs:dev`
+    // builds and forks never load the SDK, so their traffic stays out of the
+    // production project.
+    posthogApiKey: process.env.POSTHOG_API_KEY ?? null,
+  },
+
   presets: [
     [
       'classic',
@@ -387,6 +398,13 @@ const config: Config = {
             { label: 'GitHub', href: 'https://github.com/xl3-lang/xl3' },
             { label: 'npm', href: 'https://www.npmjs.com/package/@xl3-lang/xl3' },
             { label: 'Changelog', href: 'https://github.com/xl3-lang/xl3/blob/main/CHANGELOG.md' },
+          ],
+        },
+        {
+          title: 'Legal',
+          items: [
+            // `to` (not `href`) so the link keeps the active locale prefix.
+            { label: 'Privacy', to: '/privacy' },
           ],
         },
       ],

@@ -1,0 +1,112 @@
+/* Docked to the bottom rather than shown as a modal overlay: the notice must
+   not block reading the docs, and nothing here is consent-gated until the
+   visitor chooses (PostHog holds all capture while status is 'pending'). */
+.banner {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 300;
+  padding: 0.9rem 1rem;
+  background: var(--ifm-background-surface-color);
+  border-top: 1px solid var(--xl3-line);
+  box-shadow: var(--xl3-shadow);
+}
+
+[data-theme='dark'] .banner {
+  border-top-color: rgba(148, 163, 184, 0.24);
+}
+
+.inner {
+  display: flex;
+  gap: 1rem 1.5rem;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1140px;
+  margin: 0 auto;
+  flex-wrap: wrap;
+}
+
+.text {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--xl3-slate);
+  flex: 1 1 22rem;
+}
+
+[data-theme='dark'] .text {
+  color: rgba(226, 232, 240, 0.78);
+}
+
+.link {
+  white-space: nowrap;
+  text-decoration: underline;
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+  flex: 0 0 auto;
+}
+
+/* Both buttons share geometry on purpose. Refusing has to be as easy as
+   consenting, so the decline control is never smaller or dimmer than accept —
+   only the fill differs. */
+.decline,
+.accept {
+  padding: 0.5rem 1.15rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.4;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.decline {
+  color: var(--ifm-font-color-base);
+  background: transparent;
+  border-color: var(--xl3-line);
+}
+
+.decline:hover {
+  background: var(--xl3-panel);
+}
+
+[data-theme='dark'] .decline {
+  border-color: rgba(148, 163, 184, 0.38);
+}
+
+[data-theme='dark'] .decline:hover {
+  background: rgba(148, 163, 184, 0.12);
+}
+
+.accept {
+  color: #ffffff;
+  background: var(--ifm-color-primary);
+}
+
+.accept:hover {
+  background: var(--ifm-color-primary-dark);
+}
+
+[data-theme='dark'] .accept {
+  color: var(--xl3-navy);
+}
+
+@media (max-width: 560px) {
+  .inner {
+    align-items: stretch;
+  }
+
+  .actions {
+    width: 100%;
+  }
+
+  .decline,
+  .accept {
+    flex: 1 1 0;
+  }
+}

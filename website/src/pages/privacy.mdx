@@ -1,0 +1,78 @@
+---
+title: Privacy
+description: What xl3.io measures, who processes it, and how to change your choice.
+---
+
+import ConsentReset from '@site/src/components/ConsentReset';
+
+# Privacy
+
+xl3.io is the documentation site for an open-source project. There are no
+accounts, no logins, and no forms — nothing you type is collected or sent
+anywhere.
+
+## What we measure
+
+We use [PostHog](https://posthog.com) to see which documentation pages get
+read, so we know what to write more of. What is recorded depends on the choice
+you made in the consent notice:
+
+| | **Accept** | **Decline** |
+| --- | --- | --- |
+| Stored on your device | A first-party cookie identifying your browser | Only a note that you declined, so you are not asked again |
+| Page URL, referrer, language | Recorded | Recorded |
+| Browser and operating system | Recorded | Recorded |
+| Approximate country | Recorded | Not available |
+| Recognised across visits | Yes | No — a fresh identifier each day |
+
+Declining does not turn measurement off. It switches PostHog to a mode where
+your visit is counted using an identifier derived on PostHog's servers from
+your IP address and browser, salted with a random value that is discarded
+every day. Nothing that identifies you is written to your device, and the
+identifier cannot be traced back to you or reconnected to yesterday's.
+
+We do not record sessions, we do not run surveys, and we never build a profile
+of an individual visitor. There is no advertising on this site and no
+third-party tracker other than PostHog — no external fonts, scripts, or CDN
+assets are loaded.
+
+Files you open in the [browser converter](/try) are processed entirely inside
+your browser. They are never uploaded.
+
+## Who processes it
+
+PostHog acts as our data processor on **PostHog Cloud EU**, hosted in
+Frankfurt, Germany. Analytics data stays within the EU and is not transferred
+elsewhere. IP addresses are not stored.
+
+## Legal basis
+
+If you accepted, the basis is your consent — Article 6(1)(a) GDPR, together
+with Article 5(3) of the ePrivacy Directive for the cookie itself.
+
+If you declined, nothing is stored on or read from your device, so Article
+5(3) does not apply. The remaining processing is limited to aggregate audience
+measurement and rests on our legitimate interest in understanding which
+documentation is useful — Article 6(1)(f) GDPR.
+
+## Changing your choice
+
+You can change your mind at any time. This clears the stored choice and brings
+the consent notice back:
+
+<ConsentReset />
+
+You can also block or delete cookies in your browser settings. If your browser
+sends a Do Not Track signal, we treat it as a decline and never ask.
+
+## Hosting
+
+The site is served by GitHub Pages. GitHub processes request logs, including
+IP addresses, to deliver the site and protect it from abuse — see the
+[GitHub Privacy Statement](https://docs.github.com/en/site-policy/privacy-policies/github-privacy-statement).
+
+## Contact
+
+Questions about this page, or a request to access or erase data, can be raised
+at [github.com/xl3-lang/xl3/issues](https://github.com/xl3-lang/xl3/issues) or
+sent to `privacy@xl3.io`.

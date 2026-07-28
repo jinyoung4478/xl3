@@ -813,5 +813,37 @@
   "homepage.hero.flowStack.ariaLabel": {
     "message": "운영자 파일 흐름",
     "description": "Aria label for the file-flow stack inside the workflow diagram"
+  },
+  "consent.ariaLabel": {
+    "message": "쿠키 동의",
+    "description": "Accessible name for the cookie consent dialog"
+  },
+  "consent.body": {
+    "message": "xl3.io는 어떤 문서 페이지가 읽히는지 측정합니다. 동의하면 분석 쿠키를 사용합니다. 거부해도 측정은 계속되지만, 기기를 식별하지 않습니다.",
+    "description": "Body text of the cookie consent banner"
+  },
+  "consent.privacyLink": {
+    "message": "자세히",
+    "description": "Link from the consent banner to the privacy page"
+  },
+  "consent.decline": {
+    "message": "거부",
+    "description": "Consent banner decline button"
+  },
+  "consent.accept": {
+    "message": "동의",
+    "description": "Consent banner accept button"
+  },
+  "consent.reset.pending": {
+    "message": "선택이 초기화되었습니다. 동의 안내가 다시 표시됩니다.",
+    "description": "Shown on the privacy page once the stored consent choice has been cleared"
+  },
+  "consent.reset.withdraw": {
+    "message": "쿠키 동의 철회",
+    "description": "Privacy page button shown to visitors who accepted cookies"
+  },
+  "consent.reset.change": {
+    "message": "쿠키 선택 변경",
+    "description": "Privacy page button shown to visitors who declined cookies"
   }
 }

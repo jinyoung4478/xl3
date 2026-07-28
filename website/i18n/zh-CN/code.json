@@ -813,5 +813,37 @@
   "homepage.hero.flowStack.ariaLabel": {
     "message": "操作者文件流",
     "description": "Aria label for the file-flow stack inside the workflow diagram"
+  },
+  "consent.ariaLabel": {
+    "message": "Cookie 同意",
+    "description": "Accessible name for the cookie consent dialog"
+  },
+  "consent.body": {
+    "message": "xl3.io 会统计哪些文档页面被阅读。选择“接受”即允许使用分析 Cookie。选择“拒绝”后统计仍会继续，但不会识别您的设备。",
+    "description": "Body text of the cookie consent banner"
+  },
+  "consent.privacyLink": {
+    "message": "详情",
+    "description": "Link from the consent banner to the privacy page"
+  },
+  "consent.decline": {
+    "message": "拒绝",
+    "description": "Consent banner decline button"
+  },
+  "consent.accept": {
+    "message": "接受",
+    "description": "Consent banner accept button"
+  },
+  "consent.reset.pending": {
+    "message": "您的选择已清除。同意提示已再次显示。",
+    "description": "Shown on the privacy page once the stored consent choice has been cleared"
+  },
+  "consent.reset.withdraw": {
+    "message": "撤回 Cookie 同意",
+    "description": "Privacy page button shown to visitors who accepted cookies"
+  },
+  "consent.reset.change": {
+    "message": "更改 Cookie 选择",
+    "description": "Privacy page button shown to visitors who declined cookies"
   }
 }

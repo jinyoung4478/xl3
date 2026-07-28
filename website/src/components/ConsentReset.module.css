@@ -1,0 +1,39 @@
+.button {
+  padding: 0.5rem 1.15rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--ifm-font-color-base);
+  background: transparent;
+  border: 1px solid var(--xl3-line);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.button:hover {
+  background: var(--xl3-panel);
+}
+
+[data-theme='dark'] .button {
+  border-color: rgba(148, 163, 184, 0.38);
+}
+
+[data-theme='dark'] .button:hover {
+  background: rgba(148, 163, 184, 0.12);
+}
+
+.done {
+  padding: 0.75rem 1rem;
+  font-size: 0.9rem;
+  color: var(--xl3-slate);
+  background: var(--xl3-panel);
+  border: 1px solid var(--xl3-line);
+  border-radius: 6px;
+}
+
+[data-theme='dark'] .done {
+  color: rgba(226, 232, 240, 0.78);
+  background: rgba(148, 163, 184, 0.08);
+  border-color: rgba(148, 163, 184, 0.24);
+}

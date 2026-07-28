@@ -44,6 +44,7 @@
     "@types/node": "^24.0.0",
     "clsx": "^2.1.1",
     "exceljs": "^4.4.0",
+    "posthog-js": "^1.407.3",
     "pptxgenjs": "^4.0.1",
     "prism-react-renderer": "^2.4.1",
     "react": "^18.3.1",

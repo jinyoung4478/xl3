@@ -813,5 +813,37 @@
   "homepage.hero.flowStack.ariaLabel": {
     "message": "オペレーターのファイルフロー",
     "description": "Aria label for the file-flow stack inside the workflow diagram"
+  },
+  "consent.ariaLabel": {
+    "message": "Cookie の同意",
+    "description": "Accessible name for the cookie consent dialog"
+  },
+  "consent.body": {
+    "message": "xl3.io では、どのドキュメントページが読まれているかを計測しています。「同意する」を選ぶと分析 Cookie を使用します。「拒否する」を選んだ場合も計測は続きますが、お使いの端末を識別することはありません。",
+    "description": "Body text of the cookie consent banner"
+  },
+  "consent.privacyLink": {
+    "message": "詳細",
+    "description": "Link from the consent banner to the privacy page"
+  },
+  "consent.decline": {
+    "message": "拒否する",
+    "description": "Consent banner decline button"
+  },
+  "consent.accept": {
+    "message": "同意する",
+    "description": "Consent banner accept button"
+  },
+  "consent.reset.pending": {
+    "message": "選択をリセットしました。同意の案内が再び表示されます。",
+    "description": "Shown on the privacy page once the stored consent choice has been cleared"
+  },
+  "consent.reset.withdraw": {
+    "message": "Cookie の同意を撤回する",
+    "description": "Privacy page button shown to visitors who accepted cookies"
+  },
+  "consent.reset.change": {
+    "message": "Cookie の選択を変更する",
+    "description": "Privacy page button shown to visitors who declined cookies"
   }
 }

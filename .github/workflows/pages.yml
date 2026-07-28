@@ -56,6 +56,11 @@ jobs:
       # imports the local dist via a webpack alias, so dist must exist
       # before docs:build runs (build step above produces it).
       - run: npm run docs:build
+        env:
+          # A repository *variable*, not a secret: `phc_` project keys are
+          # public by design and only permit writes. Unset on forks, where the
+          # site then builds with no analytics at all.
+          POSTHOG_API_KEY: ${{ vars.POSTHOG_API_KEY }}
       - run: cp -R website/build/. site/
       - uses: actions/configure-pages@v5
         with:
