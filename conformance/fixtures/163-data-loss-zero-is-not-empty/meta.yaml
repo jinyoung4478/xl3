@@ -1,0 +1,5 @@
+description: "The Number 0 is not empty and renders as numeric 0, not as a blank cell."
+spec_section: "evaluation.md \"Empty Values\" (0 is never empty); evaluation.md \"Cell Evaluation\""
+spec_version: "0.1"
+tags: [data-loss, empty, value-model]
+verified_by: [spec-derivation, manual-script]

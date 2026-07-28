@@ -1,0 +1,5 @@
+description: "A Number source value in a single-expression cell with no template format renders as a Number, not text."
+spec_section: "evaluation.md \"Cell Evaluation\" (type preservation); evaluation.md \"Source Value Model\""
+spec_version: "0.1"
+tags: [data-loss, value-model, coercion]
+verified_by: [spec-derivation, manual-script]

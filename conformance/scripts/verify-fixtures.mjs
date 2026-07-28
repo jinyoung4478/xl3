@@ -13,7 +13,19 @@ import ExcelJS from 'exceljs';
 import { readFile, readdir, stat } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
-import { convert } from '../../dist/index.js';
+// impl/js/dist, not dist: the reference impl moved into the npm
+// workspace at impl/js in #79 (2026-07-19). This import kept the old
+// root path and the script has not run since — it is wired into neither
+// CI nor package.json, so nothing surfaced the breakage.
+//
+// STILL BROKEN after this fix, left as-is because it is a separate
+// concern from the fixture set: the script does not read `inputs` from
+// meta.yaml and does not isolate per-fixture failures, so it dies
+// uncaught on the first fixture declaring a required input (065-066
+// onward). `impl/js/src/__tests__/conformance-runner.test.ts` handles
+// both and is the checker CI actually runs; this script is a
+// convenience duplicate that has rotted.
+import { convert } from '../../impl/js/dist/index.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const FIXTURES = join(__dirname, '..', 'fixtures');

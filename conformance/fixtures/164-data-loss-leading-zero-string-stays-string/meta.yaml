@@ -1,0 +1,5 @@
+description: "A String source value that looks numeric keeps its String kind — a zero-padded identifier is not converted to a Number."
+spec_section: "evaluation.md \"Source Value Model\" (String kind); evaluation.md \"Cell Evaluation\""
+spec_version: "0.1"
+tags: [data-loss, value-model]
+verified_by: [spec-derivation, manual-script]

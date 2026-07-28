@@ -1,10 +1,10 @@
 # Conformance dashboard
 
-_Generated 2026-05-28T02:21:05.801Z by `conformance/scripts/dashboard.mjs`. Do not hand-edit; regenerate with `node conformance/scripts/dashboard.mjs`._
+_Generated 2026-07-28T08:32:57.241Z by `conformance/scripts/dashboard.mjs`. Do not hand-edit; regenerate with `node conformance/scripts/dashboard.mjs`._
 
 ## Reference implementation
 
-**xl3-js** 0.1.0-alpha.0 — 154/154 pass (100.0%); 0 fail, 0 error, 0 skip
+**xl3-js** 0.1.0-alpha.0 — 168/168 pass (100.0%); 0 fail, 0 error, 0 skip
 
 ## External implementations
 
@@ -15,7 +15,7 @@ _Generated 2026-05-28T02:21:05.801Z by `conformance/scripts/dashboard.mjs`. Do n
 
 | ADR | Fixtures | Pass | Fail | Skip | Error |
 |---|---:|---:|---:|---:|---:|
-| ADR-0001 | 1 | 1 | 0 | 0 | 0 |
+| ADR-0001 | 2 | 2 | 0 | 0 | 0 |
 | ADR-0002 | 2 | 2 | 0 | 0 | 0 |
 | ADR-0003 | 3 | 3 | 0 | 0 | 0 |
 | ADR-0005 | 1 | 1 | 0 | 0 | 0 |
@@ -45,19 +45,22 @@ _Generated 2026-05-28T02:21:05.801Z by `conformance/scripts/dashboard.mjs`. Do n
 | ADR-0033 | 2 | 2 | 0 | 0 | 0 |
 | ADR-0035 | 1 | 1 | 0 | 0 | 0 |
 | ADR-0036 | 1 | 1 | 0 | 0 | 0 |
-| ADR-0038 | 7 | 7 | 0 | 0 | 0 |
+| ADR-0038 | 11 | 11 | 0 | 0 | 0 |
 | ADR-0039 | 1 | 1 | 0 | 0 | 0 |
 | ADR-0041 | 1 | 1 | 0 | 0 | 0 |
 | ADR-0043 | 2 | 2 | 0 | 0 | 0 |
 | ADR-0044 | 1 | 1 | 0 | 0 | 0 |
-| ADR-0046 | 1 | 1 | 0 | 0 | 0 |
+| ADR-0046 | 2 | 2 | 0 | 0 | 0 |
 | ADR-0047 | 1 | 1 | 0 | 0 | 0 |
 | ADR-0050 | 3 | 3 | 0 | 0 | 0 |
-| ADR-0066 | 6 | 6 | 0 | 0 | 0 |
+| ADR-0058 | 1 | 1 | 0 | 0 | 0 |
+| ADR-0066 | 8 | 8 | 0 | 0 | 0 |
 | ADR-0067 | 4 | 4 | 0 | 0 | 0 |
-| ADR-0068 | 4 | 4 | 0 | 0 | 0 |
+| ADR-0068 | 5 | 5 | 0 | 0 | 0 |
 | ADR-0069 | 4 | 4 | 0 | 0 | 0 |
-| *(no ADR)* | 41 | 41 | 0 | 0 | 0 |
+| ADR-0073 | 2 | 2 | 0 | 0 | 0 |
+| ADR-0074 | 1 | 1 | 0 | 0 | 0 |
+| *(no ADR)* | 49 | 49 | 0 | 0 | 0 |
 
 ## Per-fixture status
 
@@ -217,6 +220,20 @@ _Generated 2026-05-28T02:21:05.801Z by `conformance/scripts/dashboard.mjs`. Do n
 | 153-directive-orphan-error | pass | — | pass |
 | 154-multi-block-per-block-filter | pass | — | pass |
 | 155-multi-block-row-function-scope | pass | — | pass |
+| 156-static-native-value-preservation | pass | — | — |
+| 157-group-block-side-cells | pass | — | — |
+| 158-chained-arithmetic-associativity | pass | — | — |
+| 159-subtotal-mixed-row-error | pass | — | — |
+| 160-subtotal-formula-cache-not-marker | pass | — | — |
+| 161-explicit-block-subtotal-unsupported | pass | — | — |
+| 162-data-loss-number-type-preserved | pass | — | — |
+| 163-data-loss-zero-is-not-empty | pass | — | — |
+| 164-data-loss-leading-zero-string-stays-string | pass | — | — |
+| 165-data-loss-boolean-type-preserved | pass | — | — |
+| 166-data-loss-percent-flows-as-underlying-number | pass | — | — |
+| 167-data-loss-date-serial-nondate-format-is-number | pass | — | — |
+| 168-data-loss-date-time-component-round-trip | pass | — | — |
+| 169-data-loss-formula-cached-result-kind | pass | — | — |
 
 ## How to add a port
 

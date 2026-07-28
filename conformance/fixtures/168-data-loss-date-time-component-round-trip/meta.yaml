@@ -1,0 +1,5 @@
+description: "A Date source value carrying a time component round-trips to the same instant, not truncated to midnight."
+spec_section: "evaluation.md \"Source Value Model\" (Date kind); ADR-0001 (UTC anchoring)"
+spec_version: "0.1"
+tags: [data-loss, date, value-model]
+verified_by: [spec-derivation, manual-script]

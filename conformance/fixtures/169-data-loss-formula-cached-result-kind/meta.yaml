@@ -1,0 +1,5 @@
+description: "A source formula cell flows as its cached result's kind — a numeric result becomes a Number, not the formula text."
+spec_section: "evaluation.md \"Source Value Model\" (formula with cached result)"
+spec_version: "0.1"
+tags: [data-loss, value-model, formula]
+verified_by: [spec-derivation, manual-script]

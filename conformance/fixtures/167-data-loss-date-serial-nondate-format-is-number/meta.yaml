@@ -1,0 +1,5 @@
+description: "A date serial stored with a non-date number format flows as a Number, not silently promoted to a Date."
+spec_section: "evaluation.md \"Source Value Model\" (serials with non-date format)"
+spec_version: "0.1"
+tags: [data-loss, value-model, date]
+verified_by: [spec-derivation, manual-script]

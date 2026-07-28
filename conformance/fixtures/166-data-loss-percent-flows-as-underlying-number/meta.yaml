@@ -1,0 +1,5 @@
+description: "A percentage-formatted source cell flows as its underlying Number value, not as a formatted string."
+spec_section: "evaluation.md \"Source Value Model\" (percentage-formatted cells)"
+spec_version: "0.1"
+tags: [data-loss, value-model, numfmt]
+verified_by: [spec-derivation, manual-script]

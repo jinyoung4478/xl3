@@ -1,0 +1,5 @@
+description: "A Boolean source value renders as a Boolean, and FALSE is not empty."
+spec_section: "evaluation.md \"Source Value Model\" (Boolean kind); evaluation.md \"Empty Values\""
+spec_version: "0.1"
+tags: [data-loss, value-model, empty]
+verified_by: [spec-derivation, manual-script]
