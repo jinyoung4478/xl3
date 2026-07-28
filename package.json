@@ -33,7 +33,8 @@
     "docs:preview": "cd website && docusaurus serve",
     "examples:build": "node examples/scripts/build.mjs",
     "examples:run": "node examples/scripts/run-all.mjs",
-    "bench": "node scripts/bench.mjs"
+    "bench": "node scripts/bench.mjs",
+    "bench:matrix": "node scripts/bench-matrix.mjs"
   },
   "devDependencies": {
     "@docusaurus/core": "^3.10.1",

@@ -731,19 +731,36 @@ SHOULD NOT rely on the engine to detect malicious inputs.
 
 ### Implementation limits — reference impl (xl3-js)
 
-The reference impl publishes the following soft caps (ROADMAP gate
-G21). These are *correctness boundaries*, not security boundaries —
-hosts that accept untrusted input MUST add their own enforcement
-layer per [`SECURITY.md`](../SECURITY.md). The values below are
-draft for 0.6.0 and tightened as the bench corpus (G8) lands.
+The reference impl publishes the following caps (ROADMAP gate G21).
+These are *correctness boundaries*, not security boundaries — hosts
+that accept untrusted input MUST add their own enforcement layer per
+[`SECURITY.md`](../SECURITY.md).
 
-| Dimension | Soft cap (draft) | Behavior at limit |
+The figures below are **measured**, from the G8 matrix in
+[`scripts/BENCH.md`](../scripts/BENCH.md) (Apple M4 Pro, Node 22,
+`--max-old-space-size=4096`). They describe where the reference impl
+stops being practical, not a check it performs — xl3 does not count
+rows and refuse.
+
+| Dimension | Measured / defined | Behavior at limit |
 |---|---|---|
-| Source rows per block | 1,000,000 | implementation-defined; ExcelJS in-memory model is the bottleneck |
+| **Memory** | **~2.2 KB per output cell** at scale (2M cells → 4.2 GB peak RSS), on a ~130 MB floor | The binding constraint. Exceeding available heap surfaces as a host-level OOM, not an xl3 error — xl3 cannot catch it |
+| **Cells per conversion** | ~2,000,000 verified end to end; ~500,000 fits in a 2 GB host | Above this, size the host by 2.2 KB/cell before assuming it runs |
+| Source rows per block | No fixed cap. Rows × columns is what matters — 100,000 rows × 20 columns is verified; 1,000,000 rows × 5 columns needs ~10 GB and is **not** reachable at a default heap | Shard at the source boundary per "Streaming policy" below |
 | Total cells per output sheet | Excel's 17,179,869,184 (the 1,048,576 × 16,384 hard ceiling) | xl3 does not synthesize cells past Excel's sheet ceiling; an output that would exceed it raises an error |
 | `@repeat` iteration count | bounded by source row count | no separate iteration cap; the source itself is the throttle |
 | `__sources__` count | implementation-defined; no spec limit | declared upper bound surfaced via warnings only |
 | File-group output count | implementation-defined | reference impl emits one file per group; host SHOULD cap externally |
+
+Time scales near-linearly in cells (400× cells → 355× wall clock), so
+throughput is predictable and memory is what to plan against.
+Serialization is 61–82% of wall clock; template parsing is ~3 ms
+regardless of data volume.
+
+Earlier drafts of this section published a 1,000,000-row soft cap. It
+was never measured and is not attainable at ordinary heap sizes; the
+row-count framing is replaced above by the cell-count and per-cell
+memory figures, which is what actually governs.
 
 ### Streaming policy
 

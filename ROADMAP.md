@@ -43,7 +43,7 @@ milestone. Per-version step plan below references these gates by ID.
 | G5 | Deferred-impl ADRs landed | maintainer | ADR-0038 impl ✅ (2026-05-18) + ADR-0040 PE impl | ADR-0038 portion shipped (fixtures 132-135); ADR-0040 CF/DV range-extension still pending | — | ❌ **OPEN** — ADR-0040 CF/DV range-extension not implemented | 0.6 (partial) / 0.7.1 |
 | G6 | Public API surface frozen | maintainer | `impl/js/src/__tests__/api-surface.test.ts` snapshot | no breaking surface change for 30 days (additions allowed, logged — see "Frozen vs unchanged") | — | ✅ **DONE** — held through 0.11.0 under the amended criterion. `cabe0e1` added `convertJson`/`previewJson`; additive, so the gate stands. Last breaking surface change: none since the gate ticked 2026-06-17 | ✅ ticked 2026-06-17 (snapshot unchanged since 2026-05-18 `16f0608`) |
 | G7 | JSDoc examples on @stable exports | maintainer | TypeDoc output | every `@stable` symbol has `@example` block | — | ✅ **DONE** — re-verified 15/15 `@stable` declarations carry `@example` | ✅ DONE 2026-06-21 — 13/13 `@stable` callables carried `@example` (PR #59); re-verified at **15/15** after 0.11.0 added `convertJson` / `previewJson` (`previewJson` shipped without one and was fixed 2026-07-27) |
-| G8 | Performance characterized | maintainer | `scripts/BENCH.md` | 1k/10k/100k row × 5/10/20 col matrix + memory-ceiling + parse/eval/write split published | — | ❌ **OPEN** — `BENCH.md` publishes 3 scenarios; no 1k/100k row tiers, no 5/10/20 col matrix, no memory ceiling, no parse/eval/write split | 0.7.1 |
+| G8 | Performance characterized | maintainer | `scripts/BENCH.md` | 1k/10k/100k row × 5/10/20 col matrix + memory-ceiling + parse/eval/write split published | — | ✅ **DONE** 2026-07-28 — `npm run bench:matrix` sweeps 1k/10k/100k × 5/10/20 (9 cells, all completing), with a parse/eval/write split and per-cell peak RSS. Published in `scripts/BENCH.md`. Headline: write is 61–82% of wall clock, parse is data-independent (~3 ms), and memory is the binding constraint at ~2.2 KB/cell (2M cells → 4.2 GB) | 0.7.1 |
 | G9 | Perf regression fixtures | maintainer | conformance corpus | ≥ 2 large fixtures with ratio-based assertion | — | ❌ **OPEN** — no fixture carries a ratio-based perf assertion | 0.7.1 |
 | G10 | Cross-browser smoke | maintainer | `ci.yml` | Safari + Firefox bundle-load + 1 convert() per run | — | ❌ **OPEN** — `ci.yml` has no Safari/Firefox/WebKit job | 0.7.1 |
 | G11 | Stage 2 in CI | maintainer | `ci.yml` | `npm run conformance:stage2` runs on every PR | — | ✅ **DONE** — runs at `ci.yml:35` | 0.7.1 |
@@ -56,7 +56,7 @@ milestone. Per-version step plan below references these gates by ID.
 | G18 | Production use case in README | maintainer | `README.md` | replaces "alpha" status with concrete production reference (tied to G15) | — | ❌ **OPEN** — blocked on G15 | 1.0 (with G15) |
 | G19 | Migration guide 0.x → 1.0 | maintainer | `docs/migration-0.x-to-1.0.md` | documents every behavior change or confirms additive-only | downgrade to CHANGELOG note if confirmed additive-only | ❌ **OPEN** — `docs/migration-0.x-to-1.0.md` absent; CHANGELOG fallback not yet exercised | 0.8 |
 | G20 | SECURITY.md + threat model | maintainer | `SECURITY.md` + spec amendment | docs zip-bomb / oversized workbook / formula-execution stance + limits API | — | ✅ **DONE** — SECURITY.md covers zip bomb, large workbook, formula stance, and points at the limits table | 0.7.1 |
-| G21 | Hard limits documented (no streaming until 1.1) | maintainer | spec/evaluation.md | row / memory hard limit values + AbortSignal API documented | — | 🟡 **PARTIAL** — `AbortSignal` shipped (`ConvertOptions.signal` on all four entry points, `xl3/abort/cancelled` catalogued, no partial output), closing the docs↔runtime inconsistency. Remaining: no memory hard-limit value is published and the row cap is still marked "draft" — both wait on G8 to supply measured numbers rather than invented ones | 0.7.1 |
+| G21 | Hard limits documented (no streaming until 1.1) | maintainer | spec/evaluation.md | row / memory hard limit values + AbortSignal API documented | — | ✅ **DONE** 2026-07-28 — `AbortSignal` shipped (`ConvertOptions.signal` on all four entry points, `xl3/abort/cancelled` catalogued, no partial output). Limits now measured rather than drafted: `spec/evaluation.md` publishes ~2.2 KB/cell memory and a verified ~2M-cell ceiling from the G8 matrix. The unmeasured 1M-row soft cap was withdrawn — it needs ~10 GB and was never reachable | 0.7.1 |
 | G22 | API surface — internal model types separated | maintainer | `impl/js/src/index.ts` exports + STABILITY.md | only `convert`/`preview`/`analyze` + stable interfaces marked `@stable`; model/parser types marked `@experimental` or moved to `xl3/internal` | — | ✅ **DONE** | DONE (0.6) |
 | G23 | RC soak | maintainer | git tags | RC published; ≥ 21-day soak (extended from 7 day per review feedback); 0 critical issues | — | ✅ **DONE** — ticked 2026-06-16 | ✅ ticked 2026-06-16 (21-day soak from rc.1 2026-05-26; 0 critical — soak-period fixes #49–52 folded into 0.9.0, none reset the clock per the G23 breaking-change definition) |
 | G24 | "Stable quarter" post-checklist | maintainer | release calendar | 90-day window after the FINAL gate above ticks ✅; no breaking spec/API/error-code change during the window | breaking change → restart clock | ❌ **BLOCKED** — the `data-loss/` fixture group required by its own testable definition (≥ 8 fixtures) does not exist. Clock question resolved 2026-07-28 (#86): the quarter runs from 2026-06-23 uninterrupted, but G24 still cannot tick while 12 other gates are open | ⏳ quarter clock started **2026-06-23** (G3 = last gate to tick); 1.0 earliest ≈ **2026-09-21** if no breaking spec/API/error-code change in the window |
@@ -65,14 +65,13 @@ milestone. Per-version step plan below references these gates by ID.
 > The `Planned` column is the historical milestone plan and is kept as-is;
 > where the two disagree, `Status` is the current fact.
 >
-> **12 gates are open:** G5, G8, G9, G10, G12, G14, G15, G16, G17, G18,
-> G19, and G21 (partial — `AbortSignal` shipped, limit values pending G8)
+> **10 gates are open:** G5, G9, G10, G12, G14, G15, G16, G17, G18, G19
 > — plus G24, which cannot tick until the others do and is
 > separately missing the `data-loss/` fixture group its own definition
-> requires. Two entries were stale in the *optimistic* direction beyond
-> that (G21 documents an `AbortSignal` API and an error code that do not
-> exist) and two in the *pessimistic* direction (G11 and G13 were already
-> satisfied).
+> requires. G8 and G21 closed on 2026-07-28; G21 had been the worst of the
+> optimistic drift, documenting an `AbortSignal` API and an error code that
+> did not exist. Two entries were stale in the *pessimistic* direction
+> (G11 and G13 were already satisfied).
 >
 > **The quarter clock runs from 2026-06-23, uninterrupted** (#86, decided
 > 2026-07-28). 0.11.0 added an export and an error code on 2026-07-19;
@@ -82,8 +81,8 @@ milestone. Per-version step plan below references these gates by ID.
 > was not, which would have reset the clock by accident.
 >
 > **The clock is not the binding constraint.** 1.0 is gated on the 12 open
-> items, and the long poles are G8/G9 (benchmark matrix, perf fixtures) and
-> the G24 `data-loss/` group. Any date derived from the quarter alone is
+> items, and the long poles are now G9 (perf fixtures, which derive their
+> ratios from the G8 matrix) and the G24 `data-loss/` group. Any date derived from the quarter alone is
 > meaningless until those land, so this file no longer asserts one.
 
 ### Definitions (testable)
