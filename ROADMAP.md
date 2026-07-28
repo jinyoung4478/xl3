@@ -54,7 +54,7 @@ milestone. Per-version step plan below references these gates by ID.
 | G16 | Maintainer set widening | maintainer | `GOVERNANCE.md` | ≥ 2 people with accept/reject rights for ADRs and impl PRs | explicit accept of single-maintainer 1.0 governance shape via amendment to GOVERNANCE | ❌ **OPEN** — `GOVERNANCE.md` still describes a single maintainer | 0.8 |
 | G17 | Korean cookbook i18n complete | maintainer | `website/i18n/ko/.../guides/` | all cookbook recipes have Korean translation | — | ❌ **OPEN** — `docs/guides/19-jxls-to-xl3.md` has no ko / ja / zh-CN translation | DONE (0.6) for recipes 01-18 — **open question before 1.0:** `docs/guides/19-jxls-to-xl3.md` was added later and has no ko/ja/zh translation. Decide whether a migration guide counts as a "cookbook recipe"; if yes, G17 needs re-ticking |
 | G18 | Production use case in README | maintainer | `README.md` | replaces "alpha" status with concrete production reference (tied to G15) | — | ❌ **OPEN** — blocked on G15 | 1.0 (with G15) |
-| G19 | Migration guide 0.x → 1.0 | maintainer | `docs/migration-0.x-to-1.0.md` | documents every behavior change or confirms additive-only | downgrade to CHANGELOG note if confirmed additive-only | ❌ **OPEN** — `docs/migration-0.x-to-1.0.md` absent; CHANGELOG fallback not yet exercised | 0.8 |
+| G19 | Migration guide 0.x → 1.0 | maintainer | `docs/migration-0.x-to-1.0.md` | documents every behavior change or confirms additive-only | downgrade to CHANGELOG note if confirmed additive-only | ✅ **DONE** 2026-07-28 — `docs/migration-0.x-to-1.0.md` written. The CHANGELOG fallback did **not** apply: 0.x was not additive-only. 17 behavior changes across 0.2/0.3/0.6/0.7/0.10 are documented, split by whether they raise or silently alter output | 0.8 |
 | G20 | SECURITY.md + threat model | maintainer | `SECURITY.md` + spec amendment | docs zip-bomb / oversized workbook / formula-execution stance + limits API | — | ✅ **DONE** — SECURITY.md covers zip bomb, large workbook, formula stance, and points at the limits table | 0.7.1 |
 | G21 | Hard limits documented (no streaming until 1.1) | maintainer | spec/evaluation.md | row / memory hard limit values + AbortSignal API documented | — | ✅ **DONE** 2026-07-28 — `AbortSignal` shipped (`ConvertOptions.signal` on all four entry points, `xl3/abort/cancelled` catalogued, no partial output). Limits now measured rather than drafted: `spec/evaluation.md` publishes ~2.2 KB/cell memory and a verified ~2M-cell ceiling from the G8 matrix. The unmeasured 1M-row soft cap was withdrawn — it needs ~10 GB and was never reachable | 0.7.1 |
 | G22 | API surface — internal model types separated | maintainer | `impl/js/src/index.ts` exports + STABILITY.md | only `convert`/`preview`/`analyze` + stable interfaces marked `@stable`; model/parser types marked `@experimental` or moved to `xl3/internal` | — | ✅ **DONE** | DONE (0.6) |
@@ -65,7 +65,7 @@ milestone. Per-version step plan below references these gates by ID.
 > The `Planned` column is the historical milestone plan and is kept as-is;
 > where the two disagree, `Status` is the current fact.
 >
-> **9 gates are open:** G5, G10, G12, G14, G15, G16, G17, G18, G19
+> **8 gates are open:** G5, G10, G12, G14, G15, G16, G17, G18
 > — plus G24, which cannot tick until the others do and is
 > separately missing the `data-loss/` fixture group its own definition
 > requires. G8 and G21 closed on 2026-07-28; G21 had been the worst of the

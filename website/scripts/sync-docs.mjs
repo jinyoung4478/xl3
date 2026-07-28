@@ -22,6 +22,7 @@ const COPY_OPTIONS = { recursive: true, dereference: true };
 const COPIES = [
   // [src absolute, dest relative to TARGET]
   ['docs/guides', 'guides'],
+  ['docs/migration-0.x-to-1.0.md', 'migration-0.x-to-1.0.md'],
   ['docs/api', 'api'],
   ['spec', 'spec'],
   ['conformance', 'conformance'],
@@ -179,6 +180,11 @@ const DEAD_LINK_EXACT = {
   // Repo files that are intentionally not synced into the site.
   'CHANGELOG.md': { kind: 'blob' },
   'SECURITY.md': { kind: 'blob' },
+  // scripts/ is repo-only. spec/evaluation.md cites BENCH.md as the
+  // source of the measured resource limits (G8/G21), so the reference
+  // has to resolve somewhere — GitHub, since it is a maintenance
+  // artifact with its own update workflow rather than user docs.
+  'scripts/BENCH.md': { kind: 'blob' },
   // Synced targets with a live route. Plain relative `.md` links
   // resolve fine on the default locale, but when an untranslated doc
   // is rendered as the English fallback under /<locale>/, Docusaurus

@@ -83,6 +83,7 @@ const sidebars: SidebarsConfig = {
       ],
     },
     { type: 'doc', id: 'ROADMAP', label: 'Roadmap to 1.0' },
+    { type: 'doc', id: 'migration-0.x-to-1.0', label: 'Migrating 0.x → 1.0' },
     { type: 'doc', id: 'GOVERNANCE', label: 'Governance' },
     { type: 'doc', id: 'CONTRIBUTING', label: 'Contributing' },
     { type: 'doc', id: 'IMPLEMENTATIONS', label: 'Implementations' },
