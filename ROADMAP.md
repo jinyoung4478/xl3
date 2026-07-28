@@ -34,32 +34,47 @@ Each gate has an owner, the artifact that closes it, the pass-fail
 criterion, a fallback if the gate is unreachable, and the target
 milestone. Per-version step plan below references these gates by ID.
 
-| ID | Gate | Owner | Artifact | Pass criterion | Fallback | Target |
-|----|------|-------|----------|----------------|----------|--------|
-| G1 | Conformance corpus ≥ 140 | maintainer | `conformance/fixtures/` | `ls conformance/fixtures/ \| wc -l` ≥ 140 | — | DONE (160 fixtures; ADR-0066 added 141-145 mid-0.7.x; ADRs 0067-0069 added 146-155 in 0.8.0; 156 (#49 native value preservation) + 157 (#51 grouped side cells) added post-0.8.1; 158 (#52 arithmetic associativity) in 0.9.0; 159-161 (ADR-0073/0074 subtotal errors) in 0.10.0; number 098 is unused, so the count is 160 while the highest index is 161; ADRs 0051-0065 reserved further numbers for 0.7.1) |
-| G2 | Stage 2 OOXML canonicalization spec'd | maintainer | ADR-0006 + canonicalizer in src/ | covered by fixtures 024-027, 093 + ADR-0006 amendment | — | DONE |
-| G3 | Error code catalog frozen | maintainer | `impl/js/src/__tests__/error-codes.test.ts` snapshot | catalog snapshot unchanged for 30 days | — | ✅ ticked 2026-06-23 (last catalog change 2026-05-24 `a8f7ad3` +3 codes `xl3/block/overlap`·`xl3/block/empty-table`·`xl3/directive/orphan`; `89bee51` added `xl3/expression/bracket-outside-block` 2026-05-23; 30-day freeze elapsed — post-05-24 commits touched the file with comments/JSDoc only, `EXPECTED_CODES` unchanged) |
-| G4 | JXLS boundary published | maintainer | ADR-0048 | file exists, references PORTERS_GUIDE | — | DONE |
-| G5 | Deferred-impl ADRs landed | maintainer | ADR-0038 impl ✅ (2026-05-18) + ADR-0040 PE impl | ADR-0038 portion shipped (fixtures 132-135); ADR-0040 CF/DV range-extension still pending | — | 0.6 (partial) / 0.7.1 |
-| G6 | Public API surface frozen | maintainer | `impl/js/src/__tests__/api-surface.test.ts` snapshot | snapshot unchanged for 30 days | — | ✅ ticked 2026-06-17 (snapshot unchanged since 2026-05-18 `16f0608`) |
-| G7 | JSDoc examples on @stable exports | maintainer | TypeDoc output | every `@stable` symbol has `@example` block | — | ✅ DONE 2026-06-21 — 13/13 `@stable` callables carried `@example` (PR #59); re-verified at **15/15** after 0.11.0 added `convertJson` / `previewJson` (`previewJson` shipped without one and was fixed 2026-07-27) |
-| G8 | Performance characterized | maintainer | `scripts/BENCH.md` | 1k/10k/100k row × 5/10/20 col matrix + memory-ceiling + parse/eval/write split published | — | 0.7.1 |
-| G9 | Perf regression fixtures | maintainer | conformance corpus | ≥ 2 large fixtures with ratio-based assertion | — | 0.7.1 |
-| G10 | Cross-browser smoke | maintainer | `ci.yml` | Safari + Firefox bundle-load + 1 convert() per run | — | 0.7.1 |
-| G11 | Stage 2 in CI | maintainer | `ci.yml` | `npm run conformance:stage2` runs on every PR | — | 0.7.1 |
-| G12 | Undecided behavior pinned (pivot/sparkline/ListObject/page break) | maintainer | conformance fixtures + ADR per item | each: fixture pinning current behavior OR ADR explicitly deferring to 1.x | defer to 1.1 with ADR | 0.7.1 / 0.8 |
-| G13 | Second-language impl validation | external (xl3-py) | `conformance/reports/*.json` | xl3-py passes ≥ 80% Stage 1 OR ≥ 80% Stage 2, OR documented 50% skeleton in another language (Rust/Go/Java) within 12 months of all other gates closing | accept single-impl 1.0 via public ADR amending GOVERNANCE | 0.7.x–0.8.x |
-| G14 | External-contributor ADR | external | `spec/decisions/NNNN-*.md` | ≥ 1 ADR with non-maintainer as Author (≥ 60% of Context/Decision sections by line count) | 18-month time-box, then: ≥ 2 external-authored cookbook recipes OR ≥ 5 external-authored conformance fixtures | 0.8 |
-| G15 | Production reference case | external (with maintainer help) | `IMPLEMENTATIONS.md` "Production users" row | ≥ 1 named user, satisfied by EITHER (a) external company with permission to list, OR (b) the maintainer's own employer running xl3 in scheduled production with a public case study | — | 0.8.x — **in progress** via maintainer's-employer production deployment (template setup complete 2026-05-24; live usage starts week of 2026-05-26); G15 ticks when the case study is published |
-| G16 | Maintainer set widening | maintainer | `GOVERNANCE.md` | ≥ 2 people with accept/reject rights for ADRs and impl PRs | explicit accept of single-maintainer 1.0 governance shape via amendment to GOVERNANCE | 0.8 |
-| G17 | Korean cookbook i18n complete | maintainer | `website/i18n/ko/.../guides/` | all cookbook recipes have Korean translation | — | DONE (0.6) for recipes 01-18 — **open question before 1.0:** `docs/guides/19-jxls-to-xl3.md` was added later and has no ko/ja/zh translation. Decide whether a migration guide counts as a "cookbook recipe"; if yes, G17 needs re-ticking |
-| G18 | Production use case in README | maintainer | `README.md` | replaces "alpha" status with concrete production reference (tied to G15) | — | 1.0 (with G15) |
-| G19 | Migration guide 0.x → 1.0 | maintainer | `docs/migration-0.x-to-1.0.md` | documents every behavior change or confirms additive-only | downgrade to CHANGELOG note if confirmed additive-only | 0.8 |
-| G20 | SECURITY.md + threat model | maintainer | `SECURITY.md` + spec amendment | docs zip-bomb / oversized workbook / formula-execution stance + limits API | — | 0.7.1 |
-| G21 | Hard limits documented (no streaming until 1.1) | maintainer | spec/evaluation.md | row / memory hard limit values + AbortSignal API documented | — | 0.7.1 |
-| G22 | API surface — internal model types separated | maintainer | `impl/js/src/index.ts` exports + STABILITY.md | only `convert`/`preview`/`analyze` + stable interfaces marked `@stable`; model/parser types marked `@experimental` or moved to `xl3/internal` | — | DONE (0.6) |
-| G23 | RC soak | maintainer | git tags | RC published; ≥ 21-day soak (extended from 7 day per review feedback); 0 critical issues | — | ✅ ticked 2026-06-16 (21-day soak from rc.1 2026-05-26; 0 critical — soak-period fixes #49–52 folded into 0.9.0, none reset the clock per the G23 breaking-change definition) |
-| G24 | "Stable quarter" post-checklist | maintainer | release calendar | 90-day window after the FINAL gate above ticks ✅; no breaking spec/API/error-code change during the window | breaking change → restart clock | ⏳ quarter clock started **2026-06-23** (G3 = last gate to tick); 1.0 earliest ≈ **2026-09-21** if no breaking spec/API/error-code change in the window |
+| ID | Gate | Owner | Artifact | Pass criterion | Fallback | Status (audited 2026-07-28) | Planned |
+|----|------|-------|----------|----------------|----------|--------|---------|
+| G1 | Conformance corpus ≥ 140 | maintainer | `conformance/fixtures/` | `ls conformance/fixtures/ \| wc -l` ≥ 140 | — | ✅ **DONE** — 160 fixtures | DONE (160 fixtures; ADR-0066 added 141-145 mid-0.7.x; ADRs 0067-0069 added 146-155 in 0.8.0; 156 (#49 native value preservation) + 157 (#51 grouped side cells) added post-0.8.1; 158 (#52 arithmetic associativity) in 0.9.0; 159-161 (ADR-0073/0074 subtotal errors) in 0.10.0; number 098 is unused, so the count is 160 while the highest index is 161; ADRs 0051-0065 reserved further numbers for 0.7.1) |
+| G2 | Stage 2 OOXML canonicalization spec'd | maintainer | ADR-0006 + canonicalizer in src/ | covered by fixtures 024-027, 093 + ADR-0006 amendment | — | ✅ **DONE** | DONE |
+| G3 | Error code catalog frozen | maintainer | `impl/js/src/__tests__/error-codes.test.ts` snapshot | catalog snapshot unchanged for 30 days | — | ❌ **RE-OPENED 2026-07-19** — `cabe0e1` added `xl3/source-json/invalid` (62→65 codes since `v0.9.0`). Earliest re-tick **2026-08-18** | ✅ ticked 2026-06-23 (last catalog change 2026-05-24 `a8f7ad3` +3 codes `xl3/block/overlap`·`xl3/block/empty-table`·`xl3/directive/orphan`; `89bee51` added `xl3/expression/bracket-outside-block` 2026-05-23; 30-day freeze elapsed — post-05-24 commits touched the file with comments/JSDoc only, `EXPECTED_CODES` unchanged) |
+| G4 | JXLS boundary published | maintainer | ADR-0048 | file exists, references PORTERS_GUIDE | — | ✅ **DONE** | DONE |
+| G5 | Deferred-impl ADRs landed | maintainer | ADR-0038 impl ✅ (2026-05-18) + ADR-0040 PE impl | ADR-0038 portion shipped (fixtures 132-135); ADR-0040 CF/DV range-extension still pending | — | ❌ **OPEN** — ADR-0040 CF/DV range-extension not implemented | 0.6 (partial) / 0.7.1 |
+| G6 | Public API surface frozen | maintainer | `impl/js/src/__tests__/api-surface.test.ts` snapshot | snapshot unchanged for 30 days | — | ❌ **RE-OPENED 2026-07-19** — `cabe0e1` added `convertJson`/`previewJson` to the snapshot. Earliest re-tick **2026-08-18** | ✅ ticked 2026-06-17 (snapshot unchanged since 2026-05-18 `16f0608`) |
+| G7 | JSDoc examples on @stable exports | maintainer | TypeDoc output | every `@stable` symbol has `@example` block | — | ✅ **DONE** — re-verified 15/15 `@stable` declarations carry `@example` | ✅ DONE 2026-06-21 — 13/13 `@stable` callables carried `@example` (PR #59); re-verified at **15/15** after 0.11.0 added `convertJson` / `previewJson` (`previewJson` shipped without one and was fixed 2026-07-27) |
+| G8 | Performance characterized | maintainer | `scripts/BENCH.md` | 1k/10k/100k row × 5/10/20 col matrix + memory-ceiling + parse/eval/write split published | — | ❌ **OPEN** — `BENCH.md` publishes 3 scenarios; no 1k/100k row tiers, no 5/10/20 col matrix, no memory ceiling, no parse/eval/write split | 0.7.1 |
+| G9 | Perf regression fixtures | maintainer | conformance corpus | ≥ 2 large fixtures with ratio-based assertion | — | ❌ **OPEN** — no fixture carries a ratio-based perf assertion | 0.7.1 |
+| G10 | Cross-browser smoke | maintainer | `ci.yml` | Safari + Firefox bundle-load + 1 convert() per run | — | ❌ **OPEN** — `ci.yml` has no Safari/Firefox/WebKit job | 0.7.1 |
+| G11 | Stage 2 in CI | maintainer | `ci.yml` | `npm run conformance:stage2` runs on every PR | — | ✅ **DONE** — runs at `ci.yml:35` | 0.7.1 |
+| G12 | Undecided behavior pinned (pivot/sparkline/ListObject/page break) | maintainer | conformance fixtures + ADR per item | each: fixture pinning current behavior OR ADR explicitly deferring to 1.x | defer to 1.1 with ADR | ❌ **OPEN** — sparkline has 0 ADRs and 0 fixtures; pivot / ListObject / page-break have ADR mentions but no pinning fixture | 0.7.1 / 0.8 |
+| G13 | Second-language impl validation | external (xl3-py) | `conformance/reports/*.json` | xl3-py passes ≥ 80% Stage 1 OR ≥ 80% Stage 2, OR documented 50% skeleton in another language (Rust/Go/Java) within 12 months of all other gates closing | accept single-impl 1.0 via public ADR amending GOVERNANCE | ✅ **DONE** — `conformance/reports/xl3-py-0.1.0a3.json`: 133/133 Stage 1 passed, 0 failed | 0.7.x–0.8.x |
+| G14 | External-contributor ADR | external | `spec/decisions/NNNN-*.md` | ≥ 1 ADR with non-maintainer as Author (≥ 60% of Context/Decision sections by line count) | 18-month time-box, then: ≥ 2 external-authored cookbook recipes OR ≥ 5 external-authored conformance fixtures | ❌ **OPEN** — no ADR in `spec/decisions/` carries an Author field | 0.8 |
+| G15 | Production reference case | external (with maintainer help) | `IMPLEMENTATIONS.md` "Production users" row | ≥ 1 named user, satisfied by EITHER (a) external company with permission to list, OR (b) the maintainer's own employer running xl3 in scheduled production with a public case study | — | ❌ **OPEN** — `IMPLEMENTATIONS.md` Production users reads `_none listed yet_` | 0.8.x — **in progress** via maintainer's-employer production deployment (template setup complete 2026-05-24; live usage starts week of 2026-05-26); G15 ticks when the case study is published |
+| G16 | Maintainer set widening | maintainer | `GOVERNANCE.md` | ≥ 2 people with accept/reject rights for ADRs and impl PRs | explicit accept of single-maintainer 1.0 governance shape via amendment to GOVERNANCE | ❌ **OPEN** — `GOVERNANCE.md` still describes a single maintainer | 0.8 |
+| G17 | Korean cookbook i18n complete | maintainer | `website/i18n/ko/.../guides/` | all cookbook recipes have Korean translation | — | ❌ **OPEN** — `docs/guides/19-jxls-to-xl3.md` has no ko / ja / zh-CN translation | DONE (0.6) for recipes 01-18 — **open question before 1.0:** `docs/guides/19-jxls-to-xl3.md` was added later and has no ko/ja/zh translation. Decide whether a migration guide counts as a "cookbook recipe"; if yes, G17 needs re-ticking |
+| G18 | Production use case in README | maintainer | `README.md` | replaces "alpha" status with concrete production reference (tied to G15) | — | ❌ **OPEN** — blocked on G15 | 1.0 (with G15) |
+| G19 | Migration guide 0.x → 1.0 | maintainer | `docs/migration-0.x-to-1.0.md` | documents every behavior change or confirms additive-only | downgrade to CHANGELOG note if confirmed additive-only | ❌ **OPEN** — `docs/migration-0.x-to-1.0.md` absent; CHANGELOG fallback not yet exercised | 0.8 |
+| G20 | SECURITY.md + threat model | maintainer | `SECURITY.md` + spec amendment | docs zip-bomb / oversized workbook / formula-execution stance + limits API | — | ✅ **DONE** — SECURITY.md covers zip bomb, large workbook, formula stance, and points at the limits table | 0.7.1 |
+| G21 | Hard limits documented (no streaming until 1.1) | maintainer | spec/evaluation.md | row / memory hard limit values + AbortSignal API documented | — | ❌ **OPEN** — `AbortSignal` is documented as "planned" but not implemented, and the `xl3/abort/cancelled` code it names is absent from the catalog (a docs↔runtime inconsistency). No memory hard-limit value is published, and the row cap is marked "draft" pending G8 | 0.7.1 |
+| G22 | API surface — internal model types separated | maintainer | `impl/js/src/index.ts` exports + STABILITY.md | only `convert`/`preview`/`analyze` + stable interfaces marked `@stable`; model/parser types marked `@experimental` or moved to `xl3/internal` | — | ✅ **DONE** | DONE (0.6) |
+| G23 | RC soak | maintainer | git tags | RC published; ≥ 21-day soak (extended from 7 day per review feedback); 0 critical issues | — | ✅ **DONE** — ticked 2026-06-16 | ✅ ticked 2026-06-16 (21-day soak from rc.1 2026-05-26; 0 critical — soak-period fixes #49–52 folded into 0.9.0, none reset the clock per the G23 breaking-change definition) |
+| G24 | "Stable quarter" post-checklist | maintainer | release calendar | 90-day window after the FINAL gate above ticks ✅; no breaking spec/API/error-code change during the window | breaking change → restart clock | ❌ **BLOCKED** — the `data-loss/` fixture group required by its own testable definition (≥ 8 fixtures) does not exist, and the clock-start precondition is disputed (see #86) | ⏳ quarter clock started **2026-06-23** (G3 = last gate to tick); 1.0 earliest ≈ **2026-09-21** if no breaking spec/API/error-code change in the window |
+
+> **Status column audited 2026-07-28** against the tree at `2ca7ab0`.
+> The `Planned` column is the historical milestone plan and is kept as-is;
+> where the two disagree, `Status` is the current fact. 14 gates are open.
+>
+> **The 1.0 date in this file is not currently reliable.** G3 and G6 were
+> both re-opened by 0.11.0 on 2026-07-19, and G3 is the gate the G24 quarter
+> clock was started on. Two rules in G24 conflict about what follows — the
+> breaking-change rule says an additive error code does not reset the clock
+> (1.0 ≈ 2026-09-21), while the clock-start rule says the quarter begins the
+> day the *last* gate ticks (1.0 ≈ 2026-11-16). That decision is tracked in
+> [#86](https://github.com/xl3-lang/xl3/issues/86) and should be written into
+> the Definitions below, since every future additive release reopens it.
+> Until it is settled, treat the ≈ 2026-09-21 references in this file as
+> unverified.
 
 ### Definitions (testable)
 
@@ -235,6 +250,8 @@ shipped without these items, and #57 was closed as superseded by the
 host-driven `__inputs__` source metadata in #82). The **G24** 90-day
 quarter clock starts at the last gate tick (2026-06-23 via G3); 1.0
 earliest ≈ 2026-09-21 absent any breaking spec/API/error-code change.
+(Superseded in part: G3 was re-opened on 2026-07-19 — see the audit note
+above the Definitions block and [#86](https://github.com/xl3-lang/xl3/issues/86).)
 
 ### 0.10.0 — Org move + `@subtotal` correctness (shipped 2026-07-19)
 
@@ -278,6 +295,14 @@ Gate impact:
 - **G24 window** — both cuts landed 2026-07-19, inside the quarter that
   started 2026-06-23. Neither was breaking under the definition above,
   so 1.0 earliest stays ≈ 2026-09-21.
+- **Open point raised by the 2026-07-28 audit** — the breaking-change rule
+  and the clock-start rule are different tests. Nothing here was breaking,
+  but G3's and G6's own pass criterion is "snapshot unchanged for 30 days",
+  and both snapshots changed on 2026-07-19. So both gates are currently
+  un-ticked (earliest re-tick 2026-08-18) even though the clock was never
+  *reset*. Whether the clock can run while a gate is un-ticked is not
+  answered anywhere in this file — tracked in
+  [#86](https://github.com/xl3-lang/xl3/issues/86).
 
 ### 1.0.0 — Final cut
 
