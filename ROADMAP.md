@@ -44,7 +44,7 @@ milestone. Per-version step plan below references these gates by ID.
 | G6 | Public API surface frozen | maintainer | `impl/js/src/__tests__/api-surface.test.ts` snapshot | no breaking surface change for 30 days (additions allowed, logged — see "Frozen vs unchanged") | — | ✅ **DONE** — held through 0.11.0 under the amended criterion. `cabe0e1` added `convertJson`/`previewJson`; additive, so the gate stands. Last breaking surface change: none since the gate ticked 2026-06-17 | ✅ ticked 2026-06-17 (snapshot unchanged since 2026-05-18 `16f0608`) |
 | G7 | JSDoc examples on @stable exports | maintainer | TypeDoc output | every `@stable` symbol has `@example` block | — | ✅ **DONE** — re-verified 15/15 `@stable` declarations carry `@example` | ✅ DONE 2026-06-21 — 13/13 `@stable` callables carried `@example` (PR #59); re-verified at **15/15** after 0.11.0 added `convertJson` / `previewJson` (`previewJson` shipped without one and was fixed 2026-07-27) |
 | G8 | Performance characterized | maintainer | `scripts/BENCH.md` | 1k/10k/100k row × 5/10/20 col matrix + memory-ceiling + parse/eval/write split published | — | ✅ **DONE** 2026-07-28 — `npm run bench:matrix` sweeps 1k/10k/100k × 5/10/20 (9 cells, all completing), with a parse/eval/write split and per-cell peak RSS. Published in `scripts/BENCH.md`. Headline: write is 61–82% of wall clock, parse is data-independent (~3 ms), and memory is the binding constraint at ~2.2 KB/cell (2M cells → 4.2 GB) | 0.7.1 |
-| G9 | Perf regression fixtures | maintainer | conformance corpus | ≥ 2 large fixtures with ratio-based assertion | — | ❌ **OPEN** — no fixture carries a ratio-based perf assertion | 0.7.1 |
+| G9 | Perf regression guards | maintainer | `impl/js/src/__tests__/perf-regression.test.ts` | ≥ 2 large scenarios with a ratio-based assertion, running in CI | — | ✅ **DONE** 2026-07-28 — row scaling and `@join` scaling, each asserting 10× the rows costs < 20× the time. Observed 6.2× and 6.9×; a quadratic regression lands near 100× | 0.7.1 |
 | G10 | Cross-browser smoke | maintainer | `ci.yml` | Safari + Firefox bundle-load + 1 convert() per run | — | ❌ **OPEN** — `ci.yml` has no Safari/Firefox/WebKit job | 0.7.1 |
 | G11 | Stage 2 in CI | maintainer | `ci.yml` | `npm run conformance:stage2` runs on every PR | — | ✅ **DONE** — runs at `ci.yml:35` | 0.7.1 |
 | G12 | Undecided behavior pinned (pivot/sparkline/ListObject/page break) | maintainer | conformance fixtures + ADR per item | each: fixture pinning current behavior OR ADR explicitly deferring to 1.x | defer to 1.1 with ADR | ❌ **OPEN** — sparkline has 0 ADRs and 0 fixtures; pivot / ListObject / page-break have ADR mentions but no pinning fixture | 0.7.1 / 0.8 |
@@ -65,7 +65,7 @@ milestone. Per-version step plan below references these gates by ID.
 > The `Planned` column is the historical milestone plan and is kept as-is;
 > where the two disagree, `Status` is the current fact.
 >
-> **10 gates are open:** G5, G9, G10, G12, G14, G15, G16, G17, G18, G19
+> **9 gates are open:** G5, G10, G12, G14, G15, G16, G17, G18, G19
 > — plus G24, which cannot tick until the others do and is
 > separately missing the `data-loss/` fixture group its own definition
 > requires. G8 and G21 closed on 2026-07-28; G21 had been the worst of the
@@ -81,8 +81,8 @@ milestone. Per-version step plan below references these gates by ID.
 > was not, which would have reset the clock by accident.
 >
 > **The clock is not the binding constraint.** 1.0 is gated on the 12 open
-> items, and the long poles are now G9 (perf fixtures, which derive their
-> ratios from the G8 matrix) and the G24 `data-loss/` group. Any date derived from the quarter alone is
+> items, and the long pole is now the G24 `data-loss/` group, which does
+> not exist yet. Any date derived from the quarter alone is
 > meaningless until those land, so this file no longer asserts one.
 
 ### Definitions (testable)
@@ -123,6 +123,17 @@ milestone. Per-version step plan below references these gates by ID.
   `convert()`, (b) error code catalog inconsistency between docs and
   runtime, OR (c) an `accepted` ADR's MUST that cannot be implemented
   as written. Maintainer cites which of (a)/(b)/(c) in the PR.
+- **Perf guards (G9), why not in the corpus:** the gate originally named
+  `conformance/fixtures/` and "≥ 2 large fixtures". Both halves conflict
+  with the corpus itself. `AUTHORING.md` makes "fixture file sizes should
+  be tiny" a hard rule, and the corpus is the cross-implementation
+  contract every port must pass to claim conformance — a Python impl being
+  slower than the JS one is not an XTL conformance failure. Amended
+  2026-07-28 to live as a CI test beside the reference impl, with data
+  generated at run time so nothing large is committed. The ratio-based
+  requirement is unchanged and is the part that mattered: an absolute
+  budget encodes the machine it was written on, a ratio survives a
+  hardware change.
 - **Data-loss test (G24 testable form):** corpus has a dedicated
   `data-loss/` fixture group (≥ 8 fixtures) exercising silent-
   stringify, numFmt drop, formula rewrite, and date round-trip paths;
