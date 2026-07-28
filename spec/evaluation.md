@@ -643,6 +643,20 @@ need a rule (e.g., conditional formatting) to cover repeat-expanded
 rows SHOULD anchor it with whole-column references in the template
 (e.g., `$A:$A`) rather than relying on engine-side extension.
 
+Per-cell formatting behaves the opposite way to those ranges, and the
+distinction is worth stating plainly. A cell written into a
+`@repeat`-expanded row inherits the **number format and cell style of
+the template row cell it was rendered from**, and **every** expanded row
+inherits them — not only the first. Engine-written cells take the
+template cell's formatting rather than a synthesized default, the same
+principle ADR-0036 applies to lock state.
+
+So a range anchored to `A2:A2` in the template stays `A2:A2` after ten
+rows are emitted, while all ten of those rows carry `A2`'s number format
+and style. Losing the format on rows 2..N is silent data loss: a column
+of numbers whose first row reads `1,234.50` and whose remainder reads
+`1234.5` looks like a formatting slip and is indistinguishable from one.
+
 Charts are **implementation-defined** in XTL 0.1 (per ADR-0036 item 3
 and ADR-0006); a port may preserve, lose, or partially preserve chart
 objects. A future ADR will normatively pin chart behavior when Stage 2

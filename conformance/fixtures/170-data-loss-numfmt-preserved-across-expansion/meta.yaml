@@ -1,0 +1,6 @@
+description: "Every @repeat-expanded row inherits its template cell's number format, not only the first row."
+spec_section: evaluation.md "Styles and Workbook Structure"; ADR-0036; ADR-0006
+spec_version: "0.1"
+tags: [data-loss, numfmt, stage2, style]
+comparison_stage: 2
+verified_by: [spec-derivation, manual-script]

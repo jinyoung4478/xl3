@@ -59,7 +59,7 @@ milestone. Per-version step plan below references these gates by ID.
 | G21 | Hard limits documented (no streaming until 1.1) | maintainer | spec/evaluation.md | row / memory hard limit values + AbortSignal API documented | — | ✅ **DONE** 2026-07-28 — `AbortSignal` shipped (`ConvertOptions.signal` on all four entry points, `xl3/abort/cancelled` catalogued, no partial output). Limits now measured rather than drafted: `spec/evaluation.md` publishes ~2.2 KB/cell memory and a verified ~2M-cell ceiling from the G8 matrix. The unmeasured 1M-row soft cap was withdrawn — it needs ~10 GB and was never reachable | 0.7.1 |
 | G22 | API surface — internal model types separated | maintainer | `impl/js/src/index.ts` exports + STABILITY.md | only `convert`/`preview`/`analyze` + stable interfaces marked `@stable`; model/parser types marked `@experimental` or moved to `xl3/internal` | — | ✅ **DONE** | DONE (0.6) |
 | G23 | RC soak | maintainer | git tags | RC published; ≥ 21-day soak (extended from 7 day per review feedback); 0 critical issues | — | ✅ **DONE** — ticked 2026-06-16 | ✅ ticked 2026-06-16 (21-day soak from rc.1 2026-05-26; 0 critical — soak-period fixes #49–52 folded into 0.9.0, none reset the clock per the G23 breaking-change definition) |
-| G24 | "Stable quarter" post-checklist | maintainer | release calendar | 90-day window after the FINAL gate above ticks ✅; no breaking spec/API/error-code change during the window | breaking change → restart clock | ❌ **BLOCKED** — on the gates above, not on the clock. Clock question resolved 2026-07-28 (#86): the quarter runs from 2026-06-23 uninterrupted. The `data-loss` group now exists (8 fixtures, 162-169, tagged `data-loss`), covering 3 of the 4 required paths — silent-stringify, date round-trip, formula-result kind. **numFmt drop is still uncovered**: Stage 1 compares values, not formats, so that path needs a Stage 2 fixture. Four of the eight only became load-bearing once #92 landed — before that the runner let a text cell impersonate a date or formula cell, so they passed regardless of what the impl emitted | ⏳ quarter clock started **2026-06-23** (G3 = last gate to tick); 1.0 earliest ≈ **2026-09-21** if no breaking spec/API/error-code change in the window |
+| G24 | "Stable quarter" post-checklist | maintainer | release calendar | 90-day window after the FINAL gate above ticks ✅; no breaking spec/API/error-code change during the window | breaking change → restart clock | ❌ **BLOCKED** — on the gates above only; its own data-loss requirement is met. Clock question resolved 2026-07-28 (#86): the quarter runs from 2026-06-23 uninterrupted. The `data-loss` group is complete (9 fixtures, 162-170, tagged `data-loss`) and covers all 4 required paths — silent-stringify, date round-trip, formula-result kind, and numFmt drop (170, Stage 2, since Stage 1 compares values not formats). Four of the first eight only became load-bearing once #92 landed; before that the runner let a text cell impersonate a date or formula cell, so they passed regardless of what the impl emitted | ⏳ quarter clock started **2026-06-23** (G3 = last gate to tick); 1.0 earliest ≈ **2026-09-21** if no breaking spec/API/error-code change in the window |
 
 > **Status column audited 2026-07-28** against the tree at `2ca7ab0`.
 > The `Planned` column is the historical milestone plan and is kept as-is;
@@ -139,13 +139,13 @@ milestone. Per-version step plan below references these gates by ID.
   stringify, numFmt drop, formula rewrite, and date round-trip paths;
   all pass on the reference impl.
 
-  *Clarified 2026-07-28.* "Group" is the `data-loss` **tag**, not a
-  subdirectory: `conformance/fixtures/` is flat and the runner treats
-  every directory in it as a fixture, so a nested `data-loss/` folder
-  would be read as a fixture with no `meta.yaml`. The dashboard already
-  groups by tag. Note also that the numFmt-drop path cannot be pinned at
-  Stage 1, which compares values and not formats — it requires a Stage 2
-  fixture.
+  *Satisfied 2026-07-28* by fixtures 162-170. "Group" is the `data-loss`
+  **tag**, not a subdirectory: `conformance/fixtures/` is flat and the
+  runner treats every directory in it as a fixture, so a nested
+  `data-loss/` folder would be read as a fixture with no `meta.yaml`. The
+  dashboard already groups by tag. The numFmt-drop path cannot be pinned
+  at Stage 1, which compares values and not formats, so 170 declares
+  `comparison_stage: 2`.
 - **Quarter clock start (G24 vs G23):** the 90-day quarter starts on
   the day the LAST gate ticks ✅. RC publication does NOT start the
   clock; the clock must have started BEFORE RC publication. If a
