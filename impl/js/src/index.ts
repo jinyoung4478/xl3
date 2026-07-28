@@ -319,7 +319,9 @@ export async function convert(
         // fallback) rather than reorganising the call sites.
         const parsed = await parseTemplate(templateBuffer);
         const manifest = extractManifest(parsed.workbook);
-        const out = await wasmConvert(
+        // wasmConvert is synchronous, so a throw from it still lands in
+        // the catch below and 'auto' still falls back to the JS path.
+        const out = wasmConvert(
           engine,
           templateBuffer,
           sourceBuffer,
