@@ -169,6 +169,22 @@ fixture that pins native value types in static or outside cells (e.g.,
 fixture 156), which is exactly the fidelity bug class such fixtures
 exist to catch in compose-model implementations.
 
+The subtler form of the same mistake is worth spelling out, because the
+reference runner made it (#92). Canonicalizing each kind to a *bare*
+string is not enough: if a date becomes `2026-05-15T13:45:30.000Z` and a
+formula becomes `=SUM(A1)`, then a genuine **text** cell holding that
+exact text canonicalizes to the same value and compares equal. Dates,
+formulas, error cells, hyperlinks and shared-formula slaves are all
+reachable this way.
+
+A runner that canonicalizes to strings MUST therefore tag the kind, and
+MUST tag plain text too — an untagged text cell can impersonate every
+tagged form. The reference runner prefixes (`date:`, `formula:`,
+`error:`, `hyperlink:`, `sharedFormula:`, `text:`) and leaves numbers and
+booleans native, since those cannot collide with a string under a
+strict comparison. Any equivalent scheme is fine; comparing typed values
+directly, without an intermediate string, avoids the problem entirely.
+
 Error fixtures and dynamic fixtures are not workbook-output comparisons. They
 keep their `expected_error` and `expected_dynamic` pass/fail rules regardless of
 comparison stage.

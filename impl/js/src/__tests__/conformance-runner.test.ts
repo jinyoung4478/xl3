@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import JSZip from 'jszip';
-import { canonicalizeXlsx, formatTextReport, parseMeta } from '../conformance-runner.js';
+import { canonicalizeXlsx, comparable, formatTextReport, parseMeta } from '../conformance-runner.js';
 
 describe('parseMeta', () => {
   it('reads required scalar fields', () => {
@@ -276,5 +276,64 @@ describe('formatTextReport', () => {
 
     expect(text).toContain('XTL 0.1 — Stage 2');
     expect(text).toContain('024-stage2-merge-preservation [stage 2]');
+  });
+});
+
+// #92 — Stage 1 comparison must be kind-aware. runner-protocol.md:
+// "A text cell never equals a number, boolean, or date cell, even when
+// their display forms coincide" and "a runner that stringifies both sides
+// before comparing MUST NOT claim Stage 1 conformance."
+//
+// Every canonical form used to collapse to a bare string, so a text cell
+// holding that same string compared equal to the real thing. These pin
+// each impostor apart. Regression guard for the data-loss group (162-169),
+// four of which depend on it.
+describe('comparable — cell kinds cannot impersonate each other (#92)', () => {
+  const iso = '2026-05-15T13:45:30.000Z';
+
+  it('a date cell does not equal a text cell holding its ISO form', () => {
+    expect(comparable(new Date(iso))).not.toBe(comparable(iso));
+  });
+
+  it('a formula cell does not equal a text cell holding its formula text', () => {
+    expect(comparable({ formula: 'SUM(A1)', result: 1 })).not.toBe(comparable('=SUM(A1)'));
+  });
+
+  it('an error cell does not equal a text cell holding the error code', () => {
+    // The reachable case: ADR-0025 has the engine substitute the literal
+    // "#DIV/0!" into mixed-text cells, so this pair really does occur.
+    expect(comparable({ error: '#DIV/0!' })).not.toBe(comparable('#DIV/0!'));
+  });
+
+  it('a hyperlink cell does not equal a text cell holding its canonical form', () => {
+    const cell = { text: 'xl3', hyperlink: 'https://xl3.io' };
+    expect(comparable(cell)).not.toBe(comparable('HYPERLINK("https://xl3.io","xl3")'));
+  });
+
+  it('a shared-formula cell does not equal a text cell holding its canonical form', () => {
+    expect(comparable({ sharedFormula: 'E2', result: 3 })).not.toBe(comparable('=shared:E2'));
+  });
+
+  it('keeps numbers and booleans native so 1 never equals "1"', () => {
+    expect(comparable(1)).toBe(1);
+    expect(comparable(1)).not.toBe(comparable('1'));
+    expect(comparable(true)).toBe(true);
+    expect(comparable(true)).not.toBe(comparable('TRUE'));
+    // protocol: "Numeric equality is value-based: 1 equals 1.0"
+    expect(comparable(1)).toBe(comparable(1.0));
+  });
+
+  it('still matches like kinds to like', () => {
+    expect(comparable(new Date(iso))).toBe(comparable(new Date(iso)));
+    expect(comparable('abc')).toBe(comparable('abc'));
+    expect(comparable({ formula: 'A1+1', result: 2 })).toBe(
+      comparable({ formula: 'A1+1', result: 99 }),
+    ); // ADR-0046: formula text is the contract, cached result is not
+  });
+
+  it('treats rich text as equal to plain text of the same content', () => {
+    // Intended, not a collision: the protocol compares rich-text cells
+    // "by their concatenated text".
+    expect(comparable({ richText: [{ text: 'ab' }, { text: 'c' }] })).toBe(comparable('abc'));
   });
 });

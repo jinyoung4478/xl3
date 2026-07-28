@@ -331,7 +331,7 @@ async function runDynamicFixture(
         continue;
       }
       const actual = comparable(sheet.getCell(assertion.cell).value);
-      const cellExpected = formatUtcToday(runnerStart, assertion.format);
+      const cellExpected = comparable(formatUtcToday(runnerStart, assertion.format));
       if (actual !== cellExpected) {
         diffs.push(`${assertion.sheet}@${assertion.cell}: actual=${JSON.stringify(actual)}, expected=${JSON.stringify(cellExpected)}`);
       }
@@ -947,42 +947,64 @@ async function loadCells(buf: ArrayBuffer): Promise<CellMap> {
   return sheets;
 }
 
-function comparable(v: ExcelJS.CellValue): unknown {
+/**
+ * Canonical, **kind-tagged** form of a cell value for Stage 1 comparison.
+ *
+ * Every string-valued form carries a `kind:` prefix, including plain
+ * text. Without that, each canonicalization collapsed into a bare string
+ * that a genuine text cell could impersonate (#92): a `Date` became its
+ * ISO string and compared equal to a text cell holding that same ISO
+ * text, and the same held for formula, error, hyperlink and
+ * shared-formula cells. runner-protocol.md prohibits exactly this —
+ * "a text cell never equals a number, boolean, or date cell, even when
+ * their display forms coincide", and "a runner that stringifies both
+ * sides before comparing MUST NOT claim Stage 1 conformance".
+ *
+ * Numbers and booleans stay native. They cannot collide with a tagged
+ * string under `diffCellMaps`'s strict `!==`, and leaving them alone
+ * keeps `1` equal to `1.0` as the protocol requires.
+ *
+ * Rich text deliberately tags as `text:` — the protocol says rich-text
+ * cells compare "by their concatenated text", so equality with a plain
+ * text cell of the same content is intended, not a collision.
+ */
+export function comparable(v: ExcelJS.CellValue): unknown {
   if (v === null || v === undefined) return null;
   if (typeof v === 'object') {
+    if (v instanceof Date) return `date:${v.toISOString()}`;
     if ('richText' in v) {
-      return (v as { richText: { text: string }[] }).richText
-        .map((r) => r.text).join('');
+      return `text:${(v as { richText: { text: string }[] }).richText
+        .map((r) => r.text).join('')}`;
     }
     // ADR-0025: an Excel error cell ({ error: '#DIV/0!' } etc.) is
     // surfaced by its error code so output-side fixtures can pin the
     // exact error. ADR-0017 separately governs error cells in input
     // sources (they read as empty in eval, so they never reach output
     // unchanged unless the engine intentionally produces them).
-    if ('error' in v) return (v as { error: unknown }).error ?? null;
+    if ('error' in v) return `error:${String((v as { error: unknown }).error ?? '')}`;
     // ADR-0039: hyperlink cells ({ text, hyperlink }) compare by a
     // stable concatenation so two structurally-equal hyperlinks pass
     // the `!==` check in diffCellMaps.
     if ('hyperlink' in v && 'text' in v) {
       const h = v as { text: unknown; hyperlink: unknown };
-      return `HYPERLINK("${String(h.hyperlink ?? '')}","${String(h.text ?? '')}")`;
+      return `hyperlink:HYPERLINK("${String(h.hyperlink ?? '')}","${String(h.text ?? '')}")`;
     }
     // ADR-0046: formula cells compare by formula text. Cached `result`
     // is timing-dependent (template-cached vs runtime-computed) and is
     // NOT part of the preservation contract — only the formula text.
     if ('formula' in v) {
-      return `=${String((v as { formula: unknown }).formula ?? '')}`;
+      return `formula:=${String((v as { formula: unknown }).formula ?? '')}`;
     }
     // ADR-0066: an OOXML shared-formula slave (`{ sharedFormula: 'E2' }`)
     // identifies its owner by address. We compare by a stable string so
     // two structurally-equal slaves (which JavaScript would treat as
     // distinct object refs) match in the runner's `!==` check.
     if ('sharedFormula' in v) {
-      return `=shared:${String((v as { sharedFormula: unknown }).sharedFormula ?? '')}`;
+      return `sharedFormula:=shared:${String((v as { sharedFormula: unknown }).sharedFormula ?? '')}`;
     }
-    if ('result' in v) return (v as { result: unknown }).result ?? null;
-    if (v instanceof Date) return v.toISOString();
+    if ('result' in v) return comparable((v as { result: ExcelJS.CellValue }).result ?? null);
   }
+  if (typeof v === 'string') return `text:${v}`;
   return v;
 }
 
