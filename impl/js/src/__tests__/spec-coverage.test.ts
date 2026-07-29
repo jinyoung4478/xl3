@@ -45,6 +45,10 @@ const INFORMATIONAL_ADRS = new Set([
   '0045', // rejected bundle — rejection IS the contract
   '0048', // accepted (informational + process gate) — JXLS boundary
   '0049', // accepted (informational) — template display vs render output
+  '0076', // deferred — pivot / sparkline / ListObject / page break left
+          // implementation-defined for 1.0 (G12's deferral arm). A fixture
+          // would assert the behavior the ADR declines to assert and would
+          // have to be deleted in 1.1.
   // 0.7.0 spec-audit batch — fixtures 141–187 reserved by these ADRs
   // but impl-pending. Each ADR's Consequences section names the
   // fixture number(s) it intends to land in 0.7.1. Listed here so

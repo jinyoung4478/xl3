@@ -99,8 +99,10 @@ terms:
 
 5. **Structured-table references** (e.g., `<f>Table1[Amount]</f>`)
    are preserved verbatim. Whether the underlying table is
-   preserved is governed by ADR-0036's pivot/ListObject row (still
-   undefined as of 2026-05-18; see G12 in ROADMAP).
+   preserved is **implementation-defined** per ADR-0076, which added the
+   pivot / sparkline / ListObject / page-break rows this clause was
+   waiting on and deferred all four to XTL 1.1. (Until 2026-07-28 this
+   pointed at an ADR-0036 row that had been intended but never written.)
 
 ### What is intentionally NOT yet adjusted — MUST NOT silently change
 

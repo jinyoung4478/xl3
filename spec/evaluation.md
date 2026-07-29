@@ -662,6 +662,22 @@ and ADR-0006); a port may preserve, lose, or partially preserve chart
 objects. A future ADR will normatively pin chart behavior when Stage 2
 conformance reaches charts.
 
+**Pivot tables, sparklines, structured tables (ListObject), and page
+breaks** are likewise implementation-defined, deferred to XTL 1.1 per
+ADR-0076. A conformant implementation MAY preserve, drop, or partially
+preserve any of them, and nothing in the conformance corpus asserts a
+behavior for them. Two points where the reference impl's behavior differs
+from what the list above would suggest:
+
+- A **structured table** authored around a `@repeat` row keeps its part
+  but not its `ref`, so after expansion it covers only the rows it
+  originally spanned. Widen the `ref` to a whole-column range in the
+  template if it must cover the expanded data — the same workaround this
+  section recommends for conditional formatting.
+- **Page breaks** are not covered by "print area / print titles" above,
+  despite the adjacency, and are not preserved by the reference impl.
+  Set them host-side after conversion.
+
 Style preservation does not override value semantics. For example, a
 string returned by `TEXT()` remains a string even if the template cell
 has a date format.
