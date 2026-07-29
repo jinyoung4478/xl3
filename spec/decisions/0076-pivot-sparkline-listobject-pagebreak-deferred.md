@@ -89,6 +89,67 @@ mental model, do not.
    assert, and would have to be deleted in 1.1. G12's criterion is
    satisfied by the deferral arm, not the fixture arm.
 
+## Alternative considered: copy the template package, edit only `{{ }}`
+
+The obvious objection to deferring is that none of this should be needed.
+If the engine copied `template.xlsx` and surgically rewrote only the cells
+holding `{{ … }}`, every unknown feature — pivot, sparkline, whatever
+Excel ships next — would survive by construction, and this ADR's matrix
+rows would be unnecessary.
+
+The instinct is right, and **the reference impl already works this way at
+the model level.** `excel-document.ts` loads the template and mutates it;
+it does not compose a fresh workbook. So the question is not "clone versus
+compose" — it is already clone. Three findings decide it anyway.
+
+**1. The loss happens at the library boundary, before any xl3 logic
+runs.** The clone round-trips through ExcelJS (`writeBuffer` → `load`).
+Measured with xl3 removed entirely — a bare ExcelJS load-then-write of a
+package carrying hand-injected parts:
+
+| Part | Survives a bare ExcelJS round trip |
+|---|---|
+| `xl/pivotTables/`, `xl/pivotCache/` | No — dropped entirely |
+| `x14:sparklineGroups` in the sheet's `extLst` | No |
+| `rowBreaks` (page breaks) | No |
+| `xl/tables/` | Yes |
+
+So page breaks are not dropped by the renderer. They do not survive the
+library.
+
+**2. Preserving the part would not make the feature correct.** The
+structured-table measurement above is the proof by analogy: the table part
+*is* preserved and is still wrong, because its `ref` does not follow the
+expansion. A pivot behaves the same way — its source range would keep
+pointing at the template's original rows — and worse, a pivot carries a
+data snapshot in `pivotCacheDefinition`, so even a corrected range shows
+stale numbers until the user refreshes in Excel.
+
+The outcome of "just preserve it" is therefore a **pivot that is present
+and wrong**. An absent pivot is visible; a wrong one is not. Every
+behavior decision across 0.x went the other way — see
+`docs/migration-0.x-to-1.0.md`, where nearly every change replaced
+silently-wrong output with a loud error.
+
+**3. Doing it properly means leaving the library, which collides with
+G13.** Editing the package directly means reimplementing, per port, every
+adjustment insertion currently gets for free: `<row r>` renumbering, cell
+references, formulas, `mergeCells`, conditional-formatting `sqref`,
+data-validation ranges, hyperlink refs, comment anchors, table `ref`,
+autofilter, print area, defined names, drawing anchors, and shared-formula
+group ranges. `PORTERS_GUIDE.md` assumes ports build on openpyxl, Apache
+POI, or ClosedXML; openpyxl does not preserve pivots across a round trip
+either. Requiring package surgery would force every port off its language's
+standard library — the same cross-implementation cost ADR-0036 cited when
+it chose P over PE.
+
+**A cheaper middle path exists and is not taken here:** copy the missing
+parts from the template package into the output package after writing,
+which needs no row-shifting logic. It is rejected for the same reason as
+above — it produces finding 2, a preserved part pointing at ranges that
+moved. If it is revisited in 1.1 it should come with range extension, not
+alone.
+
 ## Consequences
 
 **For template authors.** Do not rely on any of the four surviving a
