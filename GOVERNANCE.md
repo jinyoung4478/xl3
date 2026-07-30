@@ -18,6 +18,16 @@ xl3 is in its **formative phase**. A single maintainer is:
 This is normal for a project at this stage. The structures below describe how
 decisions enter the project and what changes as more contributors join.
 
+**XTL 1.0 ships in this shape.** That is a decision, not a gap waiting to
+be filled before the release — recorded with its reasoning, and its limits,
+in [ADR-0077](./spec/decisions/0077-single-maintainer-1.0.md). Short
+version: the contract lives in the conformance corpus and the ADR set
+rather than in one person's head, and a second implementation already
+passes Stage 1 from that corpus. What it does *not* fix is equally plain —
+releases stop if the maintainer stops, and nobody else can accept an ADR.
+Treat xl3 as a fork-if-needed dependency rather than a managed one if that
+matters to you.
+
 ## Roles
 
 | Role | Responsibility | Who |
@@ -129,3 +139,7 @@ The most effective ways to influence xl3:
 When the maintainer set widens, this document is rewritten to reflect the
 new state — including any voting / RFC / TSC processes adopted. Until then,
 this is the working description.
+
+That trigger is unchanged by the 1.0 decision above. ADR-0077 also names
+two further moments to look again: an external contributor landing an
+accepted ADR (ROADMAP G14), and a second production user appearing.

@@ -45,6 +45,8 @@ const INFORMATIONAL_ADRS = new Set([
   '0045', // rejected bundle — rejection IS the contract
   '0048', // accepted (informational + process gate) — JXLS boundary
   '0049', // accepted (informational) — template display vs render output
+  '0077', // accepted (process gate) — single-maintainer 1.0 (G16 fallback);
+          // a governance decision, no observable output
   '0076', // deferred — pivot / sparkline / ListObject / page break left
           // implementation-defined for 1.0 (G12's deferral arm). A fixture
           // would assert the behavior the ADR declines to assert and would
