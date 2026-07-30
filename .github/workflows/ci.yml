@@ -34,6 +34,32 @@ jobs:
       # fixtures; this command opts in.
       - run: npm run conformance:stage2
 
+  cross-browser:
+    # ROADMAP gate G10: the bundle has to load and convert in a real
+    # browser engine, not just in the Node `vm` sandbox that
+    # iife-bundle.test.ts uses. That sandbox hand-shims TextEncoder,
+    # Blob, crypto, a fake `process` and more — a dependency reaching
+    # for something only Node has passes there and fails in a browser,
+    # which is exactly what /try on xl3.io ships to users.
+    #
+    # `webkit` is the WebKit engine Safari is built on, headless on
+    # Linux. Standard CI proxy for Safari; not Safari-the-application,
+    # so a Safari-specific UI bug is still out of scope.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npm run build:bundle
+      # --with-deps pulls the system libraries the engines need on the
+      # runner image; without it webkit fails to launch.
+      - run: npx playwright install --with-deps webkit firefox
+      - run: npm run browser:smoke
+
   conformance-timezones:
     # ADR-0017 declares Date semantics UTC-normative. Run conformance
     # under three distinct timezones so any future regression that

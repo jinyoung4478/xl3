@@ -34,7 +34,8 @@
     "examples:build": "node examples/scripts/build.mjs",
     "examples:run": "node examples/scripts/run-all.mjs",
     "bench": "node scripts/bench.mjs",
-    "bench:matrix": "node scripts/bench-matrix.mjs"
+    "bench:matrix": "node scripts/bench-matrix.mjs",
+    "browser:smoke": "node scripts/browser-smoke.mjs"
   },
   "devDependencies": {
     "@docusaurus/core": "^3.10.1",
@@ -45,6 +46,7 @@
     "@types/node": "^24.0.0",
     "clsx": "^2.1.1",
     "exceljs": "^4.4.0",
+    "playwright": "^1.62.0",
     "posthog-js": "^1.407.3",
     "pptxgenjs": "^4.0.1",
     "prism-react-renderer": "^2.4.1",
