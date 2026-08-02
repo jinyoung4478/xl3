@@ -41,12 +41,12 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           # Full history so the Docusaurus sitemap plugin (lastmod: 'date')
           # can read git last-modified dates for every page.
           fetch-depth: 0
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 20
           cache: npm
@@ -62,14 +62,19 @@ jobs:
           # site then builds with no analytics at all.
           POSTHOG_API_KEY: ${{ vars.POSTHOG_API_KEY }}
       - run: cp -R website/build/. site/
-      - uses: actions/configure-pages@v5
+      - uses: actions/configure-pages@v6
         with:
           enablement: true
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: site
+          # v4 started excluding dotfiles from the artifact. `site/.nojekyll`
+          # is a dotfile, so the default would drop it silently — the deploy
+          # would still succeed and the file would just be gone. Keep v3
+          # behavior explicitly. (.git and .github are excluded regardless.)
+          include-hidden-files: true
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
       # Ping IndexNow (Bing/Naver/Seznam/Yandex) with every sitemap URL
       # so changed pages are re-crawled right away. Only after a
       # successful deploy — submitting URLs the CDN doesn't serve yet
