@@ -575,7 +575,7 @@
     "description": "Developer API section lead paragraph"
   },
   "homepage.api.cta.cookbook": {
-    "message": "레시피 01 — 5분 만에 시작하기",
+    "message": "5분 만에 시작하기",
     "description": "Bottom CTA link — cookbook 01"
   },
   "homepage.api.cta.spec": {
@@ -731,7 +731,7 @@
     "description": "Crosslink — Home"
   },
   "try.intro.link.cookbook": {
-    "message": "레시피 01",
+    "message": "시작하기 가이드",
     "description": "Crosslink — Cookbook 01"
   },
   "try.intro.link.spec": {
