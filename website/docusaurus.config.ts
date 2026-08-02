@@ -28,7 +28,7 @@ const xl3GithubDark: PrismTheme = {
 
 const config: Config = {
   title: 'xl3',
-  tagline: 'An open standard for declarative Excel transformation.',
+  tagline: 'Generate Excel reports from templates, not code.',
   favicon: 'img/xl3-favicon.svg',
 
   url: 'https://xl3.io',
@@ -301,7 +301,11 @@ const config: Config = {
               'Responsibility split: developers own the runtime, operators own templates',
               'Works in Node.js and browser environments',
               'Open-source with MIT license',
-              '70 Architecture Decision Records and 154 conformance fixtures',
+              // Counts are hand-maintained here and in the homepage Standard
+              // section — refresh both on every release cut. ADR count excludes
+              // ADR-0018 (a reserved gap placeholder); the live fixture count
+              // is in conformance/DASHBOARD.md.
+              '77 Architecture Decision Records and 169 conformance fixtures',
               "Porter's Guide enables second-language implementations",
             ],
             screenshot: 'https://xl3.io/img/og.png',
@@ -327,7 +331,7 @@ const config: Config = {
       {
         name: 'description',
         content:
-          'xl3 runs Excel templates with data to produce the same workbook every time.',
+          'xl3 generates production Excel reports from templates: edit the transformation logic in the Excel file, supply data, get the same formatted workbook every time.',
       },
       { property: 'og:type', content: 'website' },
     ],

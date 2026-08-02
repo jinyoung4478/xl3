@@ -164,7 +164,7 @@ function Hero() {
         <div className={styles.heroCopy}>
           <p className={styles.kicker}>
             <Translate id="homepage.hero.kicker" description="Hero section eyebrow / kicker line">
-              A standard for declarative Excel transformation
+              Excel template engine for recurring business documents
             </Translate>
           </p>
           <h1 className={styles.heroTitle}>
@@ -176,7 +176,7 @@ function Hero() {
                 dot: <span className={styles.blueDot}>.</span>,
               }}
             >
-              {'Execute Excel.{lineBreak}Deterministically{dot}'}
+              {'Generate Excel reports{lineBreak}from templates — not code{dot}'}
             </Translate>
           </h1>
           <p className={styles.heroLead}>
@@ -184,7 +184,7 @@ function Hero() {
               id="homepage.hero.lead"
               description="Hero section lead paragraph"
             >
-              Jinja made HTML executable as templates. xl3 makes Excel workbooks executable as templates — an open standard, not a single library. Run a template with data and get the same workbook, every time.
+              Edit the transformation logic inside the Excel file — no developer ticket. Supply the data and xl3 executes it: styles preserved, same result every time.
             </Translate>
           </p>
           <div className={styles.heroLinks}>
@@ -215,9 +215,12 @@ function Hero() {
             description: 'Aria label for the workflow diagram aside',
           })}
         >
+          {/* Brand line. Moved out of the H1 (2026-08-02) so the headline can
+              carry the concrete promise; kept in the hero, untranslated in
+              every locale, because it is brand copy rather than a claim. */}
           <div className={styles.visualHeader}>
             <span>Runtime system</span>
-            <strong>Same input. Same workbook.</strong>
+            <strong>Execute Excel. Deterministically.</strong>
           </div>
           <div className={styles.visualLogoCard}>
             <img src="/img/xl3-logo-dark.png" alt="XL3" />
@@ -627,8 +630,14 @@ function Standard() {
             id="homepage.standard.fact"
             description="Standard section conformance stats sentence; {adrCount} and {fixtureCount} are pre-bolded counts, {npmLink} and {portersGuideLink} are inline links"
             values={{
-              adrCount: <strong>75 ADRs</strong>,
-              fixtureCount: <strong>160 conformance fixtures</strong>,
+              // Hand-maintained counts — they went stale once (75/160 while the
+              // corpus was at 77/169) and an external reviewer quoted the stale
+              // pair back at us. Live values: `ls spec/decisions/*.md | wc -l`
+              // minus ADR-0018 (a reserved gap placeholder, not a decision),
+              // and the corpus size in conformance/DASHBOARD.md. Refresh both
+              // on every release cut.
+              adrCount: <strong>77 ADRs</strong>,
+              fixtureCount: <strong>169 conformance fixtures</strong>,
               npmLink: (
                 <a href="https://www.npmjs.com/package/@xl3-lang/xl3">@xl3-lang/xl3</a>
               ),
@@ -901,15 +910,16 @@ export default function Home() {
     <Layout
       title={translate({
         id: 'homepage.layout.title',
-        // Names xl3's identity as a standard for Excel transformation, not a
-        // library. Docusaurus appends "| xl3", so no brand prefix here.
-        message: 'A Standard for Declarative Excel Transformation',
+        // Leads with the job the visitor searched for, not with xl3's identity
+        // as a standard — "open standard" is a trust signal, not the reason
+        // anyone arrives. Docusaurus appends "| xl3", so no brand prefix here.
+        message: 'Generate Production Excel Reports From Templates',
         description: 'HTML <title> for the landing page',
       })}
       description={translate({
         id: 'homepage.layout.description',
         message:
-          'xl3 is an open standard for declarative Excel transformation: run an Excel template with data to get the same workbook every time.',
+          'xl3 executes an ordinary .xlsx as a template: edit the transformation logic in the Excel file, supply data, and get the same formatted workbook every time.',
         description: 'HTML <meta description> for the landing page',
       })}
     >

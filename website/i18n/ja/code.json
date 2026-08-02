@@ -327,15 +327,15 @@
     "description": "The title of the tag list page"
   },
   "homepage.hero.kicker": {
-    "message": "宣言的な Excel 変換のための標準",
+    "message": "繰り返し作る業務文書のための Excel テンプレートエンジン",
     "description": "Hero section eyebrow / kicker line"
   },
   "homepage.hero.title": {
-    "message": "Execute Excel.{lineBreak}Deterministically{dot}",
+    "message": "Excel の帳票は、コードではなく{lineBreak}テンプレートで作る",
     "description": "Hero section H1"
   },
   "homepage.hero.lead": {
-    "message": "Jinja が HTML をテンプレートとして実行可能にしたように、xl3 は Excel ワークブックをテンプレートとして実行可能にします — 単一のライブラリではなく、オープンな標準として。同じテンプレートに同じデータを渡せば、出力されるワークブックも常に同じです。",
+    "message": "変換ロジックは Excel ファイルの中で直接直せます。開発依頼は要りません。データを渡せば xl3 が実行し、書式はそのまま、結果は毎回同じです。",
     "description": "Hero section lead paragraph"
   },
   "homepage.hero.cta.try": {
@@ -539,11 +539,11 @@
     "description": "Bottom CTA link — Porter's Guide"
   },
   "homepage.layout.title": {
-    "message": "宣言的な Excel 変換のための標準",
+    "message": "Excel の帳票をテンプレートから生成する",
     "description": "HTML <title> for the landing page"
   },
   "homepage.layout.description": {
-    "message": "xl3 は宣言的な Excel 変換のためのオープンな標準です。同じ Excel テンプレートに同じデータを渡せば、毎回同じワークブックが得られます。",
+    "message": "変換ロジックは Excel ファイルの中で直接直せます。データを渡せば xl3 が実行し、書式はそのまま、結果は毎回同じです。",
     "description": "HTML <meta description> for the landing page"
   },
   "try.status.idle": {

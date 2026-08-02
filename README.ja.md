@@ -1,8 +1,9 @@
-# xl3 — 宣言的 Excel 変換の標準
+# xl3 — Excel の帳票を、コードではなくテンプレートで
 
-> Jinja が HTML をテンプレートにしたように、**xl3 は Excel ワークブックを
-> 実行可能なテンプレートにします** — 単一のライブラリではなく、実装に
-> 依存しないオープンな標準として。
+> 変換ロジックは Excel ファイルの中で直接直せます。データを渡せば実行され、
+> 書式はそのまま、結果は毎回同じです。Jinja が HTML をテンプレートにした
+> ように、**xl3 は Excel ワークブックを実行可能なテンプレートにします** —
+> 単一のライブラリではなく、実装に依存しないオープンな標準として。
 
 **ステータス:** alpha · **XTL spec 0.1 (draft)** · リファレンス実装
 `@xl3-lang/xl3` 0.11.0 · 1.0 までは breaking change の可能性あり
@@ -61,7 +62,7 @@
 Excel がレイアウトと業務ルールを持つ形にします。
 
 この役割分担こそが、[`docs/llm-template-authoring.md`](./docs/llm-template-authoring.md)、
-160 件の conformance fixture コーパス、そして意図的に小さく保たれた
+169 件の conformance fixture コーパス、そして意図的に小さく保たれた
 XTL の表面が想定している対象です。
 
 ## 簡単な例
@@ -119,7 +120,7 @@ Excel に残し、ワークブックを実行可能にします。アプリケ�
   AI も下書きしやすくなります。並べて見たい場合は
   [Cookbook 16](./docs/guides/16-xtl-vs-excel-formula.md) を参照して
   ください。
-- **Conformance コーパス。** 160 件の fixture、すべて green、74 件の
+- **Conformance コーパス。** 169 件の fixture、すべて green、77 件の
   ADR を網羅。変換契約を実行可能な形で検証するテストベッドです。
 - **実装は 1 つ、仕様は 1 つ。** [`spec/`](./spec) ディレクトリは XTL を
   この TypeScript リファレンス実装から独立に定義しています。他ランタイム

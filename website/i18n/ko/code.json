@@ -327,15 +327,15 @@
     "description": "The title of the tag list page"
   },
   "homepage.hero.kicker": {
-    "message": "선언적 엑셀 변환을 위한 표준",
+    "message": "반복되는 Excel 문서를 위한 템플릿 엔진",
     "description": "Hero section eyebrow / kicker line"
   },
   "homepage.hero.title": {
-    "message": "Execute Excel.{lineBreak}Deterministically{dot}",
+    "message": "Excel 보고서, 코드가 아니라{lineBreak}템플릿으로 만듭니다{dot}",
     "description": "Hero section H1"
   },
   "homepage.hero.lead": {
-    "message": "Jinja가 HTML을 템플릿으로 실행 가능하게 만들었듯, xl3는 엑셀 파일을 템플릿으로 실행 가능하게 만듭니다 — 단일 라이브러리가 아니라 열린 표준으로. 같은 템플릿에 같은 데이터를 넣으면, 나오는 엑셀 파일도 항상 같습니다.",
+    "message": "개발 요청 없이, 변환 로직을 Excel 파일에서 직접 고칩니다. 데이터를 넣으면 xl3가 실행합니다. 서식은 그대로, 결과는 매번 같습니다.",
     "description": "Hero section lead paragraph"
   },
   "homepage.hero.cta.try": {
@@ -587,11 +587,11 @@
     "description": "Bottom CTA link — Porter's Guide"
   },
   "homepage.layout.title": {
-    "message": "선언적 엑셀 변환을 위한 표준",
+    "message": "Excel 보고서를 템플릿으로 만드는 엔진",
     "description": "HTML <title> for the landing page"
   },
   "homepage.layout.description": {
-    "message": "xl3는 선언적 엑셀 변환을 위한 열린 표준입니다. 같은 템플릿에 같은 데이터를 넣으면 매번 같은 엑셀 파일이 나옵니다.",
+    "message": "변환 로직을 Excel 파일에서 직접 고치고, 데이터를 넣으면 xl3가 실행합니다. 서식은 그대로, 결과는 매번 같습니다.",
     "description": "HTML <meta description> for the landing page"
   },
   "try.status.idle": {

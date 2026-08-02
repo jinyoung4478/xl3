@@ -1,8 +1,9 @@
-# xl3 — 선언형 Excel 변환 표준
+# xl3 — Excel 보고서를 코드가 아니라 템플릿으로
 
-> Jinja가 HTML을 템플릿으로 만들었듯, **xl3는 Excel 파일을 실행 가능한
-> 템플릿으로 만듭니다** — 단일 라이브러리가 아니라, 구현에 독립적인
-> 열린 표준으로.
+> 변환 로직을 Excel 파일에서 직접 고치고, 데이터를 넣으면 실행합니다.
+> 서식은 그대로, 결과는 매번 같습니다. Jinja가 HTML을 템플릿으로
+> 만들었듯, **xl3는 Excel 파일을 실행 가능한 템플릿으로 만듭니다** —
+> 단일 라이브러리가 아니라, 구현에 독립적인 열린 표준으로.
 
 **상태:** alpha · **XTL spec 0.1 (draft)** · 레퍼런스 구현
 `@xl3-lang/xl3` 0.11.0 · 1.0 전까지 breaking change 가능
@@ -58,7 +59,7 @@ ExcelJS·SheetJS·openpyxl 같은 SDK는 스프레드시트의 DOM API입니다.
 업무 규칙을 소유하게 만듭니다.
 
 이 분리 구조 때문에 [`docs/llm-template-authoring.md`](./docs/llm-template-authoring.md),
-160 개 conformance fixture 코퍼스, 그리고 의도적으로 작은 XTL 표면이
+169 개 conformance fixture 코퍼스, 그리고 의도적으로 작은 XTL 표면이
 존재합니다.
 
 ## 간단한 예시
@@ -114,7 +115,7 @@ protocol은 [`conformance/`](./conformance)에 있습니다.
   모든 것은 평범한 Excel 셀 수식이고, Excel이 열릴 때 직접 평가합니다.
   언어가 작을수록 사람이 검토하기 쉽고, AI가 초안을 만들기도 쉽습니다. 대조표는
   [Cookbook 16](./docs/guides/16-xtl-vs-excel-formula.md) 참고.
-- **적합성 픽스처.** ADR 74개 위에 픽스처 160개, 전부 통과.
+- **적합성 픽스처.** ADR 77개 위에 픽스처 169개, 전부 통과.
   변환 계약을 실행 가능한 형태로 검증하는 테스트베드입니다.
 - **구현 하나, 스펙 하나.** [`spec/`](./spec) 디렉토리가 이
   TypeScript 레퍼런스와는 별개로 XTL을 정의합니다. 다른 런타임으로의

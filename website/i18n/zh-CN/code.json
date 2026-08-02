@@ -327,15 +327,15 @@
     "description": "The title of the tag list page"
   },
   "homepage.hero.kicker": {
-    "message": "声明式 Excel 转换标准",
+    "message": "面向周期性业务文档的 Excel 模板引擎",
     "description": "Hero section eyebrow / kicker line"
   },
   "homepage.hero.title": {
-    "message": "Execute Excel.{lineBreak}Deterministically{dot}",
+    "message": "用模板生成 Excel 报表，{lineBreak}而不是写代码",
     "description": "Hero section H1"
   },
   "homepage.hero.lead": {
-    "message": "Jinja 让 HTML 可作为模板执行；xl3 让 Excel 工作簿可作为模板执行——是一个开放标准，而非单一的库。同一个模板、同一份数据，每次生成的工作簿都完全相同。",
+    "message": "转换逻辑就写在 Excel 文件里，自己随时改，不必再提开发需求。传入数据后由 xl3 执行：格式原样保留，结果每次一致。",
     "description": "Hero section lead paragraph"
   },
   "homepage.hero.cta.try": {
@@ -539,11 +539,11 @@
     "description": "Bottom CTA link — Porter's Guide"
   },
   "homepage.layout.title": {
-    "message": "声明式 Excel 转换标准",
+    "message": "用模板生成 Excel 报表",
     "description": "HTML <title> for the landing page"
   },
   "homepage.layout.description": {
-    "message": "xl3 是声明式 Excel 转换的开放标准：同一个 Excel 模板、同一份数据，每次生成的工作簿都完全相同。",
+    "message": "转换逻辑就写在 Excel 文件里，随时自己改；传入数据后由 xl3 执行，格式原样保留，结果每次一致。",
     "description": "HTML <meta description> for the landing page"
   },
   "try.status.idle": {
