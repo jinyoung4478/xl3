@@ -42,7 +42,17 @@ async function pinZipEntryDates(buf: ArrayBuffer): Promise<ArrayBuffer> {
     const entry = zip.files[name];
     if (entry) entry.date = ZIP_ENTRY_DATE;
   }
-  return zip.generateAsync({ type: 'arraybuffer', compression: 'DEFLATE' });
+  // `uint8array`, not `arraybuffer`, to keep the runtime shape callers
+  // already had. ExcelJS returns a Buffer under Node and a Uint8Array in
+  // the browser — both `instanceof Uint8Array`, both indexable — and
+  // `OutputFile.data` has always been that value cast to `ArrayBuffer`.
+  // Returning a real ArrayBuffer here broke the IIFE bundle smoke test,
+  // which indexes `data[0]` to check the PK header. Changing the declared
+  // type instead would be a public-surface break (G6).
+  return zip.generateAsync({
+    type: 'uint8array',
+    compression: 'DEFLATE',
+  }) as unknown as Promise<ArrayBuffer>;
 }
 
 export interface WorkbookDocument {
