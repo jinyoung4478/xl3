@@ -94,19 +94,6 @@ Exceeding available memory surfaces as a host-level out-of-memory, not
 as an xl3 error — xl3 cannot catch it. Long conversions accept an
 `AbortSignal`.
 
-## Where these decisions live
-
-This page is a plain-language reading of the normative sources. When
-they disagree, they win:
-
-- [`spec/evaluation.md` § Styles and Workbook Structure](../spec/evaluation.md) — the normative rules
-- [ADR-0036](../spec/decisions/0036-feature-preservation-matrix.md) — the nine-feature preservation matrix and why each is preserve-verbatim rather than preserve-and-extend
-- [ADR-0076](../spec/decisions/0076-pivot-sparkline-listobject-pagebreak-deferred.md) — pivot / sparkline / ListObject / page break deferred to 1.1, with measured behavior
-- [ADR-0046](../spec/decisions/0046-cell-formula-preservation.md) — native Excel formulas in static cells
-- [ADR-0032](../spec/decisions/0032-niche-limits-and-pass-through.md) — string length and other niche limits
-- [ADR-0022](../spec/decisions/0022-excel-version-compatibility.md) — Excel version compatibility
-- [SECURITY.md](../SECURITY.md) — the macro, network, and filesystem stance
-
 ## How much of this is machine-checked
 
 Partly, and it is worth knowing which parts.
@@ -124,3 +111,16 @@ machine-verified ones. Every implementation runs the same [conformance
 corpus](../conformance/README.md), so what is checked is checked
 everywhere — but the corpus does not yet cover the whole matrix, and
 this page would rather say so than imply otherwise.
+
+## Where these decisions live
+
+This page is a plain-language reading of the normative sources. When
+they disagree, they win:
+
+- [`spec/evaluation.md` § Styles and Workbook Structure](../spec/evaluation.md) — the normative rules
+- [ADR-0036](../spec/decisions/0036-feature-preservation-matrix.md) — the nine-feature preservation matrix and why each is preserve-verbatim rather than preserve-and-extend
+- [ADR-0076](../spec/decisions/0076-pivot-sparkline-listobject-pagebreak-deferred.md) — pivot / sparkline / ListObject / page break deferred to 1.1, with measured behavior
+- [ADR-0046](../spec/decisions/0046-cell-formula-preservation.md) — native Excel formulas in static cells
+- [ADR-0032](../spec/decisions/0032-niche-limits-and-pass-through.md) — string length and other niche limits
+- [ADR-0022](../spec/decisions/0022-excel-version-compatibility.md) — Excel version compatibility
+- [SECURITY.md](../SECURITY.md) — the macro, network, and filesystem stance
