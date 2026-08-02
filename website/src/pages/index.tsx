@@ -925,9 +925,13 @@ export default function Home() {
     >
       <Hero />
       <main>
+        {/* Responsibility sits ahead of Handoff on purpose: the split it
+            describes — operators own templates, developers own the runtime —
+            is the value, and Handoff is the argument for why Excel is the
+            place to put it. Value before rationale. */}
         <Walkthrough />
-        <Handoff />
         <Responsibility />
+        <Handoff />
         <Standard />
         <Comparison />
         <DeveloperApi />

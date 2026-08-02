@@ -259,8 +259,13 @@
   line-height: 1.72;
 }
 
+/* Light and banded backgrounds alternate down the page, so these two groups
+   are keyed to a section's *position*, not its content. Responsibility and
+   Handoff traded places in index.tsx and traded background groups with each
+   other to keep the alternation — moving one without the other leaves two
+   identical backgrounds adjacent with no divider between them. */
 .walkthrough,
-.responsibility,
+.handoff,
 .api {
   padding: 5rem 0;
   background:
@@ -353,7 +358,7 @@
   line-height: 1.58;
 }
 
-.handoff,
+.responsibility,
 .comparison {
   padding: 5rem 0;
   background:
