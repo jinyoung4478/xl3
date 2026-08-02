@@ -15,6 +15,10 @@
     "message": "가이드",
     "description": "The label of footer link with label=Guides linking to /guides"
   },
+  "link.item.label.What's preserved": {
+    "message": "보존 범위",
+    "description": "The label of footer link with label=What's preserved linking to /support-matrix"
+  },
   "link.item.label.Spec": {
     "message": "명세",
     "description": "The label of footer link with label=Spec linking to /spec"

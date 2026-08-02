@@ -55,6 +55,10 @@ const sidebars: SidebarsConfig = {
   // and Conformance are accordion categories that collapse their
   // sub-pages; the other reference docs are flat entries.
   docsSidebar: [
+    // First, ahead of the implementer-facing reference: "will my workbook
+    // survive?" is the question a prospective user asks before any of the
+    // rest of this matters.
+    { type: 'doc', id: 'support-matrix', label: "What's preserved" },
     {
       type: 'category',
       label: 'Spec',

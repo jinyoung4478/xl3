@@ -95,6 +95,9 @@ xl3 渲染出的结果:
 输出就是一份可以直接在 Excel、Numbers 或 Google Sheets 中打开的
 `.xlsx`,无需任何格式转换。
 
+哪些功能会被保留、哪些不会,[支持范围文档](./docs/support-matrix.md)按功能
+逐项列出,并说明了推迟到 1.1 的四项功能与体积上限。
+
 语言草案参见 [`spec/`](./spec),实现无关的 fixture 语料库与 runner
 协议参见 [`conformance/`](./conformance)。
 

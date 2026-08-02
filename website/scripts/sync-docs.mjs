@@ -22,6 +22,7 @@ const COPY_OPTIONS = { recursive: true, dereference: true };
 const COPIES = [
   // [src absolute, dest relative to TARGET]
   ['docs/guides', 'guides'],
+  ['docs/support-matrix.md', 'support-matrix.md'],
   ['docs/migration-0.x-to-1.0.md', 'migration-0.x-to-1.0.md'],
   ['docs/api', 'api'],
   ['spec', 'spec'],
@@ -126,6 +127,9 @@ async function main() {
     join(TARGET, 'GOVERNANCE.md'),
     join(TARGET, 'ROADMAP.md'),
     join(TARGET, 'README.md'),
+    // `../SECURITY.md` (repo-only → GitHub) and `../conformance/README.md`
+    // (→ /conformance) both resolve through DEAD_LINK_EXACT.
+    join(TARGET, 'support-matrix.md'),
     join(TARGET, 'guides', 'index.md'),
     join(TARGET, 'spec', 'evaluation.md'),
     join(TARGET, 'spec', 'language.md'),
@@ -355,6 +359,23 @@ async function rewriteRelativePaths(target) {
     if (next !== body) await writeFile(conf, next);
   }
 
+  // Support matrix: canonical is `docs/support-matrix.md`, synced to the
+  // docs root, so it loses one level the same way the guides do. Its
+  // ADR and guide links become absolute site routes — Docusaurus drops
+  // the `NNNN-` / `NN-` number prefix from those routes, and absolute
+  // paths survive locale-fallback rendering, where a raw `.md` href
+  // would leak and 404.
+  const support = join(target, 'support-matrix.md');
+  if (existsSync(support)) {
+    const body = await readFile(support, 'utf8');
+    const next = body
+      .replace(/\]\(\.\.\/spec\/decisions\/\d{4}-([a-z0-9-]+)\.md(#[^)]*)?\)/g,
+        (_, name, frag = '') => `](/spec/decisions/${name}${frag})`)
+      .replace(/\]\(\.\/guides\/\d{2}-([a-z0-9-]+)\.md(#[^)]*)?\)/g,
+        (_, name, frag = '') => `](/guides/${name}${frag})`);
+    if (next !== body) await writeFile(support, next);
+  }
+
   // Top-level README.md → `./README.<lang>.md`: language READMEs are
   // not synced into the site (they'd collide with /readme). Send the
   // links out to GitHub instead.
@@ -465,6 +486,11 @@ const SEO_META = {
     title: 'XTL Guides — Excel templating recipes for loops, joins, and grouping',
     description:
       'Hands-on recipes for the XTL Excel template language: runtime inputs, multi-source joins, group-and-subtotal, conditional cells, file-per-group output, and more.',
+  },
+  'support-matrix.md': {
+    title: 'What xl3 Preserves in an Excel Template — Support Matrix',
+    description:
+      'Feature-by-feature list of what survives an xl3 conversion: styles, merged cells, images, conditional formatting, data validation, print areas — plus what is deferred (pivot tables, charts, sparklines, page breaks) and the size limits.',
   },
   'guides/19-jxls-to-xl3.md': {
     title: 'JXLS Alternative for JavaScript & Node.js — Migrate JXLS Templates to xl3',

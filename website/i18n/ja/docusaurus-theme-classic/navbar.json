@@ -19,6 +19,10 @@
     "message": "ドキュメント",
     "description": "Navbar item with label Docs"
   },
+  "item.label.What's preserved": {
+    "message": "保持される機能",
+    "description": "Navbar item with label What's preserved"
+  },
   "item.label.Spec": {
     "message": "仕様",
     "description": "Navbar item with label Spec"

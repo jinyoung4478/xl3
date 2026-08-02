@@ -101,6 +101,10 @@ xl3 renders:
 footer rows preserved verbatim. The output is an `.xlsx` you can open in
 Excel, Numbers, or Google Sheets without conversion.
 
+[What xl3 preserves — and what it doesn't](./docs/support-matrix.md) is the
+feature-by-feature version of that sentence, including the four features
+deferred to 1.1 and the size limits.
+
 See [`spec/`](./spec) for the language draft and [`conformance/`](./conformance) for the implementation-neutral fixture corpus and runner protocol.
 
 ## Why Excel should be the template

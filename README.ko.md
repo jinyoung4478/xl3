@@ -97,6 +97,10 @@ xl3는 다음 결과를 렌더링합니다:
 출력은 변환 없이 Excel · Numbers · Google Sheets에서 바로 열리는 `.xlsx`
 입니다.
 
+무엇이 보존되고 무엇이 안 되는지는 [지원 범위 문서](./docs/support-matrix.md)에
+기능 단위로 정리해 두었습니다. 1.1로 미뤄둔 네 가지와 크기 한계도 함께
+적혀 있습니다.
+
 언어 초안은 [`spec/`](./spec)에, 구현 중립적인 fixture corpus와 runner
 protocol은 [`conformance/`](./conformance)에 있습니다.
 

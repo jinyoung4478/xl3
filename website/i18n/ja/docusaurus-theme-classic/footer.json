@@ -15,6 +15,10 @@
     "message": "ガイド",
     "description": "The label of footer link with label=Guides linking to /guides"
   },
+  "link.item.label.What's preserved": {
+    "message": "保持される機能",
+    "description": "The label of footer link with label=What's preserved linking to /support-matrix"
+  },
   "link.item.label.Spec": {
     "message": "仕様",
     "description": "The label of footer link with label=Spec linking to /spec"

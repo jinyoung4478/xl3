@@ -19,6 +19,10 @@
     "message": "문서",
     "description": "Navbar item with label Docs"
   },
+  "item.label.What's preserved": {
+    "message": "보존 범위",
+    "description": "Navbar item with label What's preserved"
+  },
   "item.label.Spec": {
     "message": "명세",
     "description": "Navbar item with label Spec"

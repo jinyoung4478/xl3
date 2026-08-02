@@ -358,6 +358,10 @@ const config: Config = {
           label: 'Docs',
           position: 'left',
           items: [
+            // First in the dropdown for the same reason it is first in
+            // docsSidebar: it answers the question asked before adoption,
+            // not during implementation.
+            { label: "What's preserved", to: '/support-matrix' },
             { label: 'Spec', to: '/spec' },
             { label: "Porter's Guide", to: '/porters-guide' },
             { label: 'Conformance', to: '/conformance' },
@@ -380,6 +384,7 @@ const config: Config = {
           title: 'Docs',
           items: [
             { label: 'Guides', to: '/guides' },
+            { label: "What's preserved", to: '/support-matrix' },
             { label: 'Spec', to: '/spec' },
             { label: "Porter's Guide", to: '/porters-guide' },
             { label: 'Conformance', to: '/conformance' },

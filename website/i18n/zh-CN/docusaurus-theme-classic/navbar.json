@@ -19,6 +19,10 @@
     "message": "文档",
     "description": "Navbar item with label Docs"
   },
+  "item.label.What's preserved": {
+    "message": "保留哪些功能",
+    "description": "Navbar item with label What's preserved"
+  },
   "item.label.Spec": {
     "message": "规范",
     "description": "Navbar item with label Spec"

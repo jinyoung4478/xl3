@@ -15,6 +15,10 @@
     "message": "指南",
     "description": "The label of footer link with label=Guides linking to /guides"
   },
+  "link.item.label.What's preserved": {
+    "message": "保留哪些功能",
+    "description": "The label of footer link with label=What's preserved linking to /support-matrix"
+  },
   "link.item.label.Spec": {
     "message": "规范",
     "description": "The label of footer link with label=Spec linking to /spec"
