@@ -683,7 +683,7 @@
     "description": "Crosslink — Home"
   },
   "try.intro.link.cookbook": {
-    "message": "Cookbook 01",
+    "message": "手册 01",
     "description": "Crosslink — Cookbook 01"
   },
   "try.intro.link.spec": {
@@ -691,7 +691,7 @@
     "description": "Crosslink — Spec"
   },
   "try.intro.link.porters": {
-    "message": "移植者指南",
+    "message": "移植指南",
     "description": "Crosslink — Porter's Guide"
   },
   "try.fallback.loading": {
