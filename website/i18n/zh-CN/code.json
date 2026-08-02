@@ -331,8 +331,12 @@
     "description": "Hero section eyebrow / kicker line"
   },
   "homepage.hero.title": {
-    "message": "用模板生成 Excel 报表，{lineBreak}而不是写代码",
+    "message": "用模板生成 Excel 报表，{lineBreak}而不是写代码{dot}",
     "description": "Hero section H1"
+  },
+  "homepage.hero.title.fullStop": {
+    "message": "。",
+    "description": "Sentence-final mark rendered as the hero H1's accent dot. Override per locale (ja/zh use 。)."
   },
   "homepage.hero.lead": {
     "message": "转换逻辑就写在 Excel 文件里，自己随时改，不必再提开发需求。传入数据后由 xl3 执行：格式原样保留，结果每次一致。",

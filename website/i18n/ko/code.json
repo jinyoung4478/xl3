@@ -334,6 +334,10 @@
     "message": "Excel 보고서, 코드가 아니라{lineBreak}템플릿으로 만듭니다{dot}",
     "description": "Hero section H1"
   },
+  "homepage.hero.title.fullStop": {
+    "message": ".",
+    "description": "Sentence-final mark rendered as the hero H1's accent dot. Override per locale (ja/zh use 。)."
+  },
   "homepage.hero.lead": {
     "message": "개발 요청 없이, 변환 로직을 Excel 파일에서 직접 고칩니다. 데이터를 넣으면 xl3가 실행합니다. 서식은 그대로, 결과는 매번 같습니다.",
     "description": "Hero section lead paragraph"

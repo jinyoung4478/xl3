@@ -173,7 +173,20 @@ function Hero() {
               description="Hero section H1"
               values={{
                 lineBreak: <br />,
-                dot: <span className={styles.blueDot}>.</span>,
+                // The accent dot is the headline's sentence-final mark, so it
+                // has to be the mark that locale actually uses — a Latin "."
+                // after 作る or 写代码 reads as a typo. ja/zh override it with
+                // 。; everything else inherits the Latin period.
+                dot: (
+                  <span className={styles.blueDot}>
+                    {translate({
+                      id: 'homepage.hero.title.fullStop',
+                      message: '.',
+                      description:
+                        "Sentence-final mark rendered as the hero H1's accent dot. Override per locale (ja/zh use 。).",
+                    })}
+                  </span>
+                ),
               }}
             >
               {'Generate Excel reports{lineBreak}from templates — not code{dot}'}
