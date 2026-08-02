@@ -108,11 +108,16 @@ phrasing is replaced with concrete rules.
   (P via load→save round-trip). A port using a different library
   must verify that each feature in the table survives its
   load→save cycle and add explicit code paths where it doesn't.
-- Conformance fixture 123 (`123-template-feature-preservation`)
-  exercises items 1, 2, 4, 5, 6, 7, 8, 9 in Stage 2 OOXML
-  comparison. Item 3 (charts) is excluded per the **D**
-  decision. Image anchor across `@repeat` is exercised by
-  fixture 124.
+- **Corrected 2026-08-02 — see the Amendment below.** Fixture
+  coverage for this matrix is narrower than this bullet claimed, and
+  the fixture it cited for image anchors is a different ADR's. The
+  original text is retained for the record:
+
+  > ~~Conformance fixture 123 (`123-template-feature-preservation`)
+  > exercises items 1, 2, 4, 5, 6, 7, 8, 9 in Stage 2 OOXML
+  > comparison. Item 3 (charts) is excluded per the **D**
+  > decision. Image anchor across `@repeat` is exercised by
+  > fixture 124.~~
 - Adding "preserve and extend" semantics to any item is a
   *separate* future ADR. This ADR does not preclude PE for any
   item; it pins the 0.1 contract as P.
@@ -133,3 +138,85 @@ phrasing is replaced with concrete rules.
 - `evaluation.md` § "Styles and Workbook Structure"
 - `src/excel-document.ts:65-75` (current `cloneWorksheet`
   pass-through path)
+
+## Amendment (2026-08-02) — what the corpus actually covers for this matrix
+
+The Consequences bullet above described fixture coverage that does not
+exist. Two claims, both wrong:
+
+**1. Fixture 123 is Stage 1 and covers two of the nine items, not eight
+in Stage 2.**
+
+The directory is `123-feature-preservation` — the name in the bullet,
+`123-template-feature-preservation`, has never existed. Its `meta.yaml`
+says what it does:
+
+> Template features (named ranges, cell comments) are preserved verbatim
+> … **Stage 1** cell-value comparison validates that the row data
+> anchored by the named range and the cell carrying the comment survive
+> the render cycle. **Full Stage 2 canonical comparison of every
+> preservation feature awaits ADR-0006 canonicalizer updates.**
+
+So it covers items **4** (named ranges) and **9** (cell comments). The
+runner agrees, and says so even when asked for Stage 2:
+
+```console
+$ npx xl3-conformance --comparison-stage=2 --filter=adr-0036
+  PASS  123-feature-preservation [stage 1]
+```
+
+**2. No fixture covers image anchors across `@repeat`.**
+
+The bullet cited fixture 124, which is `124-source-2d-merge-header` — an
+ADR-0033 fixture for merged source headers, as `conformance/coverage.md`
+lists it. No fixture in the corpus references images at all.
+
+### Actual coverage today
+
+| Matrix item | Fixture | Stage |
+|---|---|---|
+| 4 — named ranges | `123-feature-preservation` | 1 |
+| 9 — cell comments | `123-feature-preservation` | 1 |
+| 1 — images / anchors | none | — |
+| 2 — conditional formatting | none | — |
+| 5 — print area / titles | none | — |
+| 6 — freeze pane / split | none | — |
+| 7 — sheet protection / lock flags | none | — |
+| 8 — data validation | none | — |
+| 3 — charts | none, per the **D** decision | — |
+
+Related but outside the nine: `170-data-loss-numfmt-preserved-across-expansion`
+checks in Stage 2 that a template row's number format reaches every
+`@repeat`-expanded row, which is the per-cell half of
+`evaluation.md` § "Styles and Workbook Structure".
+
+### What this does and does not change
+
+- **The decisions are untouched.** Every item stays **P**; the matrix in
+  the Decision section is unchanged. This amendment corrects a claim
+  about the *test corpus*, not about behavior.
+- **The final Consequences bullet still stands**: an author can rely on
+  the table as a promise. It is a spec promise, which is what the last
+  bullet says — it was the *preceding* bullet that implied the promise
+  was machine-verified across the board.
+- **Landing the missing fixtures remains open**, blocked on the
+  ADR-0006 canonicalizer work that fixture 123's own metadata points at.
+  A Stage 2 comparison is what these items need: preservation is
+  invisible to a Stage 1 cell-value diff, which is why 123 can only
+  reach the two items whose effect shows up in values.
+
+### Why it was written this way
+
+Best guess, recorded so the pattern is recognizable rather than
+mysterious: the bullet describes the fixture that *was intended* when
+the ADR was drafted — eight items compared in Stage 2 — and the fixture
+that landed was the subset achievable without the canonicalizer. The
+Consequences text was never revised to match. The directory name in the
+bullet (`123-template-feature-preservation`) reads like the planned name,
+which supports that reading.
+
+Found while writing `docs/support-matrix.md`, the user-facing reading of
+this matrix. That page deliberately did not repeat these claims; it
+states what fixture 123 checks and names the rows that are spec promises
+rather than verified ones. This amendment brings the ADR into agreement
+with it. Tracked as xl3#108.
