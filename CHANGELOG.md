@@ -695,15 +695,17 @@ unchanged.
 - **Package `exports` map** adds `./bundle` (minified) and
   `./bundle/dev` (unminified) entries, plus `unpkg` and `jsdelivr`
   fields so the CDN URL
-  `https://cdn.jsdelivr.net/npm/@xl3-lang/xl3@0.4.1/`
-  resolves to the bundle by default.
+  `https://cdn.jsdelivr.net/npm/@jinyoung4478/xl3@0.4.1/`
+  resolves to the bundle by default. (That was the package name at the
+  time; the scope became `@xl3-lang` in 0.10.0, and no `@xl3-lang/xl3@0.4.1`
+  was ever published.)
 - **Build script:** `npm run build:bundle` (tsup, ESM→IIFE).
   `prepublishOnly` runs it automatically.
 
 ### Usage
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/@xl3-lang/xl3@0.4.1/dist/xl3.bundle.iife.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@jinyoung4478/xl3@0.4.1/dist/xl3.bundle.iife.min.js"></script>
 <script>
   const outputs = await xl3.convert(templateBuffer, dataBuffer);
 </script>
