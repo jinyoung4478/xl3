@@ -34,7 +34,7 @@ pagination_label: '개요'
 | 13 | [호스트를 위한 에러 처리](/guides/error-handling) | `XtlError` 잡기, 코드 카탈로그, fail-fast를 위한 `preview()`. |
 | 14 | [값 사전으로 쓰는 `__config__`](/guides/config-values) | 작성자 정의 키, 타입 인식, `__config__` vs `__inputs__`. |
 | 15 | [디렉티브 조합하기](/guides/directive-composition) | 실행 순서, 여러 `@filter`의 AND 결합, 금지된 조합. |
-| 16 | [XTL 함수 vs 엑셀 수식](/guides/xtl-vs-excel-formula) | `{{ ... }}`와 `=...` 셀 수식을 어떻게 나눠 쓸지. ADR-0043의 render-time / open-time 경계. |
+| 16 | [XTL 함수 vs Excel 수식](/guides/xtl-vs-excel-formula) | `{{ ... }}`와 `=...` 셀 수식을 어떻게 나눠 쓸지. ADR-0043의 render-time / open-time 경계. |
 | 17 | [템플릿 작성용 표시값](/guides/template-authoring-display) | 템플릿 편집 중 엑셀에서 보이는 모습 (에러, 플레이스홀더), 그게 의도된 이유, 대시보드용 `IFERROR` wrap 관행. |
 | 18 | [`@group`과 `@subtotal`](/guides/group-and-subtotal) | 하나의 데이터 블록 안에 그룹별 소계 행을 끼워 넣기 (ADR-0038) — 단일 레벨, 중첩, 가장 바깥 @subtotal로 만드는 총계. |
 

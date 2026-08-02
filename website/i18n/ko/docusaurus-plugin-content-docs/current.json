@@ -68,7 +68,7 @@
     "description": "The label for the doc item '15 · Composing directives' in sidebar 'guidesSidebar', linking to the doc guides/directive-composition"
   },
   "sidebar.guidesSidebar.doc.16 · XTL function vs Excel formula": {
-    "message": "16 · XTL 함수와 엑셀 수식 비교",
+    "message": "16 · XTL 함수와 Excel 수식 비교",
     "description": "The label for the doc item '16 · XTL function vs Excel formula' in sidebar 'guidesSidebar', linking to the doc guides/xtl-vs-excel-formula"
   },
   "sidebar.guidesSidebar.doc.17 · Template-authoring display": {

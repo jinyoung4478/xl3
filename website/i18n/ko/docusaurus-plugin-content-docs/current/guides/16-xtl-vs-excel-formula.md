@@ -1,6 +1,6 @@
 ---
-sidebar_label: '16 · XTL 함수와 엑셀 수식 비교'
-pagination_label: '16 · XTL 함수와 엑셀 수식 비교'
+sidebar_label: '16 · XTL 함수와 Excel 수식 비교'
+pagination_label: '16 · XTL 함수와 Excel 수식 비교'
 ---
 
 # 16 · XTL 함수 vs Excel 수식
@@ -76,10 +76,10 @@ XTL 집계는 인자 안에 행별 산술식을 받지 않습니다. `{{ SUM([�
 세 가지 해결책 (선호 순):
 
 1. **원본에 헬퍼 컬럼 추가** — 원본에 `금액` 컬럼(계산식 또는 미리 곱해진 값)을 만들고 `{{ SUM([금액]) }}` 사용. "A × B의 합계" 표준 XTL 패턴.
-2. **푸터 셀에 네이티브 엑셀 `SUMPRODUCT`** — xl3는 셀 수식을 그대로 보존합니다 (ADR-0046). 푸터 셀에 `=SUMPRODUCT(E2:E10000, F2:F10000)`을 직접 작성. 렌더 시점의 실제 행 수를 모르므로 `E2:E10000`처럼 오버슈트 범위를 씁니다. 두 가지 푸터 함정(자기 컬럼 참조; 행 오버슈트 이중 합산)을 피해야 함 — [LLM 작성 가이드 § Footer pitfalls](https://github.com/xl3-lang/xl3/blob/main/docs/llm-template-authoring.md#footer-pitfall-1--self-column-sum-raises-순환-참조-circular-reference) 참고.
+2. **푸터 셀에 네이티브 Excel `SUMPRODUCT`** — xl3는 셀 수식을 그대로 보존합니다 (ADR-0046). 푸터 셀에 `=SUMPRODUCT(E2:E10000, F2:F10000)`을 직접 작성. 렌더 시점의 실제 행 수를 모르므로 `E2:E10000`처럼 오버슈트 범위를 씁니다. 두 가지 푸터 함정(자기 컬럼 참조; 행 오버슈트 이중 합산)을 피해야 함 — [LLM 작성 가이드 § Footer pitfalls](https://github.com/xl3-lang/xl3/blob/main/docs/llm-template-authoring.md#footer-pitfall-1--self-column-sum-raises-순환-참조-circular-reference) 참고.
 3. **행 단위 XTL 셀 + 렌더 출력의 헬퍼 컬럼** — `{{ [수량] * [단가] }}`를 행 단위 셀에 둡니다(집계가 아니므로 정상 동작). 그 값까지 footer로 합치려면 결국 1번 또는 2번으로 돌아갑니다.
 
-왜 이 제약이 있는가: XTL 0.x는 함수 표면을 작고 예측 가능하게 유지합니다. 행별 계산 후 집계(엑셀 배열 수식 동작)는 의도적으로 deferred — ADR-0059 § "Why not allow `SUM([a] + [b])`".
+왜 이 제약이 있는가: XTL 0.x는 함수 표면을 작고 예측 가능하게 유지합니다. 행별 계산 후 집계(Excel 배열 수식 동작)는 의도적으로 deferred — ADR-0059 § "Why not allow `SUM([a] + [b])`".
 
 ### "`SUMIF` / `COUNTIF` / `AVERAGEIF` 찾고 있어요"
 

@@ -267,7 +267,7 @@ format은 구현 간 이식 가능하며 `.xlsx` 경로는 그대로입니다.
 ### 다중 소스 (Multi-source) 데이터
 
 기본 `source_sheet` 외에도 템플릿이 `__sources__`에서 이름 붙은 소스를
-선언하고 엑셀 구조화 참조 (structured reference) 형식으로 가져올 수 있습니다.
+선언하고 Excel 구조화 참조 (structured reference) 형식으로 가져올 수 있습니다.
 
 ```text
 {{ 거래처[거래처명] }}
