@@ -52,7 +52,7 @@
     "description": "The label of footer link with label=Changelog linking to https://github.com/xl3-lang/xl3/blob/main/CHANGELOG.md"
   },
   "copyright": {
-    "message": "Code MIT · Spec CC-BY-4.0. Microsoft 와 Excel 은 Microsoft Corporation 의 상표입니다. xl3 는 Microsoft 와 무관합니다.",
+    "message": "Code MIT · Spec CC-BY-4.0. Microsoft와 Excel은 Microsoft Corporation의 상표입니다. xl3는 Microsoft와 무관합니다.",
     "description": "The footer copyright"
   },
   "link.title.Legal": {
