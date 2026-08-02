@@ -347,7 +347,7 @@
     "description": "Walkthrough step 01 title"
   },
   "homepage.walkthrough.step01.body": {
-    "message": "애플리케이션이 xl3에 데이터 테이블 — .xlsx 시트 또는 JSON 소스 — 과 실행별 입력값을 넘깁니다. 레이아웃에 관한 것은 코드에 존재하지 않습니다.",
+    "message": "애플리케이션은 데이터 테이블(.xlsx 시트 또는 JSON 소스)과 실행 시 입력값을 xl3에 넘깁니다. 레이아웃에 관한 것은 코드에 하나도 들어가지 않습니다.",
     "description": "Walkthrough step 01 body"
   },
   "homepage.walkthrough.step02.title": {
@@ -371,7 +371,7 @@
     "description": "Walkthrough section kicker"
   },
   "homepage.walkthrough.title": {
-    "message": "Excel이 템플릿이고, xl3가 그것을 실행합니다.",
+    "message": "Excel이 템플릿이고, 실행은 xl3가 합니다.",
     "description": "Walkthrough section H2"
   },
   "homepage.walkthrough.lead": {
@@ -391,11 +391,11 @@
     "description": "Handoff section H2"
   },
   "homepage.handoff.body.p1": {
-    "message": "ExcelJS, SheetJS, openpyxl, Apache POI는 스프레드시트의 DOM API입니다. 강력하지만 장황하죠. 리포트 레이아웃, 스타일, 병합 셀, 반복이 코드에 들어가면 열 하나 추가, 소계 이동, 헤더 서식 변경 같은 모든 디자인 변경이 배포가 됩니다.",
+    "message": "ExcelJS, SheetJS, openpyxl, Apache POI는 스프레드시트의 DOM API입니다. 강력하지만 장황합니다. 리포트 레이아웃, 스타일, 병합 셀, 반복이 코드에 들어가면 열 하나 추가, 소계 이동, 헤더 서식 변경 같은 모든 디자인 변경이 배포가 됩니다.",
     "description": "Handoff body paragraph 1"
   },
   "homepage.handoff.body.p2": {
-    "message": "xl3는 반복되는 계약을 다시 Excel 안으로 옮깁니다. 엑셀 파일은 이미 뷰이고, XTL이 그것을 실행 가능하게 만듭니다. 애플리케이션은 데이터를 공급하고 엔진을 실행할 뿐입니다. 템플릿은 평범한 .xlsx이므로 — 매크로도, 벤더 클라우드도 없습니다 — diff를 뜨고, 풀 리퀘스트에서 리뷰하고, xl3를 들어본 적 없는 사람에게 건넬 수 있습니다.",
+    "message": "xl3는 반복되는 계약을 다시 Excel 안으로 옮깁니다. 엑셀 파일은 이미 뷰이고, XTL이 이를 실행 가능하게 만듭니다. 애플리케이션은 데이터를 공급하고 엔진을 실행할 뿐입니다. 템플릿은 평범한 .xlsx이므로 — 매크로도, 벤더 클라우드도 없습니다 — diff를 뜨고, 풀 리퀘스트에서 리뷰하고, xl3를 들어본 적 없는 사람에게 건넬 수 있습니다.",
     "description": "Handoff body paragraph 2"
   },
   "homepage.responsibility.card01.title": {
@@ -431,7 +431,7 @@
     "description": "Responsibility section H2"
   },
   "homepage.responsibility.body.p1": {
-    "message": "대부분의 Excel 자동화 도구는 개발자를 더 빠르게 만듭니다. xl3는 다른 결과를 지향합니다 — 예전에는 개발자가 필요했던 문서 변경을 운영자가 직접 맡도록 하는 것이죠. 모든 거래처가 저마다의 포맷을 요구할 때, 개발자 한 명이 그것을 하나하나 구현하고 변경될 때마다 다시 수정하는 것은 병목이 됩니다.",
+    "message": "대부분의 Excel 자동화 도구는 개발자를 더 빠르게 만듭니다. xl3는 다른 결과를 지향합니다 — 예전에는 개발자가 필요했던 문서 변경을 운영자가 직접 맡도록 하는 것입니다. 모든 거래처가 저마다의 포맷을 요구할 때, 개발자 한 명이 그 포맷을 하나씩 구현하고 바뀔 때마다 다시 고치는 구조는 병목이 됩니다.",
     "description": "Responsibility section body paragraph 1"
   },
   "homepage.responsibility.body.p2": {
@@ -463,7 +463,7 @@
     "description": "Standard card 03 title"
   },
   "homepage.standard.card03.body": {
-    "message": "@xl3-lang/xl3(TypeScript)는 브라우저와 Node에서 실행됩니다. 유용하지만 규범은 아니며 — Rust/WASM, Python 이식이 진행 중입니다.",
+    "message": "@xl3-lang/xl3(TypeScript)는 브라우저와 Node에서 실행됩니다. 유용하지만 규범은 아닙니다. Rust/WASM과 Python 이식이 진행 중입니다.",
     "description": "Standard card 03 body"
   },
   "homepage.standard.kicker": {
@@ -479,7 +479,7 @@
     "description": "Standard section lead paragraph"
   },
   "homepage.standard.fact": {
-    "message": "XTL 0.1은 {adrCount}와 {fixtureCount}를 갖추고 있으며, Stage 2에서 모두 통과합니다. TypeScript 레퍼런스 구현은 {npmLink}에 게시되어 있고 — {portersGuideLink}가 계약을 문서화하여 다른 언어 이식이 이를 맞출 수 있게 합니다.",
+    "message": "XTL 0.1은 {adrCount}와 {fixtureCount}를 갖추고 있으며, Stage 2에서 모두 통과합니다. TypeScript 레퍼런스 구현은 {npmLink}에 게시되어 있습니다. {portersGuideLink}가 계약을 문서화해, 다른 언어 이식이 이를 맞출 수 있게 합니다.",
     "description": "Standard section conformance stats sentence; {adrCount} and {fixtureCount} are pre-bolded counts, {npmLink} and {portersGuideLink} are inline links"
   },
   "homepage.standard.fact.portersGuideLabel": {
@@ -487,7 +487,7 @@
     "description": "Link label inside the conformance fact sentence"
   },
   "homepage.comparison.xl3.bestAt": {
-    "message": "선언적 Excel 템플릿 실행. 엑셀 파일은 이미 존재하고, xl3가 데이터로 그것을 실행합니다.",
+    "message": "선언적 Excel 템플릿 실행. 엑셀 파일은 이미 존재하고, xl3가 데이터를 넣어 실행합니다.",
     "description": "Comparison row xl3 — best at"
   },
   "homepage.comparison.xl3.tradeoff": {
@@ -531,7 +531,7 @@
     "description": "Comparison row doc-gen SaaS — best at"
   },
   "homepage.comparison.docgen.tradeoff": {
-    "message": "규칙이 벤더 서비스에 존재하며, 직접 검토하고 실행할 수 있는 이식 가능한 엑셀 템플릿이 아닙니다.",
+    "message": "규칙이 벤더 서비스에 존재하며, 직접 검토하고 실행할 수 있는 이식 가능한 Excel 템플릿이 아닙니다.",
     "description": "Comparison row doc-gen SaaS — tradeoff"
   },
   "homepage.comparison.llmDirect.bestAt": {
@@ -751,7 +751,7 @@
     "description": "Excel preview caption — raw data step"
   },
   "homepage.preview.raw.note": {
-    "message": "애플리케이션이 xl3에 데이터 테이블 — .xlsx 시트 또는 언어 중립적인 JSON 소스 — 과 실행별 입력값을 넘깁니다. 레이아웃에 관한 것은 코드에 존재하지 않습니다.",
+    "message": "애플리케이션은 데이터 테이블(.xlsx 시트 또는 언어 중립적인 JSON 소스)과 실행 시 입력값을 xl3에 넘깁니다. 레이아웃에 관한 것은 코드에 하나도 들어가지 않습니다.",
     "description": "Excel preview note — raw data step"
   },
   "homepage.preview.raw.subtitle": {
