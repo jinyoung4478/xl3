@@ -3,12 +3,24 @@ import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
 import Translate, { translate } from '@docusaurus/Translate';
 import BrowserOnly from '@docusaurus/BrowserOnly';
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import clsx from 'clsx';
 import styles from './try.module.css';
 
-// Sample files shipped under website/static/playground-samples/.
-const SAMPLE_RAW_URL = '/playground-samples/sample-raw.xlsx';
-const SAMPLE_TEMPLATE_URL = '/playground-samples/sample-template.xlsx';
+// Sample files shipped under website/static/playground-samples/. ko ships its
+// own pair so the demo data reads as Korean; other locales fall back to the
+// English samples. Keep this the only locale-specific bit of the page — the
+// copy comes from i18n/<locale>/code.json.
+const SAMPLES: Record<string, { raw: string; template: string }> = {
+  default: {
+    raw: '/playground-samples/sample-raw.xlsx',
+    template: '/playground-samples/sample-template.xlsx',
+  },
+  ko: {
+    raw: '/playground-samples/sample-raw-ko.xlsx',
+    template: '/playground-samples/sample-template-ko.xlsx',
+  },
+};
 
 type OutputFile = { filename: string; data: Uint8Array };
 type Xl3Module = {
@@ -70,6 +82,8 @@ function outputBlob(output: OutputFile): Blob {
 }
 
 function Converter() {
+  const { i18n } = useDocusaurusContext();
+  const samples = SAMPLES[i18n.currentLocale] ?? SAMPLES.default;
   const [rawFile, setRawFile] = useState<File | null>(null);
   const [templateFile, setTemplateFile] = useState<File | null>(null);
   const [inputDecls, setInputDecls] = useState<Xl3Module extends never ? never : Awaited<ReturnType<Xl3Module['readTemplateInputs']>>>([]);
@@ -96,7 +110,7 @@ function Converter() {
     async function refreshDecls() {
       if (inputDeclsLoadedFor.current === templateFile) return;
       try {
-        const buf = await fileOrUrlBuffer(templateFile, SAMPLE_TEMPLATE_URL);
+        const buf = await fileOrUrlBuffer(templateFile, samples.template);
         const xl3 = await loadXl3();
         const decls = await xl3.readTemplateInputs(buf);
         if (cancelled) return;
@@ -114,7 +128,7 @@ function Converter() {
     }
     refreshDecls();
     return () => { cancelled = true; };
-  }, [templateFile]);
+  }, [templateFile, samples.template]);
 
   const onSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
@@ -129,8 +143,8 @@ function Converter() {
     });
     setPreviewInfo(null);
     try {
-      const templateBuf = await fileOrUrlBuffer(templateFile, SAMPLE_TEMPLATE_URL);
-      const dataBuf = await fileOrUrlBuffer(rawFile, SAMPLE_RAW_URL);
+      const templateBuf = await fileOrUrlBuffer(templateFile, samples.template);
+      const dataBuf = await fileOrUrlBuffer(rawFile, samples.raw);
       const xl3 = await loadXl3();
 
       // Preview first to populate the side panel.
@@ -269,7 +283,7 @@ function Converter() {
                 Raw Excel file
               </Translate>
             </span>
-            <a href={SAMPLE_RAW_URL} download>
+            <a href={samples.raw} download>
               <Translate id="try.form.downloadSample" description="Link label to download the sample file (used twice)">
                 Download sample
               </Translate>
@@ -294,7 +308,7 @@ function Converter() {
                 Template Excel file
               </Translate>
             </span>
-            <a href={SAMPLE_TEMPLATE_URL} download>
+            <a href={samples.template} download>
               <Translate id="try.form.downloadSample" description="Link label to download the sample file (used twice)">
                 Download sample
               </Translate>
