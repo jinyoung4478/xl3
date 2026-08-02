@@ -105,6 +105,47 @@ The maintainer accepts security reports for:
 Older versions are not patched. Users are expected to track the
 current minor during pre-1.0 (per `STABILITY.md` "Pre-1.0 policy").
 
+## Dependency advisories: what `npm audit` reports vs what ships
+
+`npm audit` at the repo root reports a large number of advisories. Almost
+none of them reach a user of `@xl3-lang/xl3`, and the distinction is worth
+stating once so it does not have to be re-derived every time someone runs
+the command.
+
+**The published package has two runtime dependencies:** `exceljs` and
+`jszip`. Everything else in the audit output — Docusaurus and its webpack
+tree, vitest, playwright, sharp — is `devDependencies` for the website,
+the test suite, and the benchmark scripts. Those never install for a
+consumer, so a `critical` finding there is not a `critical` finding in
+xl3.
+
+Audit output at the root is therefore **not** a signal about the shipped
+artifact. To see what a consumer actually gets, install the package in an
+empty directory and audit there.
+
+### Triaged: `uuid` < 11.1.1 via `exceljs` (moderate, not reachable)
+
+The one advisory that does sit in the runtime path, and why no action is
+taken on it:
+
+- **Advisory:** [GHSA-w5hq-g745-h8pq](https://github.com/advisories/GHSA-w5hq-g745-h8pq)
+  — missing buffer bounds check in `uuid` v3/v5/v6 *when a `buf` argument
+  is provided*.
+- **Why it is not reachable:** `exceljs` uses `uuid` in exactly one place,
+  `lib/xlsx/xform/sheet/cf-ext/cf-rule-ext-xform.js`, and imports only
+  `v4`: `const {v4: uuidv4} = require('uuid')`. Both call sites are
+  `uuidv4()` with no arguments. The advisory needs v3, v5, or v6 *and* a
+  `buf` argument; neither condition occurs.
+- **Why the "fix" is declined:** `npm audit fix` resolves this by moving
+  to `exceljs@3.4.0` — a major downgrade from the current `^4.4.0`.
+  Regressing the workbook library a generation to silence a code path that
+  never executes is a bad trade.
+- **When to revisit:** if `exceljs` starts calling `uuid` v3/v5/v6, or
+  publishes a release that bumps its `uuid` range past 11.1.1. Verify by
+  re-grepping the file above rather than trusting this note.
+
+Triaged 2026-08-02 against `exceljs@4.4.0` / `uuid@8.3.2`.
+
 ## Hardening checklist for host integrators
 
 If you are embedding xl3 in production, run through this once:
