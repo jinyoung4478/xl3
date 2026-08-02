@@ -595,155 +595,155 @@
     "description": "HTML <meta description> for the landing page"
   },
   "try.status.idle": {
-    "message": "Sample files are pre-loaded. Press the button to convert as-is, or replace either file first.",
+    "message": "샘플 파일이 미리 올라가 있습니다. 그대로 변환하려면 버튼을 누르고, 원하면 파일을 먼저 교체하세요.",
     "description": "Status line shown before the user has run a conversion"
   },
   "try.status.running": {
-    "message": "Converting workbook…",
+    "message": "엑셀 파일 변환 중…",
     "description": "Status line shown while the converter is running"
   },
   "try.status.noOutputs": {
-    "message": "Conversion succeeded but produced no output files.",
+    "message": "변환은 성공했지만 출력 파일이 생성되지 않았습니다.",
     "description": "Status line when convert() returns an empty array"
   },
   "try.status.downloadedOne": {
-    "message": "Downloaded {filename}.",
+    "message": "{filename} 내려받기 완료.",
     "description": "Status line after a single output file is downloaded"
   },
   "try.status.downloadedMany": {
-    "message": "Downloaded {count} files as xl3-outputs.zip.",
+    "message": "파일 {count}개를 xl3-outputs.zip으로 내려받았습니다.",
     "description": "Status line after multiple output files are bundled into a zip and downloaded"
   },
   "try.status.failedXtl": {
-    "message": "Conversion failed: {detail}",
+    "message": "변환 실패: {detail}",
     "description": "Status line on a typed xl3/XTL failure"
   },
   "try.status.failedGeneric": {
-    "message": "Conversion failed: {detail}",
+    "message": "변환 실패: {detail}",
     "description": "Status line on a generic (non-xl3) runtime failure"
   },
   "try.form.ariaLabel": {
-    "message": "Browser workbook converter",
+    "message": "브라우저 엑셀 컨버터",
     "description": "Aria-label for the converter form region"
   },
   "try.form.kicker": {
-    "message": "Browser converter",
+    "message": "브라우저 컨버터",
     "description": "Form section kicker"
   },
   "try.form.heading": {
-    "message": "Upload raw data and a template, then download the finished workbook.",
+    "message": "원본 데이터와 템플릿을 올리고, 완성된 엑셀 파일을 내려받으세요.",
     "description": "Form section H2"
   },
   "try.form.hint": {
-    "message": "To choose the raw workbook table, add {sourceTable} such as {one} or {range} to the template workbook's hidden {config} sheet.",
+    "message": "원본 파일에서 어떤 표를 읽을지 고르려면, 템플릿 파일의 숨겨진 {config} 시트에 {sourceTable} 항목을 추가하세요. 값은 {one} 또는 {range}처럼 지정합니다.",
     "description": "Hint paragraph explaining source_table; {sourceTable}, {one}, {range}, {config} are inline code refs"
   },
   "try.form.rawLabel": {
-    "message": "Raw Excel file",
+    "message": "원본 엑셀 파일",
     "description": "Raw Excel file picker label"
   },
   "try.form.downloadSample": {
-    "message": "Download sample",
+    "message": "샘플 내려받기",
     "description": "Link label to download the sample file (used twice)"
   },
   "try.form.rawHint": {
-    "message": "Default sample is attached. Replace it only if you want.",
+    "message": "기본 샘플이 첨부돼 있습니다. 필요할 때만 교체하세요.",
     "description": "Hint under the raw file picker"
   },
   "try.form.templateLabel": {
-    "message": "Template Excel file",
+    "message": "템플릿 엑셀 파일",
     "description": "Template Excel file picker label"
   },
   "try.form.templateHint": {
-    "message": "Includes {config}.",
+    "message": "{config} 설정을 포함합니다.",
     "description": "Hint under the template file picker; {config} is an inline code ref"
   },
   "try.form.inputs.legend": {
-    "message": "Template inputs",
+    "message": "템플릿 입력값",
     "description": "Legend for the dynamic inputs block"
   },
   "try.form.submit.busy": {
-    "message": "Converting…",
+    "message": "변환 중…",
     "description": "Submit button label while a conversion is running"
   },
   "try.form.submit.idle": {
-    "message": "Run and download",
+    "message": "실행하고 내려받기",
     "description": "Submit button label when idle"
   },
   "try.preview.ariaLabel": {
-    "message": "Conversion preview",
+    "message": "변환 미리보기",
     "description": "Aria-label for the preview side panel"
   },
   "try.preview.heading": {
-    "message": "Preview",
+    "message": "미리보기",
     "description": "Preview panel heading"
   },
   "try.preview.empty": {
-    "message": "Run the converter to see source counts, output filenames, and any warnings.",
+    "message": "컨버터를 실행하면 원본 개수, 출력 파일 이름, 경고가 여기에 표시됩니다.",
     "description": "Placeholder text when no conversion has run yet"
   },
   "try.preview.sources.heading": {
-    "message": "Sources detected",
+    "message": "감지된 원본",
     "description": "Preview subsection — sources"
   },
   "try.preview.none": {
-    "message": "None.",
+    "message": "없음.",
     "description": "Placeholder when a list is empty (used in multiple sections)"
   },
   "try.preview.sourceMeta": {
-    "message": "{rowCount} rows · {colCount} cols",
+    "message": "{rowCount}행 · {colCount}열",
     "description": "Source row count + column count meta; {rowCount} and {colCount} are integers"
   },
   "try.preview.outputs.heading": {
-    "message": "Output files",
+    "message": "출력 파일",
     "description": "Preview subsection — output files"
   },
   "try.preview.sheetMeta": {
-    "message": "{rowCount} rows",
+    "message": "{rowCount}행",
     "description": "Per-sheet row count meta; {rowCount} is an integer"
   },
   "try.preview.warnings.heading": {
-    "message": "Warnings",
+    "message": "경고",
     "description": "Preview subsection — warnings"
   },
   "try.layout.title": {
-    "message": "xl3 converter — try Excel-to-Excel templates in the browser",
+    "message": "xl3 컨버터 — 엑셀→엑셀 템플릿을 브라우저에서 실행해 보기",
     "description": "HTML <title> for the converter page"
   },
   "try.layout.description": {
-    "message": "Upload raw + template Excel files. xl3 runs convert() in the browser and downloads the rendered workbook. The interactive demo for xl3.io.",
+    "message": "원본과 템플릿 엑셀 파일을 올리면 xl3가 브라우저에서 convert()를 실행하고, 완성된 엑셀 파일을 내려줍니다. xl3.io의 인터랙티브 데모입니다.",
     "description": "HTML <meta description> for the converter page"
   },
   "try.intro.kicker": {
-    "message": "Use it",
+    "message": "직접 써보기",
     "description": "Intro section kicker"
   },
   "try.intro.title": {
-    "message": "Try the operator flow, then wire it into your app.",
+    "message": "운영자 흐름을 직접 해보고, 그대로 앱에 연결하세요.",
     "description": "Intro section H1"
   },
   "try.intro.lead": {
-    "message": "Both files are pre-loaded with sample data. Press the button to convert as-is, or replace either file. Conversion runs entirely in your browser — nothing is uploaded.",
+    "message": "두 파일 모두 샘플 데이터가 채워져 있습니다. 그대로 변환하려면 버튼을 누르고, 원하는 파일은 교체해도 됩니다. 변환은 전부 브라우저 안에서 실행되며, 서버로 올라가는 것은 없습니다.",
     "description": "Intro section lead paragraph"
   },
   "try.intro.link.home": {
-    "message": "Home",
+    "message": "홈",
     "description": "Crosslink — Home"
   },
   "try.intro.link.cookbook": {
-    "message": "Cookbook 01",
+    "message": "쿡북 01",
     "description": "Crosslink — Cookbook 01"
   },
   "try.intro.link.spec": {
-    "message": "Spec",
+    "message": "명세",
     "description": "Crosslink — Spec"
   },
   "try.intro.link.porters": {
-    "message": "Porter's Guide",
+    "message": "포팅 가이드",
     "description": "Crosslink — Porter's Guide"
   },
   "try.fallback.loading": {
-    "message": "Loading converter…",
+    "message": "컨버터 불러오는 중…",
     "description": "BrowserOnly fallback while xl3 engine loads"
   },
   "homepage.preview.raw.title": {
