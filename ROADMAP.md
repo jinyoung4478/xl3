@@ -48,7 +48,7 @@ milestone. Per-version step plan below references these gates by ID.
 | G10 | Cross-browser smoke | maintainer | `ci.yml` | Safari + Firefox bundle-load + 1 convert() per run | — | ✅ **DONE** 2026-07-28 — `cross-browser` job runs `npm run browser:smoke`, which loads the IIFE bundle in Playwright `webkit` (the engine Safari is built on) and `firefox`, checks all 15 exports, and runs one `convert()` per engine against fixture 001. Not Safari-the-application: engine coverage only | 0.7.1 |
 | G11 | Stage 2 in CI | maintainer | `ci.yml` | `npm run conformance:stage2` runs on every PR | — | ✅ **DONE** — runs at `ci.yml:35` | 0.7.1 |
 | G12 | Undecided behavior pinned (pivot/sparkline/ListObject/page break) | maintainer | conformance fixtures + ADR per item | each: fixture pinning current behavior OR ADR explicitly deferring to 1.x | defer to 1.1 with ADR | ✅ **DONE** 2026-07-28 — ADR-0076 takes the deferral arm for all four, amending ADR-0036 with rows 10-13 and recording measured reference-impl behavior as non-normative. No fixture: pinning a behavior the ADR declines to assert would have to be deleted in 1.1. Also resolves ADR-0046 § 5, which pointed at an ADR-0036 row that was never written | 0.7.1 / 0.8 |
-| G13 | Second-language impl validation | external (xl3-py) | `conformance/reports/*.json` | xl3-py passes ≥ 80% Stage 1 OR ≥ 80% Stage 2, OR documented 50% skeleton in another language (Rust/Go/Java) within 12 months of all other gates closing | accept single-impl 1.0 via public ADR amending GOVERNANCE | ✅ **DONE** — `conformance/reports/xl3-py-0.1.0a3.json`: 133/133 Stage 1 passed, 0 failed | 0.7.x–0.8.x |
+| G13 | Second-language impl validation | external (xl3-py) | `conformance/reports/*.json` | xl3-py passes ≥ 80% Stage 1 OR ≥ 80% Stage 2, OR documented 50% skeleton in another language (Rust/Go/Java) within 12 months of all other gates closing | accept single-impl 1.0 via public ADR amending GOVERNANCE | 🟡 **NOT JUDGEABLE** — reverted 2026-07-30; the 2026-07-28 audit ticked this in error. `xl3-py-0.1.0a3.json` reports 133/133, but that is 100% *of the 133 fixtures the report ran*, not of the corpus. It is 36 fixtures behind today, so the gate's ">= 80%" has no denominator to evaluate against — 133 of the current corpus would be under 80%, but how many of the un-run fixtures it would pass is unknown. `IMPLEMENTATIONS.md` already said G13 is judged on a current report and not on these; the audit read the report summary without checking what its total meant. Needs a fresh report | 0.7.x–0.8.x |
 | G14 | External-contributor ADR | external | `spec/decisions/NNNN-*.md` | ≥ 1 ADR with non-maintainer as Author (≥ 60% of Context/Decision sections by line count) | 18-month time-box, then: ≥ 2 external-authored cookbook recipes OR ≥ 5 external-authored conformance fixtures | ❌ **OPEN** — no ADR in `spec/decisions/` carries an Author field | 0.8 |
 | G15 | Production reference case | external (with maintainer help) | `IMPLEMENTATIONS.md` "Production users" row | ≥ 1 named user, satisfied by EITHER (a) external company with permission to list, OR (b) the maintainer's own employer running xl3 in scheduled production with a public case study | — | ❌ **OPEN** — `IMPLEMENTATIONS.md` Production users reads `_none listed yet_` | 0.8.x — **in progress** via maintainer's-employer production deployment (template setup complete 2026-05-24; live usage starts week of 2026-05-26); G15 ticks when the case study is published |
 | G16 | Maintainer set widening | maintainer | `GOVERNANCE.md` | ≥ 2 people with accept/reject rights for ADRs and impl PRs | explicit accept of single-maintainer 1.0 governance shape via amendment to GOVERNANCE | ✅ **DONE (via fallback)** 2026-07-28 — ADR-0077 explicitly accepts a single-maintainer 1.0 and `GOVERNANCE.md` states it. The primary criterion (≥ 2 accepters) is **not** met; the fallback is. ADR-0077 records what that does and does not mitigate, and names the triggers to revisit | 0.8 |
@@ -65,13 +65,14 @@ milestone. Per-version step plan below references these gates by ID.
 > The `Planned` column is the historical milestone plan and is kept as-is;
 > where the two disagree, `Status` is the current fact.
 >
-> **4 gates are open:** G5, G14, G15, G18
+> **5 gates are open:** G5, G13, G14, G15, G18
 > — plus G24, which cannot tick until the others do and is
 > separately missing the `data-loss/` fixture group its own definition
 > requires. G8 and G21 closed on 2026-07-28; G21 had been the worst of the
 > optimistic drift, documenting an `AbortSignal` API and an error code that
-> did not exist. Two entries were stale in the *pessimistic* direction
-> (G11 and G13 were already satisfied).
+> did not exist. G11 was stale in the *pessimistic* direction — already satisfied and not
+> marked. G13 was mis-ticked by the audit itself and reverted 2026-07-30;
+> see its Status cell.
 >
 > **The quarter clock runs from 2026-06-23, uninterrupted** (#86, decided
 > 2026-07-28). 0.11.0 added an export and an error code on 2026-07-19;

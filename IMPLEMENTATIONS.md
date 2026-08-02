@@ -12,17 +12,26 @@ Implementations of the [XTL spec](./spec/). xl3 is the reference implementation.
 
 The two figures above come from the JSON reports committed under
 [`conformance/reports/`](./conformance/reports/), and **both predate the
-current 160-fixture corpus**:
+current corpus**. The live corpus size is in
+[`conformance/DASHBOARD.md`](./conformance/DASHBOARD.md), which is
+generated — this section deliberately does not repeat it, because a
+hardcoded count goes stale every time a fixture lands.
 
 | Report | Ran against | Result |
 |---|---|---|
-| `xl3-wasm-0.1.0.json` (2026-06-08) | 154 fixtures | 119 passed, 29 failed, 6 skipped → 119/148 comparable |
-| `xl3-py-0.1.0a3.json` (2026-05-23) | 139 fixtures | 133 passed, 0 failed, 6 skipped |
+| `xl3-wasm-0.1.0.json` (2026-06-08) | 154 fixtures | 119 passed, 29 failed, 6 skipped |
+| `xl3-py-0.1.0a3.json` (2026-05-23) | 133 fixtures | 133 passed, 0 failed, 6 skipped |
 
-Neither has been re-run since the corpus grew to 160 (fixtures 158-161
-landed in 0.9.0 / 0.10.0), so a port's standing against **today's** corpus
-is unknown until it submits a fresh report. ROADMAP **G13** is judged on a
-current report, not on these.
+**Read the "Ran against" column before the "Result" column.** A report
+saying `133/133` means 100% *of what that report ran*, not of the corpus.
+Both reports are tens of fixtures behind — the corpus has grown in 0.9.0,
+0.10.0, and again on 2026-07-28 (fixtures 162-170, the `data-loss` group).
+
+So a port's standing against **today's** corpus is unknown until it
+submits a fresh report. ROADMAP **G13** is judged on a current report, not
+on these. This is not hypothetical: the 2026-07-28 gate audit ticked G13
+off `133/133` without checking the denominator, and it was reverted on
+2026-07-30.
 
 ## Production users
 

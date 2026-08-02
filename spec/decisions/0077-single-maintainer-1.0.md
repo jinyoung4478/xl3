@@ -46,11 +46,20 @@ outputs from the reference implementation precisely so the corpus does
 not become "whatever the JS impl does". Every accepted behavior has an
 ADR recording its reasoning.
 
-**A second implementation already exists and passes.** `xl3-py` clears
-Stage 1 (see the dashboard). That is the strongest available evidence
-that the corpus is sufficient to reimplement XTL *from*, by someone who
-is not the maintainer. A spec you can build a second implementation from
-survives its author in a way a single codebase does not.
+**A second implementation already exists and passes a large part of the
+corpus.** `xl3-py` passed every one of the 133 fixtures its last report
+ran (2026-05-23). Stated carefully, because the first version of this ADR
+overstated it as "clears Stage 1": that report is tens of fixtures behind
+the current corpus, so it does **not** establish that xl3-py meets
+ROADMAP G13 today — G13 was reverted to unjudgeable on 2026-07-30 for
+exactly this reason.
+
+The argument here survives the correction, because it does not depend on
+the gate. 133 fixtures independently passing is evidence that the corpus
+is sufficient to reimplement XTL *from*, by someone who is not the
+maintainer. A spec you can build a second implementation from survives its
+author in a way a single codebase does not — and that remains true whether
+or not the port is currently caught up.
 
 **Both artifacts are permissively licensed.** Code MIT, spec CC-BY-4.0.
 A stalled project can be forked and continued without permission.
