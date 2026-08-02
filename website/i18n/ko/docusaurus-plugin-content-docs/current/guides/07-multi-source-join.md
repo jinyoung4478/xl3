@@ -16,7 +16,7 @@ pagination_label: '07 · 다중 소스와 @join'
 | `갱신현황` | `갱신현황` | `1` | 갱신 단위 행 |
 | `거래처` | `거래처` | `1` | 고객 1행 |
 
-`__config__`의 `source_sheet`는 여전히 암묵적인 기본 원본 역할을 합니다.이 기본 원본은 접두어 없이 `[Column]`으로 참조하고, 명명된 원본은 `SourceName[Column]` 형태로 씁니다.
+`__config__`의 `source_sheet`는 여전히 암묵적인 기본 원본 역할을 합니다. 이 기본 원본은 접두어 없이 `[Column]`으로 참조하고, 명명된 원본은 `SourceName[Column]` 형태로 씁니다.
 
 ## `@source`로 블록의 활성 원본 바꾸기
 
