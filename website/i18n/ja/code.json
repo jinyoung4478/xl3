@@ -335,7 +335,7 @@
     "description": "Hero section H1"
   },
   "homepage.hero.lead": {
-    "message": "Jinja が HTML をテンプレートとして実行可能にしたように、xl3 は Excel ワークブックをテンプレートとして実行可能にします — 単一のライブラリではなく、オープンな標準として。データとともにテンプレートを実行すれば、毎回同じワークブックが得られます。",
+    "message": "Jinja が HTML をテンプレートとして実行可能にしたように、xl3 は Excel ワークブックをテンプレートとして実行可能にします — 単一のライブラリではなく、オープンな標準として。同じテンプレートに同じデータを渡せば、出力されるワークブックも常に同じです。",
     "description": "Hero section lead paragraph"
   },
   "homepage.hero.cta.try": {
@@ -543,7 +543,7 @@
     "description": "HTML <title> for the landing page"
   },
   "homepage.layout.description": {
-    "message": "xl3 は宣言的な Excel 変換のためのオープンな標準です。Excel テンプレートをデータとともに実行すれば、毎回同じワークブックが得られます。",
+    "message": "xl3 は宣言的な Excel 変換のためのオープンな標準です。同じ Excel テンプレートに同じデータを渡せば、毎回同じワークブックが得られます。",
     "description": "HTML <meta description> for the landing page"
   },
   "try.status.idle": {
