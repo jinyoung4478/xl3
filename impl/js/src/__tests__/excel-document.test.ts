@@ -1,6 +1,7 @@
 import ExcelJS from 'exceljs';
+import JSZip from 'jszip';
 import { describe, expect, it } from 'vitest';
-import { ExcelJsWorkbookDocument, sanitizeFilename } from '../excel-document.js';
+import { ExcelJsWorkbookDocument, sanitizeFilename, ZIP_ENTRY_DATE } from '../excel-document.js';
 
 async function documentWithMergedSheet(mergeRef: string) {
   const wb = new ExcelJS.Workbook();
@@ -61,5 +62,41 @@ describe('sanitizeFilename', () => {
         location: 'Acme_North.xlsx',
       }],
     });
+  });
+});
+
+describe('output determinism', () => {
+  // Two renders of identical inputs used to differ in raw bytes: ExcelJS
+  // appends zip entries without a date, so the zip layer stamped
+  // `new Date()` per entry and the output moved whenever a render crossed
+  // a DOS-timestamp tick. `writeBuffer` pins every entry instead.
+  //
+  // Asserted on the entry dates rather than by rendering twice and
+  // comparing: two renders inside one test finish in the same millisecond,
+  // so a byte comparison would pass even with the pin removed. This
+  // assertion fails the moment it is.
+  it('stamps every zip entry with the fixed date, not the clock', async () => {
+    const wb = new ExcelJS.Workbook();
+    wb.addWorksheet('R').getCell('A1').value = 'x';
+    const doc = await ExcelJsWorkbookDocument.fromTemplate(wb);
+
+    const zip = await JSZip.loadAsync(await doc.writeBuffer());
+    const names = Object.keys(zip.files);
+    expect(names.length).toBeGreaterThan(0);
+
+    for (const name of names) {
+      expect(zip.files[name]!.date.getTime(), `entry ${name}`).toBe(ZIP_ENTRY_DATE.getTime());
+    }
+  });
+
+  it('renders the same bytes for the same input', async () => {
+    async function render(): Promise<ArrayBuffer> {
+      const wb = new ExcelJS.Workbook();
+      wb.addWorksheet('R').getCell('A1').value = 'x';
+      const doc = await ExcelJsWorkbookDocument.fromTemplate(wb);
+      return doc.writeBuffer();
+    }
+
+    expect(new Uint8Array(await render())).toEqual(new Uint8Array(await render()));
   });
 });

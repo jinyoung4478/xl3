@@ -1,6 +1,49 @@
 import ExcelJS from 'exceljs';
+import JSZip from 'jszip';
 import { xtlError } from './error-codes.js';
 import type { XtlWarning } from './types.js';
+
+/**
+ * Fixed timestamp written into every output zip entry.
+ *
+ * ExcelJS appends entries to its zip without a `date`, so the zip layer
+ * fills in `new Date()` per entry. That made two renders of identical
+ * inputs differ in raw bytes whenever they straddled a DOS-timestamp
+ * tick — the workbook content was identical, but "same inputs, same
+ * bytes" was not literally true.
+ *
+ * Deliberately **not** `SOURCE_DATE_EPOCH`, which
+ * `scripts/deterministic-xlsx.mjs` honors for build-time asset
+ * generation. That convention is right for a build; it is wrong here.
+ * A library that read the environment would produce different bytes on
+ * a host that happens to set the variable — the opposite of
+ * STABILITY.md's promise that output does not depend on the host.
+ *
+ * 1980-01-01 is the earliest date the DOS timestamp field can encode:
+ * the conventional "no meaningful timestamp" marker in reproducible
+ * builds, and unmistakably not a real modification time.
+ *
+ * Document timestamps (`docProps/core.xml`) are left alone. They come
+ * from the template and are preserved workbook properties (ADR-0032,
+ * fixture 120-workbook-properties-preserved); rewriting them would
+ * trade one determinism problem for a preservation bug.
+ */
+export const ZIP_ENTRY_DATE = new Date('1980-01-01T00:00:00Z');
+
+/**
+ * Rewrite every zip entry's mod-time to a fixed value. JSZip carries
+ * already-compressed entries through rather than recompressing them, so
+ * this is a header rewrite: measured at 2-7 ms from 10k to 500k cells,
+ * against ~12.5 s for a 2M-cell render.
+ */
+async function pinZipEntryDates(buf: ArrayBuffer): Promise<ArrayBuffer> {
+  const zip = await JSZip.loadAsync(buf);
+  for (const name of Object.keys(zip.files)) {
+    const entry = zip.files[name];
+    if (entry) entry.date = ZIP_ENTRY_DATE;
+  }
+  return zip.generateAsync({ type: 'arraybuffer', compression: 'DEFLATE' });
+}
 
 export interface WorkbookDocument {
   removeAuxiliarySheets(): void;
@@ -113,7 +156,8 @@ export class ExcelJsWorkbookDocument implements WorkbookDocument {
   }
 
   async writeBuffer(): Promise<ArrayBuffer> {
-    return await this.workbook.xlsx.writeBuffer() as ArrayBuffer;
+    const buf = await this.workbook.xlsx.writeBuffer() as ArrayBuffer;
+    return pinZipEntryDates(buf);
   }
 }
 

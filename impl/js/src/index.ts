@@ -1,4 +1,5 @@
 import JSZip from 'jszip';
+import { ZIP_ENTRY_DATE } from './excel-document.js';
 import { parseTemplate, populateColumnRefs } from './parser.js';
 import { readAllSources, columnSet } from './reader.js';
 import type { SourceData } from './reader.js';
@@ -575,7 +576,11 @@ export async function analyzeModel(
 export async function packageZip(files: OutputFile[]): Promise<Blob> {
   const zip = new JSZip();
   for (const f of files) {
-    zip.file(f.filename, f.data);
+    // Same fixed date as the workbook entries themselves
+    // (excel-document.ts ZIP_ENTRY_DATE): without it JSZip stamps the
+    // current clock per entry and the archive of a deterministic render
+    // would not itself be reproducible.
+    zip.file(f.filename, f.data, { date: ZIP_ENTRY_DATE });
   }
   return zip.generateAsync({ type: 'blob' });
 }
