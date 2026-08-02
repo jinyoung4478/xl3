@@ -231,6 +231,37 @@ const outputs = await convertJson(templateBuffer, {
 [ADR-0075](./spec/decisions/0075-xl3-source-json.md); the wire format is
 portable across implementations and the `.xlsx` path is unchanged.
 
+### CLI — rendering from any language
+
+A host that isn't JavaScript doesn't need to embed a JS runtime. The
+`xl3` bin takes a template plus the same wire format on stdin and writes
+`.xlsx` files, so a Java, Python, Go, or shell caller shells out and
+reads the result:
+
+```bash
+xl3 render template.xlsx --data=source.json --out=./out/
+cat source.json | xl3 render template.xlsx --data=- --out=./out/
+xl3 render template.xlsx --data=data.xlsx --zip=reports.zip
+```
+
+`--data` reads `.json` as `xl3-source-json/0.1`, `.xlsx` as a data
+workbook, and `-` as JSON on stdin. Templates that declare runtime
+inputs take `--input=name=value` (repeatable) or `--inputs=values.json`;
+`xl3 inputs template.xlsx` lists what a template expects.
+
+Two more commands support scripting around it: `xl3 preview` reports the
+output filenames, source shape, and warnings without writing anything,
+and both commands accept `--json` for machine-readable output.
+
+Exit codes separate the two failure modes a caller handles differently —
+`2` is a usage error, `1` is a conversion failure, and the failure
+carries its stable [`error.code`](./docs/guides/13-error-handling.md):
+
+```console
+$ xl3 render template.xlsx --data=- --json < bad.json
+{ "error": { "code": "xl3/source-json/invalid", "message": "…" } }
+```
+
 ### Acceleration (opt-in)
 
 `convert` and `preview` accept an `engine` option that selects the

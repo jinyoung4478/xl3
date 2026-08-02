@@ -27,6 +27,7 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "bin": {
+    "xl3": "dist/bin/xl3.js",
     "xl3-conformance": "dist/bin/conformance.js"
   },
   "publishConfig": {
