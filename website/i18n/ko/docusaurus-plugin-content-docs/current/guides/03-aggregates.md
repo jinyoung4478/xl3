@@ -62,7 +62,7 @@ Overall:            | {{ SUM(Source[갱신액]) }}  # 전체 행
 {{ AVERAGE([매출] - [원가]) }}   # ✗ 행별 뺄셈 — 거부
 ```
 
-의도된 동작입니다. 엑셀의 `SUMPRODUCT` / 배열 수식(행별로 계산한 뒤 집계) 의미는 XTL 0.x 범위 밖입니다 — ADR-0059 § "Why not allow `SUM([a] + [b])`" 참고.
+의도된 동작입니다. Excel의 `SUMPRODUCT` / 배열 수식(행별로 계산한 뒤 집계) 의미는 XTL 0.x 범위 밖입니다 — ADR-0059 § "Why not allow `SUM([a] + [b])`" 참고.
 
 ### 해결: 원본에 헬퍼 컬럼 추가
 

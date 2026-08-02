@@ -84,7 +84,7 @@ try {
 
 ## 변환 전에 preview로 검사
 
-`preview(template, data, options)`는 `convert`와 동일한 파싱/디스패치 단계를 실행하되, 엑셀 파일을 렌더링하지는 않습니다. 호스트에 "Convert" 버튼 앞에 "Validate" 버튼이 있다면 `preview`를 호출하세요 — 빠르고, 같은 에러를 잡아내고, xlsx 생성 비용도 들지 않습니다.
+`preview(template, data, options)`는 `convert`와 동일한 파싱/디스패치 단계를 실행하되, Excel 파일을 렌더링하지는 않습니다. 호스트에 "Convert" 버튼 앞에 "Validate" 버튼이 있다면 `preview`를 호출하세요 — 빠르고, 같은 에러를 잡아내고, xlsx 생성 비용도 들지 않습니다.
 
 ```ts
 const preview = await xl3.preview(template, data, options);

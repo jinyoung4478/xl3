@@ -27,7 +27,7 @@ const LABELS = {
   '13-error-handling.md': '13 · 호스트 측 오류 처리',
   '14-config-values.md': '14 · 값 사전으로 쓰는 __config__',
   '15-directive-composition.md': '15 · 디렉티브 조합하기',
-  '16-xtl-vs-excel-formula.md': '16 · XTL 함수와 엑셀 수식 비교',
+  '16-xtl-vs-excel-formula.md': '16 · XTL 함수와 Excel 수식 비교',
   '17-template-authoring-display.md': '17 · 템플릿 작성용 표시값',
   '18-group-and-subtotal.md': '18 · 그룹과 소계',
 };

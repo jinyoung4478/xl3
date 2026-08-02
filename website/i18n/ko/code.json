@@ -351,7 +351,7 @@
     "description": "Walkthrough step 01 body"
   },
   "homepage.walkthrough.step02.title": {
-    "message": "엑셀 파일 안에서 변환을 선언",
+    "message": "Excel 파일 안에서 변환을 선언",
     "description": "Walkthrough step 02 title"
   },
   "homepage.walkthrough.step02.body": {
@@ -359,7 +359,7 @@
     "description": "Walkthrough step 02 body"
   },
   "homepage.walkthrough.step03.title": {
-    "message": "매번 같은 엑셀 파일을 생성",
+    "message": "매번 같은 Excel 파일을 생성",
     "description": "Walkthrough step 03 title"
   },
   "homepage.walkthrough.step03.body": {
@@ -375,7 +375,7 @@
     "description": "Walkthrough section H2"
   },
   "homepage.walkthrough.lead": {
-    "message": "비즈니스 사용자는 Excel에서 레이아웃을 편집하고, 애플리케이션은 데이터와 입력값을 공급하며, xl3는 그 파일을 결정론적으로 실행합니다. 세 단계를 클릭하며 리포트 하나가 원본 데이터에서 완성된 엑셀 파일까지 가는 과정을 따라가 보세요.",
+    "message": "비즈니스 사용자는 Excel에서 레이아웃을 편집하고, 애플리케이션은 데이터와 입력값을 공급하며, xl3는 그 파일을 결정론적으로 실행합니다. 세 단계를 클릭하며 리포트 하나가 원본 데이터에서 완성된 Excel 파일까지 가는 과정을 따라가 보세요.",
     "description": "Walkthrough section lead paragraph"
   },
   "homepage.walkthrough.steps.ariaLabel": {
@@ -395,7 +395,7 @@
     "description": "Handoff body paragraph 1"
   },
   "homepage.handoff.body.p2": {
-    "message": "xl3는 매번 되풀이되는 그 규칙을 다시 Excel 안으로 돌려놓습니다. 엑셀 파일은 이미 뷰이고, XTL이 이를 실행 가능하게 만듭니다. 애플리케이션은 데이터를 공급하고 엔진을 실행할 뿐입니다. 템플릿은 평범한 .xlsx이므로 — 매크로도, 벤더 클라우드도 없습니다 — diff를 뜨고, 풀 리퀘스트에서 리뷰하고, xl3를 들어본 적 없는 사람에게 건넬 수 있습니다.",
+    "message": "xl3는 매번 되풀이되는 그 규칙을 다시 Excel 안으로 돌려놓습니다. Excel 파일은 이미 뷰이고, XTL이 이를 실행 가능하게 만듭니다. 애플리케이션은 데이터를 공급하고 엔진을 실행할 뿐입니다. 템플릿은 평범한 .xlsx이므로 — 매크로도, 벤더 클라우드도 없습니다 — diff를 뜨고, 풀 리퀘스트에서 리뷰하고, xl3를 들어본 적 없는 사람에게 건넬 수 있습니다.",
     "description": "Handoff body paragraph 2"
   },
   "homepage.responsibility.card01.title": {
@@ -419,7 +419,7 @@
     "description": "Responsibility section card 03 title"
   },
   "homepage.responsibility.card03.body": {
-    "message": "문서가 조금 바뀔 때마다 릴리스를 기다리지 않고, 완성된 엑셀 파일을 바로 받아 씁니다.",
+    "message": "문서가 조금 바뀔 때마다 릴리스를 기다리지 않고, 완성된 Excel 파일을 바로 받아 씁니다.",
     "description": "Responsibility section card 03 body"
   },
   "homepage.responsibility.kicker": {
@@ -487,7 +487,7 @@
     "description": "Link label inside the conformance fact sentence"
   },
   "homepage.comparison.xl3.bestAt": {
-    "message": "선언적 Excel 템플릿 실행. 엑셀 파일은 이미 존재하고, xl3가 데이터를 넣어 실행합니다.",
+    "message": "선언적 Excel 템플릿 실행. Excel 파일은 이미 존재하고, xl3가 데이터를 넣어 실행합니다.",
     "description": "Comparison row xl3 — best at"
   },
   "homepage.comparison.xl3.tradeoff": {
@@ -495,7 +495,7 @@
     "description": "Comparison row xl3 — tradeoff"
   },
   "homepage.comparison.sdk.bestAt": {
-    "message": "애플리케이션 코드에서 저수준 또는 완전한 기능의 엑셀 파일 생성.",
+    "message": "애플리케이션 코드에서 저수준 또는 완전한 기능의 Excel 파일 생성.",
     "description": "Comparison row spreadsheet SDKs — best at"
   },
   "homepage.comparison.sdk.tradeoff": {
@@ -515,7 +515,7 @@
     "description": "Comparison row Power Query — best at"
   },
   "homepage.comparison.powerQuery.tradeoff": {
-    "message": "테넌트에 종속되며, 워크플로 규칙이 엑셀 파일과 함께 이동하지 않습니다.",
+    "message": "테넌트에 종속되며, 워크플로 규칙이 Excel 파일과 함께 이동하지 않습니다.",
     "description": "Comparison row Power Query — tradeoff"
   },
   "homepage.comparison.templateEngines.bestAt": {
@@ -599,7 +599,7 @@
     "description": "Status line shown before the user has run a conversion"
   },
   "try.status.running": {
-    "message": "엑셀 파일을 변환하고 있습니다…",
+    "message": "Excel 파일을 변환하고 있습니다…",
     "description": "Status line shown while the converter is running"
   },
   "try.status.noOutputs": {
@@ -623,7 +623,7 @@
     "description": "Status line on a generic (non-xl3) runtime failure"
   },
   "try.form.ariaLabel": {
-    "message": "브라우저 엑셀 변환기",
+    "message": "브라우저 Excel 변환기",
     "description": "Aria-label for the converter form region"
   },
   "try.form.kicker": {
@@ -631,7 +631,7 @@
     "description": "Form section kicker"
   },
   "try.form.heading": {
-    "message": "원본 데이터와 템플릿을 올리면 완성된 엑셀 파일을 바로 받습니다.",
+    "message": "원본 데이터와 템플릿을 올리면 완성된 Excel 파일을 바로 받습니다.",
     "description": "Form section H2"
   },
   "try.form.hint": {
@@ -639,7 +639,7 @@
     "description": "Hint paragraph explaining source_table; {sourceTable}, {one}, {range}, {config} are inline code refs"
   },
   "try.form.rawLabel": {
-    "message": "원본 엑셀 파일",
+    "message": "원본 Excel 파일",
     "description": "Raw Excel file picker label"
   },
   "try.form.downloadSample": {
@@ -651,7 +651,7 @@
     "description": "Hint under the raw file picker"
   },
   "try.form.templateLabel": {
-    "message": "템플릿 엑셀 파일",
+    "message": "템플릿 Excel 파일",
     "description": "Template Excel file picker label"
   },
   "try.form.templateHint": {
@@ -707,11 +707,11 @@
     "description": "Preview subsection — warnings"
   },
   "try.layout.title": {
-    "message": "xl3 변환기 — 브라우저에서 바로 엑셀 변환",
+    "message": "xl3 변환기 — 브라우저에서 바로 Excel 변환",
     "description": "HTML <title> for the converter page"
   },
   "try.layout.description": {
-    "message": "원본과 템플릿 엑셀 파일을 올리면 xl3가 브라우저에서 convert()를 실행해 완성된 파일을 내려줍니다. xl3.io의 인터랙티브 데모입니다.",
+    "message": "원본과 템플릿 Excel 파일을 올리면 xl3가 브라우저에서 convert()를 실행해 완성된 파일을 내려줍니다. xl3.io의 인터랙티브 데모입니다.",
     "description": "HTML <meta description> for the converter page"
   },
   "try.intro.kicker": {
@@ -759,7 +759,7 @@
     "description": "Excel preview window subtitle — raw data step"
   },
   "homepage.preview.template.title": {
-    "message": "템플릿이 곧 실행 가능한 엑셀 파일입니다.",
+    "message": "템플릿이 곧 실행 가능한 Excel 파일입니다.",
     "description": "Excel preview caption — template step"
   },
   "homepage.preview.template.note": {
@@ -779,7 +779,7 @@
     "description": "Excel preview note — result step"
   },
   "homepage.preview.result.subtitle": {
-    "message": "렌더링된 엑셀 파일, 서식 보존됨",
+    "message": "렌더링된 Excel 파일, 서식 보존됨",
     "description": "Excel preview window subtitle — result step"
   },
   "homepage.hero.flow.role.developer": {
@@ -799,7 +799,7 @@
     "description": "Workflow diagram — what template.xlsx is"
   },
   "homepage.hero.flow.result.label": {
-    "message": "완성된 엑셀 파일",
+    "message": "완성된 Excel 파일",
     "description": "Workflow diagram — output label"
   },
   "homepage.hero.flow.result.sublabel": {

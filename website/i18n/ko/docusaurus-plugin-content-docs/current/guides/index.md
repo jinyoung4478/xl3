@@ -35,7 +35,7 @@ pagination_label: '개요'
 | 14 | [값 사전으로 쓰는 `__config__`](/guides/config-values) | 작성자 정의 키, 타입 인식, `__config__` vs `__inputs__`. |
 | 15 | [디렉티브 조합하기](/guides/directive-composition) | 실행 순서, 여러 `@filter`의 AND 결합, 금지된 조합. |
 | 16 | [XTL 함수 vs Excel 수식](/guides/xtl-vs-excel-formula) | `{{ ... }}`와 `=...` 셀 수식을 어떻게 나눠 쓸지. ADR-0043의 render-time / open-time 경계. |
-| 17 | [템플릿 작성용 표시값](/guides/template-authoring-display) | 템플릿 편집 중 엑셀에서 보이는 모습 (에러, 플레이스홀더), 그게 의도된 이유, 대시보드용 `IFERROR` wrap 관행. |
+| 17 | [템플릿 작성용 표시값](/guides/template-authoring-display) | 템플릿 편집 중 Excel에서 보이는 모습 (에러, 플레이스홀더), 그게 의도된 이유, 대시보드용 `IFERROR` wrap 관행. |
 | 18 | [`@group`과 `@subtotal`](/guides/group-and-subtotal) | 하나의 데이터 블록 안에 그룹별 소계 행을 끼워 넣기 (ADR-0038) — 단일 레벨, 중첩, 가장 바깥 @subtotal로 만드는 총계. |
 
 ## 레시피를 읽는 법
@@ -51,7 +51,7 @@ pagination_label: '개요'
 
 ## 표기 규칙
 
-- 셀은 `[row, col]`이 아니라 엑셀이 쓰는 `A1` 표기를 씁니다.
+- 셀은 `[row, col]`이 아니라 Excel이 쓰는 `A1` 표기를 씁니다.
 - `__config__` 값은 간결하게 `key = value` 형태로 적어 두지만, 실제 `template.xlsx` 안에서는 두 컬럼 (`A: key`, `B: value`)으로 들어갑니다.
 - 원본 데이터는 레시피를 짧게 유지하기 위해 마크다운 테이블로 표시합니다. 실제 `data.xlsx`에서는 `source_sheet`와 같은 이름의 워크시트에 그 행들이 들어 있습니다.
 
@@ -59,7 +59,7 @@ pagination_label: '개요'
 
 가이드의 레시피들은 문서 위주입니다 — 모든 레시피에 실행 가능한 `.xlsx` 쌍이 함께 제공되지는 않습니다. 직접 해 보려면:
 
-1. 엑셀을 열어 새 엑셀 파일을 만듭니다.
+1. Excel을 열어 새 Excel 파일을 만듭니다.
 2. 레시피에 적힌 키들로 `__config__` 시트를 추가합니다.
 3. `source_sheet`와 같은 이름의 데이터 시트를 추가합니다.
 4. 레시피의 셀들로 템플릿 시트를 추가합니다.
