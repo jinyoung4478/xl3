@@ -6,6 +6,67 @@ separately in [spec/STABILITY.md](./spec/STABILITY.md).
 
 ## [Unreleased]
 
+## [0.12.0] - 2026-08-02
+
+Renders are now reproducible down to the bytes, and any language can drive
+one: the new `xl3` CLI takes the JSON source format on stdin and writes
+`.xlsx` files, so a JVM or Python service no longer needs a JS runtime — or
+a throwaway `data.xlsx` — to render a template.
+
+### Added
+
+- **`xl3` CLI** — `xl3 render <template.xlsx> --data=<source.json|source.xlsx|->`
+  writes output files; `xl3 preview` reports filenames, source shape, and
+  warnings without writing; `xl3 inputs` lists a template's declared runtime
+  inputs. Options: `--out`, `--zip`, `--input=k=v`, `--inputs=<path|->`,
+  `--engine`, `--json`, `--quiet`. Exit codes separate the failure modes a
+  caller handles differently — `2` usage, `1` conversion (carrying the stable
+  `error.code`, as JSON under `--json`), `0` success. `--data=-` reads
+  `xl3-source-json/0.1` on stdin, which is the path a non-JS host takes.
+  Additive: no export, error-code, or API-surface change.
+
+### Fixed
+
+- **Output is byte-reproducible.** Rendering identical inputs twice produced
+  different bytes whenever the two renders crossed a DOS-timestamp tick:
+  ExcelJS appends zip entries without a date, so the zip layer stamped the
+  current clock on each one. Entry dates are now pinned to 1980-01-01, and
+  `packageZip` pins the archive's entries for the same reason. Document
+  timestamps in `docProps/core.xml` are untouched — they come from the
+  template and are preserved workbook properties (ADR-0032).
+
+  **Output bytes therefore differ from 0.11.0 for identical inputs, while
+  the workbook content does not.** Golden-file tests written against 0.11.0
+  output need re-baselining; conformance is unaffected, because Stage 1
+  compares cell values and Stage 2 compares canonicalized parts, and neither
+  reads zip mtimes. Cost is a zip header rewrite — 2 ms at 10k cells, 7 ms
+  at 500k — and `bench` moved 220→229 ms on one scenario, well under
+  BENCH.md's investigation threshold.
+
+  This makes the "same inputs, same bytes" claim in ADR-0075 and Cookbook 19
+  literally true rather than true of the content only.
+
+### Documentation
+
+- **Cookbook 19 (JXLS → xl3)** told a JVM team to export whatever they
+  `putVar`'d into a second `.xlsx` — the cost ADR-0075 removed in 0.11.0.
+  The comparison table and migration checklist now name the JSON route, and
+  a new "Staying on the JVM" section covers calling the CLI from Java with
+  `ProcessBuilder`, including exit-code handling. All four locales.
+- **ADR-0048 axis 5** ("XLSX in, XLSX out") predated ADR-0075. Amended in
+  place to "XLSX or `xl3-source-json/0.1` in, XLSX out", recording what the
+  amendment does not change: external I/O stays the host's responsibility,
+  the template stays `.xlsx`, output stays XLSX only, and the out-of-scope
+  input list (XLSB, XLS, XLTX, CSV) is unchanged.
+- **Support matrix** (`/support-matrix`) — a plain-language reading of what
+  survives a conversion and what does not, distilled from ADR-0036,
+  ADR-0076, ADR-0032, ADR-0046, and SECURITY.md, with the deferred
+  features' measured behavior and the size limits.
+- Homepage now leads with the concrete promise rather than with xl3's
+  status as an open standard, and three stale ADR/fixture counts were
+  corrected (75/160 and 70/154 against a 77/169 corpus). A new test
+  checks every published count against the repo so they cannot drift again.
+
 ## [0.11.0] - 2026-07-19
 
 ### Added

@@ -6,7 +6,7 @@
 > 단일 라이브러리가 아니라, 구현에 독립적인 열린 표준으로.
 
 **상태:** alpha · **XTL spec 0.1 (draft)** · 레퍼런스 구현
-`@xl3-lang/xl3` 0.11.0 · 1.0 전까지 breaking change 가능
+`@xl3-lang/xl3` 0.12.0 · 1.0 전까지 breaking change 가능
 
 **xl3**는 평범한 `.xlsx` 파일을 결정론적·선언형 변환 템플릿으로 바꾸는
 열린 표준입니다. 레이아웃·스타일·병합 셀·규칙이 *Excel 파일 안에* 들어가고,
@@ -225,7 +225,7 @@ format은 구현 간 이식 가능하며 `.xlsx` 경로는 그대로입니다.
 `window.xl3`로 사용할 수 있습니다.
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/@xl3-lang/xl3@0.11.0/dist/xl3.bundle.iife.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@xl3-lang/xl3@0.12.0/dist/xl3.bundle.iife.min.js"></script>
 <script>
   const tpl = await fetch('./template.xlsx').then((r) => r.arrayBuffer());
   const data = await fetch('./data.xlsx').then((r) => r.arrayBuffer());

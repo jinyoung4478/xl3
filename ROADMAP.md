@@ -3,7 +3,7 @@
 What needs to happen for **XTL 1.0** (spec) and **xl3 1.0** (reference
 implementation).
 
-The current version is **0.11.0** (npm) targeting **XTL 0.1 (draft)**.
+The current version is **0.12.0** (npm) targeting **XTL 0.1 (draft)**.
 Breaking changes are still possible during 0.x. The 1.0 cut is gated on
 the items below, not on a calendar date.
 
@@ -356,6 +356,41 @@ Gate impact:
   Clause (a) is now scoped to removal / rename / re-signature, matching
   (b), and G3/G6 carry an explicit "additions allowed" criterion. G3 and
   G6 therefore held through this cut and the quarter was never reset.
+
+### 0.12.0 — CLI + byte-reproducible output (shipped 2026-08-02)
+
+An `xl3` bin so any language can render a template: it takes
+`xl3-source-json/0.1` on stdin and writes `.xlsx` files, which closes the
+gap ADR-0075 opened but could not reach — a JVM or Python service no
+longer needs a JS runtime, or a throwaway `data.xlsx`, to render. Render
+output is also byte-reproducible now: zip entry mod-times were stamped
+from the clock, so identical inputs produced different bytes whenever two
+renders crossed a DOS-timestamp tick.
+
+Gate impact:
+
+- **G3** — no error code added, renamed, or repurposed. The CLI reports
+  existing codes; it does not raise its own.
+- **G6** — public API surface snapshot unchanged. The bin is a package
+  entry point, not an export, and `ZIP_ENTRY_DATE` stays internal to
+  `excel-document.ts`.
+- **G8 / G9** — the determinism fix adds a zip header rewrite: 2 ms at
+  10k cells, 7 ms at 500k. `bench` moved 220 → 229 ms on wide-flat and
+  not at all on the other two scenarios, so `scripts/BENCH.md` stands
+  and the ratio-based perf guards are unaffected.
+- **G24 window** — output *bytes* changed for identical inputs while
+  workbook *content* did not. Not breaking under the definition above,
+  which scopes clause (a) to removal / rename / re-signature of the API
+  surface and clause (b) to spec and error-code semantics. The spec's
+  output contract is content-level — Stage 1 compares cell values,
+  Stage 2 compares canonicalized parts, and neither reads zip mtimes —
+  so the corpus is unaffected (169/169 at Stage 2, all three timezones)
+  and the quarter is undisturbed. Worth stating explicitly because a
+  changed output byte *looks* like the kind of thing that resets the
+  clock: what the spec promises is the workbook, not the packaging.
+
+  The one consumer-visible consequence: a golden-file test baselined on
+  0.11.0 bytes needs re-baselining. Documented in CHANGELOG under Fixed.
 
 ### 1.0.0 — Final cut
 

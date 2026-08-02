@@ -6,7 +6,7 @@ Key facts:
 - Excel is the template/view, data is the model, and xl3 is the execution engine.
 - XTL expressions use Excel syntax (`IF`, `XLOOKUP`, `SUM`, `&`, `[Column]` references) inside `{{ ... }}` cell markers — no second expression language.
 - Directives (`@filter`, `@sort`, `@group`, `@subtotal`, `@join`, `@source`, `@top`, `@repeat`, `@block`) live in visible cell values, not cell comments.
-- Data comes from a second `.xlsx` file, not host-language objects; there is no escape hatch into JavaScript, by design.
+- Data comes from a second `.xlsx` file or the language-neutral `xl3-source-json/0.1` wire format (ADR-0075), not host-language objects; there is no escape hatch into JavaScript, by design.
 - The language is specified independently of the implementation (spec + ADRs + conformance fixtures), so it can be ported to other runtimes.
 - The small, declarative XTL surface is readable by operators and easier for AI systems to draft than workbook API code.
 - Responsibility model: developers own the runtime; operators own templates and document-specific transformation rules.
