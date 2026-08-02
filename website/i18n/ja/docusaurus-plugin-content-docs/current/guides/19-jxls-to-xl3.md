@@ -27,7 +27,7 @@ pagination_label: '19 · JXLS から xl3 へ'
 |---|---|---|
 | ディレクティブの置き場所 | セルの**コメント** (`jx:each(items="rows" lastCell="D4")`) — グリッド上では見えない | セルの**値** (`{{ @filter [Status] = "Open" }}`) — 見える、レビューできる、diff が取れる |
 | 式言語 | JEXL (`${employee.payment * 1.1}`) — 新たに覚える 2 つ目の言語 | Excel の構文 (`{{ [Payment] * 1.1 }}`, `IF`, `XLOOKUP`, `SUM`) — テンプレート作成者がすでに知っているもの |
-| データの供給元 | コードでバインドした Java オブジェクト (`context.putVar("employees", list)`) | 2 つ目の `.xlsx` — `render(template, data)` は純粋関数。同じ入力なら同じバイト列 |
+| データの供給元 | コードでバインドした Java オブジェクト (`context.putVar("employees", list)`) | 2 つ目の `.xlsx`、または stdin から渡す JSON — `render(template, data)` は純粋関数。同じ入力なら同じバイト列 |
 | ブロックの境界 | 明示的な `lastCell="D4"` 座標 | `{{ ... }}` マーカーから推論（必要なら明示的に `{{ @block A:D }}`） |
 | 抜け道 | カスタム Java コマンド — チューリング完全で移植不可 | 設計上なし — テンプレートはどの実装でもレンダリングできる引き継ぎ成果物のまま ([ADR-0048](https://xl3.io/spec/decisions/jxls-boundary-final)) |
 
@@ -97,14 +97,58 @@ const outputs = await convert(templateBuffer, dataBuffer);
 ```
 
 バインドするコンテキストオブジェクトはありません。レンダーに必要なものは
-すべて 2 つのワークブックの中にあります。だから出力が再現可能で、ホスト
-プログラムなしでテンプレートをテストできます。
+すべて入力の中にあります。だから出力が再現可能で、ホストプログラムなしで
+テンプレートをテストできます。
+
+## JVM に留まったまま使う
+
+レンダー処理を Node へ移すのは選択肢の一つにすぎません。サービスを JVM に
+残すなら、CLI を呼び出せば済みます。データは今ある形のまま、中間の
+ワークブックを作らずに JSON で渡します。
+
+```java
+// xl3-source-json/0.1 をプロセスへ書き込み、書き出されたファイルを読む。
+Process p = new ProcessBuilder(
+        "xl3", "render", "template.xlsx", "--data=-", "--out=./out/", "--json")
+    .start();
+p.getOutputStream().write(sourceJson.getBytes(StandardCharsets.UTF_8));
+p.getOutputStream().close();
+
+int exit = p.waitFor();   // 0 成功 · 1 変換エラー · 2 使い方の誤り
+```
+
+JSON は列指向です ― `headers` と配列の `rows`。そのため `List<Employee>` の
+対応付けはワークブックの構築ではなくループ 1 つで終わります。
+
+```json
+{
+  "version": "xl3-source-json/0.1",
+  "sources": {
+    "default": {
+      "headers": ["従業員", "支給額"],
+      "rows": [["キム", 4200], ["イ", 3900]]
+    }
+  }
+}
+```
+
+終了コードが 0 以外のときは `--json` が stderr に失敗内容を出力し、その中の
+安定した `error.code` で分岐できます ― コード一覧は
+[Cookbook 13](./13-error-handling.md) にあります。リクエストごとに `npx` を
+呼ぶとレジストリ参照が毎回発生するので、`npm i -g @xl3-lang/xl3` で一度
+インストールしておくほうが適切です。
+
+JXLS の運用形態にいちばん近い形です。サーバーに成果物を 1 つ入れておき、
+アプリケーションコードから呼ぶ。引き継げないのは SPI の拡張点で、上記の節を
+参照してください。
 
 ## 移行チェックリスト
 
-1. **データをコードの外へ出す。** `putVar` していたものをシートに
-   書き出してください（コレクション 1 つにつき表 1 つ）。通常、これが
-   唯一の実作業です。
+1. **データをコードの外へ出す。** `putVar` していたものがソースになります。
+   シートに書き出すか（コレクション 1 つにつき表 1 つ）、
+   `xl3-source-json/0.1` の `sources` エントリ 1 つにします。すでに持って
+   いるコレクションをシリアライズするのが通常唯一の実作業で、JSON なら
+   読み戻すためだけにワークブックを書く手間を省けます。
 2. **コメントを消してセルに書く。** 各 `jx:each` の領域は
    `{{ [Column] }}` マーカーからなる 1 行のデータブロックになります。
    `lastCell` の境界は消えます。
@@ -112,8 +156,11 @@ const outputs = await convert(templateBuffer, dataBuffer);
    `IF`／演算子とともに `{{ ... }}` へ 1:1 で対応します。
 4. **グループ化を宣言的に組み直す。** `groupBy`／`orderBy` はブロック内の
    `@group`／`@sort`／`@subtotal` セルになります。
-5. **実行して diff を取る。** `convert()` は決定論的なので、ゴールデン
-   ファイルテスト（`同じ入力 → 同じバイト列`）が目視確認を置き換えます。
+5. **実行して diff を取る。** `convert()` は決定論的です ― zip エントリの
+   タイムスタンプまで含め、同じ入力なら同じバイト列になるので、ゴールデン
+   ファイルテストが目視確認を置き換えます。バイト単位の再現性は 0.12.0 で
+   入りました。0.11.0 以前では正規化したパートを比較してください
+   （`npx xl3-conformance canonicalize out.xlsx`）。
 
 インストールなしで、ブラウザ上でテンプレート 1 つ分の移行を試せます —
 [xl3.io/try](https://xl3.io/try)。

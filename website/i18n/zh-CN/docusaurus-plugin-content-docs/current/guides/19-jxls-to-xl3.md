@@ -25,7 +25,7 @@ Excel-to-Excel 模板引擎。
 |---|---|---|
 | 指令存放位置 | 单元格**批注**（`jx:each(items="rows" lastCell="D4")`）—— 在表格中看不见 | 单元格**值**（`{{ @filter [Status] = "Open" }}`）—— 可见、可评审、可 diff |
 | 表达式语言 | JEXL（`${employee.payment * 1.1}`）—— 需要额外学习的第二种语言 | Excel 语法（`{{ [Payment] * 1.1 }}`、`IF`、`XLOOKUP`、`SUM`）—— 模板作者本来就会 |
-| 数据来源 | 代码中绑定的 Java 对象（`context.putVar("employees", list)`） | 第二个 `.xlsx` —— `render(template, data)` 是纯函数：相同输入，相同字节 |
+| 数据来源 | 代码中绑定的 Java 对象（`context.putVar("employees", list)`） | 第二个 `.xlsx`,或从 stdin 传入的 JSON —— `render(template, data)` 是纯函数：相同输入,相同字节 |
 | 块边界 | 显式的 `lastCell="D4"` 坐标 | 由 `{{ ... }}` 标记推断（需要时也可显式写 `{{ @block A:D }}`） |
 | 逃生通道 | 自定义 Java 命令 —— 图灵完备且不可移植 | 设计上没有 —— 模板始终是任何实现都能渲染的交付物（[ADR-0048](https://xl3.io/spec/decisions/jxls-boundary-final)） |
 
@@ -90,21 +90,64 @@ const outputs = await convert(templateBuffer, dataBuffer);
 // outputs: [{ filename: 'renewal-report.xlsx', buffer }, ...]
 ```
 
-没有需要绑定的 context 对象。渲染所需的一切都在这两个工作簿里 —— 这正是
+没有需要绑定的 context 对象。渲染所需的一切都在输入里 —— 这正是
 输出可复现、且无需宿主程序即可测试模板的原因。
+
+## 继续留在 JVM 上
+
+把渲染逻辑搬到 Node 只是其中一种选择。如果服务继续留在 JVM 上,直接调用
+CLI 就可以:数据保持它原本的样子,以 JSON 传入,不需要中间工作簿。
+
+```java
+// 把 xl3-source-json/0.1 写进进程,再读取它写出的文件。
+Process p = new ProcessBuilder(
+        "xl3", "render", "template.xlsx", "--data=-", "--out=./out/", "--json")
+    .start();
+p.getOutputStream().write(sourceJson.getBytes(StandardCharsets.UTF_8));
+p.getOutputStream().close();
+
+int exit = p.waitFor();   // 0 成功 · 1 转换失败 · 2 用法错误
+```
+
+这份 JSON 是列式的 —— `headers` 加数组形式的 `rows`,所以把
+`List<Employee>` 映射过去只是一个循环,而不是构建一个工作簿。
+
+```json
+{
+  "version": "xl3-source-json/0.1",
+  "sources": {
+    "default": {
+      "headers": ["员工", "薪酬"],
+      "rows": [["金", 4200], ["李", 3900]]
+    }
+  }
+}
+```
+
+退出码非 0 时,`--json` 会把失败内容输出到 stderr,其中带有稳定的
+`error.code` 供你分支处理 —— 代码清单见
+[Cookbook 13](./13-error-handling.md)。不要每个请求都调用 `npx`,那会每次
+都去查询 registry;用 `npm i -g @xl3-lang/xl3` 安装一次即可。
+
+这与 JXLS 的部署方式最为接近:在服务器上装一份产物,由应用代码调用。
+无法沿用的是 SPI 扩展点,参见上文相应小节。
 
 ## 迁移检查清单
 
-1. **把数据搬出代码。** 原本 `putVar` 进去的东西，导出成工作表（每个
-   集合一张表）。这通常是唯一真正的工作量。
+1. **把数据搬出代码。** 原本 `putVar` 进去的东西会变成一个 source:
+   导出成工作表（每个集合一张表）,或者写成 `xl3-source-json/0.1` 的一个
+   `sources` 条目。把手上已有的集合序列化通常是唯一真正的工作量,而 JSON
+   这条路还省掉了「先写一个工作簿、只为再读回来」的步骤。
 2. **删掉批注，改写单元格。** 每个 `jx:each` 区域变成一行由
    `{{ [Column] }}` 标记组成的数据块；`lastCell` 边界随之消失。
 3. **把 JEXL 改写成 Excel 表达式。** `${...}` 中的算术和条件判断可以
    1:1 映射到 `{{ ... }}` 配合 `IF`／运算符。
 4. **用声明式方式重建分组。** `groupBy`／`orderBy` 变成块内的
    `@group`／`@sort`／`@subtotal` 单元格。
-5. **跑一遍并做 diff。** `convert()` 是确定性的，因此黄金文件测试
-   （`相同输入 → 相同字节`）可以取代肉眼抽查。
+5. **跑一遍并做 diff。** `convert()` 是确定性的 —— 连 zip 条目的时间戳
+   在内,相同输入就产生相同字节,因此黄金文件测试可以取代肉眼抽查。
+   字节级可复现性从 0.12.0 开始;在 0.11.0 及更早版本上,请比较规范化后的
+   部件（`npx xl3-conformance canonicalize out.xlsx`）。
 
 无需安装，直接在浏览器里拿一个模板试试迁移 ——
 [xl3.io/try](https://xl3.io/try)。

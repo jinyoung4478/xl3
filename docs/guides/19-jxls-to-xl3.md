@@ -21,7 +21,7 @@ dedicated ADRs and conformance fixtures. The operating principle
 |---|---|---|
 | Directives live in | Cell **comments** (`jx:each(items="rows" lastCell="D4")`) — invisible in the grid | Cell **values** (`{{ @filter [Status] = "Open" }}`) — visible, reviewable, diffable |
 | Expression language | JEXL (`${employee.payment * 1.1}`) — a second language to learn | Excel syntax (`{{ [Payment] * 1.1 }}`, `IF`, `XLOOKUP`, `SUM`) — what template authors already know |
-| Data comes from | Java objects bound in code (`context.putVar("employees", list)`) | A second `.xlsx` — `render(template, data)` is a pure function: same inputs, same bytes |
+| Data comes from | Java objects bound in code (`context.putVar("employees", list)`) | A second `.xlsx`, or JSON on stdin — `render(template, data)` is a pure function: same inputs, same bytes |
 | Block bounds | Explicit `lastCell="D4"` coordinates | Inferred from `{{ ... }}` markers (or explicit `{{ @block A:D }}` when you want it) |
 | Escape hatch | Custom Java commands — Turing-complete, unportable | None, by design — the template stays a handover artifact any implementation can render ([ADR-0048](../../spec/decisions/0048-jxls-boundary-final.md)) |
 
@@ -90,13 +90,59 @@ const outputs = await convert(templateBuffer, dataBuffer);
 ```
 
 There is no context object to bind. Everything the render needs is in
-the two workbooks — which is what makes the output reproducible and the
+the inputs — which is what makes the output reproducible and the
 template testable without a host program.
+
+## Staying on the JVM
+
+Migrating the render loop to Node is one option, not the only one. If
+the service stays on the JVM, call the CLI and keep the data where it
+already is — in memory, as JSON, with no intermediate workbook:
+
+```java
+// Write xl3-source-json/0.1 to the process, read the files it wrote.
+Process p = new ProcessBuilder(
+        "xl3", "render", "template.xlsx", "--data=-", "--out=./out/", "--json")
+    .redirectErrorStream(false)
+    .start();
+p.getOutputStream().write(sourceJson.getBytes(StandardCharsets.UTF_8));
+p.getOutputStream().close();
+
+int exit = p.waitFor();   // 0 ok · 1 conversion error · 2 usage error
+```
+
+The JSON is column-oriented — `headers` plus array `rows` — so mapping a
+`List<Employee>` onto it is a loop, not a workbook build:
+
+```json
+{
+  "version": "xl3-source-json/0.1",
+  "sources": {
+    "default": {
+      "headers": ["Employee", "Payment"],
+      "rows": [["Kim", 4200], ["Lee", 3900]]
+    }
+  }
+}
+```
+
+On a non-zero exit, `--json` puts the failure on stderr with the stable
+`error.code` to switch on — see
+[Cookbook 13](./13-error-handling.md) for the code catalog. Install once
+(`npm i -g @xl3-lang/xl3`) rather than invoking `npx` per request, which
+would pay a registry lookup every time.
+
+This is the closest analogue to how JXLS is deployed: one artifact
+installed on the server, called from application code. What does not
+carry over is the SPI escape hatch — see the section above.
 
 ## Migration checklist
 
-1. **Move data out of code.** Whatever you `putVar`'d, export it to a
-   sheet (one table per collection). This is usually the only real work.
+1. **Move data out of code.** Whatever you `putVar`'d becomes a source:
+   either a sheet (one table per collection) or one `sources` entry of
+   `xl3-source-json/0.1`. Serializing the collections you already hold is
+   usually the only real work — and the JSON route skips writing a
+   workbook just to have one read back.
 2. **Delete the comments, write the cells.** Each `jx:each` region
    becomes a one-row data block of `{{ [Column] }}` markers; `lastCell`
    bounds disappear.
@@ -104,8 +150,11 @@ template testable without a host program.
    conditionals map 1:1 onto `{{ ... }}` with `IF`/operators.
 4. **Re-create grouping declaratively.** `groupBy`/`orderBy` become
    `@group`/`@sort`/`@subtotal` cells inside the block.
-5. **Run it and diff.** `convert()` is deterministic, so a golden-file
-   test (`same inputs → same bytes`) replaces visual spot-checking.
+5. **Run it and diff.** `convert()` is deterministic — identical inputs
+   render identical bytes, including zip entry timestamps — so a
+   golden-file test replaces visual spot-checking. Reproducible bytes
+   landed in 0.12.0; against 0.11.0 or earlier, compare canonicalized
+   parts instead (`npx xl3-conformance canonicalize out.xlsx`).
 
 Try the migration on one template in the browser — no install — at
 [xl3.io/try](https://xl3.io/try).

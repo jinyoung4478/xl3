@@ -26,7 +26,7 @@ pagination_label: '19 · JXLS에서 xl3로'
 |---|---|---|
 | 지시자가 사는 곳 | 셀 **메모** (`jx:each(items="rows" lastCell="D4")`) — 그리드에서 보이지 않음 | 셀 **값** (`{{ @filter [Status] = "Open" }}`) — 보이고, 리뷰 가능하고, diff 가능 |
 | 표현식 언어 | JEXL (`${employee.payment * 1.1}`) — 새로 배워야 하는 두 번째 언어 | Excel 문법 (`{{ [Payment] * 1.1 }}`, `IF`, `XLOOKUP`, `SUM`) — 템플릿 작성자가 이미 아는 것 |
-| 데이터가 오는 곳 | 코드에서 바인딩한 자바 객체 (`context.putVar("employees", list)`) | 두 번째 `.xlsx` — `render(template, data)`가 순수 함수입니다. 같은 입력, 같은 바이트 |
+| 데이터가 오는 곳 | 코드에서 바인딩한 자바 객체 (`context.putVar("employees", list)`) | 두 번째 `.xlsx`, 또는 stdin으로 넘기는 JSON — `render(template, data)`가 순수 함수입니다. 같은 입력, 같은 바이트 |
 | 블록 경계 | 명시적 `lastCell="D4"` 좌표 | `{{ ... }}` 마커로부터 추론 (원하면 명시적 `{{ @block A:D }}`) |
 | 탈출구 | 커스텀 자바 커맨드 — 튜링 완전하고 이식 불가 | 설계상 없음 — 템플릿은 어떤 구현체든 렌더링할 수 있는 인계 산출물로 남습니다 ([ADR-0048](https://xl3.io/spec/decisions/jxls-boundary-final)) |
 
@@ -95,22 +95,70 @@ const outputs = await convert(templateBuffer, dataBuffer);
 // outputs: [{ filename: 'renewal-report.xlsx', buffer }, ...]
 ```
 
-바인딩할 컨텍스트 객체가 없습니다. 렌더에 필요한 모든 것이 두 파일
-안에 있습니다. 그래서 출력이 재현 가능하고, 호스트 프로그램 없이도
-템플릿을 테스트할 수 있습니다.
+바인딩할 컨텍스트 객체가 없습니다. 렌더에 필요한 모든 것이 입력 안에
+있습니다. 그래서 출력이 재현 가능하고, 호스트 프로그램 없이도 템플릿을
+테스트할 수 있습니다.
+
+## JVM에 그대로 남는 방법
+
+렌더 루프를 Node로 옮기는 건 선택지 하나일 뿐입니다. 서비스를 JVM에
+그대로 둔다면 CLI를 호출하면 됩니다. 데이터는 이미 있는 자리 그대로,
+중간 워크북 없이 JSON으로 넘깁니다.
+
+```java
+// xl3-source-json/0.1 을 프로세스에 써넣고, 프로세스가 쓴 파일을 읽습니다.
+Process p = new ProcessBuilder(
+        "xl3", "render", "template.xlsx", "--data=-", "--out=./out/", "--json")
+    .start();
+p.getOutputStream().write(sourceJson.getBytes(StandardCharsets.UTF_8));
+p.getOutputStream().close();
+
+int exit = p.waitFor();   // 0 성공 · 1 변환 실패 · 2 사용법 오류
+```
+
+JSON은 컬럼 지향입니다 — `headers`와 배열 `rows`. 그래서 `List<Employee>`를
+옮기는 일이 워크북 생성이 아니라 반복문 하나로 끝납니다.
+
+```json
+{
+  "version": "xl3-source-json/0.1",
+  "sources": {
+    "default": {
+      "headers": ["직원", "급여"],
+      "rows": [["김", 4200], ["이", 3900]]
+    }
+  }
+}
+```
+
+0이 아닌 종료 코드로 끝나면 `--json`이 stderr에 실패 내용을 내보내고,
+거기 담긴 `error.code`로 분기하면 됩니다 — 코드 목록은
+[Cookbook 13](./13-error-handling.md)에 있습니다. 요청마다 `npx`를 부르면
+매번 레지스트리를 조회하니, `npm i -g @xl3-lang/xl3`로 한 번 설치해 두는
+편이 낫습니다.
+
+JXLS를 배포하던 방식과 가장 가까운 형태입니다. 서버에 산출물 하나를
+설치해 두고 애플리케이션 코드에서 호출하는 것. 넘어오지 않는 것은 SPI
+확장점이며, 위의 절을 참고하세요.
 
 ## 이관 체크리스트
 
-1. **데이터를 코드 밖으로 옮깁니다.** `putVar`로 넣던 것을 시트로
-   내보내세요(컬렉션 하나당 표 하나). 보통 이것이 유일한 실질 작업입니다.
+1. **데이터를 코드 밖으로 옮깁니다.** `putVar`로 넣던 것이 소스가 됩니다.
+   시트로 내보내거나(컬렉션 하나당 표 하나), `xl3-source-json/0.1`의
+   `sources` 항목 하나로 만드세요. 이미 들고 있는 컬렉션을 직렬화하는 것이
+   보통 유일한 실질 작업이고, JSON 쪽은 다시 읽히기만 할 워크북을 만드는
+   단계를 건너뜁니다.
 2. **메모를 지우고 셀에 씁니다.** 각 `jx:each` 영역은 `{{ [Column] }}`
    마커로 된 한 줄 데이터 블록이 됩니다. `lastCell` 경계는 사라집니다.
 3. **JEXL을 Excel 표현식으로 다시 씁니다.** `${...}`의 산술과 조건은
    `IF`/연산자와 함께 `{{ ... }}`로 1:1 대응됩니다.
 4. **그룹핑을 선언적으로 재구성합니다.** `groupBy`/`orderBy`는 블록 안의
    `@group`/`@sort`/`@subtotal` 셀이 됩니다.
-5. **돌려보고 diff를 뜹니다.** `convert()`는 결정론적이므로, 골든 파일
-   테스트(`같은 입력 → 같은 바이트`)가 눈으로 확인하는 작업을 대체합니다.
+5. **돌려보고 diff를 뜹니다.** `convert()`는 결정론적입니다 — zip 엔트리
+   타임스탬프까지 포함해 같은 입력이면 같은 바이트가 나오므로, 골든 파일
+   테스트가 눈으로 확인하는 작업을 대체합니다. 바이트 재현성은 0.12.0에
+   들어갔습니다. 0.11.0 이하에서는 정규화한 파트를 비교하세요
+   (`npx xl3-conformance canonicalize out.xlsx`).
 
 설치 없이 브라우저에서 템플릿 하나로 이관을 시험해보세요 —
 [xl3.io/try](https://xl3.io/try).

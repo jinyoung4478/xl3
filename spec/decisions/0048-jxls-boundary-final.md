@@ -154,3 +154,37 @@ evidence bar but a future SUMIF proposer is held to one.
   protects
 - PORTERS_GUIDE.md § "What you MUST match" / § "Function table is
   bounded" — porter consequences
+
+## Amendment (2026-08-02) — axis 5 admits a JSON source, and a CLI reaches it
+
+Axis 5 reads **"XLSX in, XLSX out"** and enumerates what is out of scope
+(XLSB, XLS, XLTX, CSV). It was written before **ADR-0075**, which added
+`xl3-source-json/0.1` and shipped `convertJson` / `previewJson` in
+0.11.0. The row's input half is therefore incomplete: a **source** may
+also arrive as the language-neutral JSON wire format.
+
+What this amendment does **not** change:
+
+- **The thesis stands.** Axis 5's point is that external I/O belongs to
+  the host, not the template — no JDBC, no REST, no fetching from inside
+  a template. Accepting typed rows the host already holds is the same
+  boundary, not a relaxation of it. xl3 still performs no I/O of its own.
+- **The template is still XLSX.** Only the source input gained a second
+  spelling. The template is the operator-authored artifact and that is
+  the whole positioning; `.xlsx` remains its only form.
+- **Output is still XLSX only** (axis 6, unchanged).
+- **The out-of-scope list is unchanged.** XLSB, XLS, XLTX, and CSV remain
+  out of scope, and a re-proposal still owes conformance-corpus and
+  porter cost.
+
+Axis 5 should now be read as: **XLSX or `xl3-source-json/0.1` in, XLSX
+out.**
+
+Related, and the reason this was noticed: 0.12.0 adds an `xl3` bin, so a
+host in any language can pipe the wire format in and get `.xlsx` files
+out without embedding a JS runtime. That closes the practical gap for
+JVM teams that axis 5's wording implied — they no longer have to build a
+workbook to hand xl3 their data. **Axis 3 (no host extension / SPI
+escape hatch) is untouched**: a JXLS deployment that depends on custom
+Java commands still has no migration path, by design.
+
