@@ -95,7 +95,7 @@ const outputs = await convert(templateBuffer, dataBuffer);
 // outputs: [{ filename: 'renewal-report.xlsx', buffer }, ...]
 ```
 
-바인딩할 컨텍스트 객체가 없습니다. 렌더에 필요한 모든 것이 두 워크북
+바인딩할 컨텍스트 객체가 없습니다. 렌더에 필요한 모든 것이 두 파일
 안에 있습니다. 그래서 출력이 재현 가능하고, 호스트 프로그램 없이도
 템플릿을 테스트할 수 있습니다.
 

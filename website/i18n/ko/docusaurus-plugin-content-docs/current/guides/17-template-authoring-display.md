@@ -101,7 +101,7 @@ Excel native 정답입니다. 수식마다 한 줄, 익히는 데 몇 초.
 ### 1. xl3.io 플레이그라운드
 
 `template.xlsx` + 샘플 `data.xlsx` (또는 번들된 샘플)을
-[xl3.io](https://xl3.io)에 드롭하면 렌더된 워크북이 몇 초 안에 나옵니다.
+[xl3.io](https://xl3.io)에 드롭하면 렌더된 엑셀 파일이 몇 초 안에 나옵니다.
 
 ### 2. 호스트의 `preview()` API
 
@@ -116,13 +116,13 @@ console.log(result.files);     // 출력 파일과 시트
 console.log(result.warnings);  // 비치명적 이슈
 ```
 
-`preview()`는 `convert()`와 동일한 파싱 + 초기 평가 단계를 돌리지만 워크북
+`preview()`는 `convert()`와 동일한 파싱 + 초기 평가 단계를 돌리지만 엑셀 파일
 바이트는 만들지 않습니다 — 전체 렌더를 돌리기 전에 호스트측 검증에 유용합니다.
 
 ### 3. 빠른 CLI 스모크 테스트
 
 ```bash
-# 신선한 샘플을 만들고 싶으면 example 워크북 빌드
+# 샘플을 새로 만들고 싶으면 예제 파일 빌드
 npm run examples:build
 
 # 하나 렌더해서 확인

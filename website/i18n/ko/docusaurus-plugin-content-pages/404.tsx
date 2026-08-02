@@ -13,7 +13,7 @@ export default function NotFoundKo() {
       <main className={styles.page}>
         <div className="container">
           <p className={styles.code}>404</p>
-          <h1 className={styles.title}>이 워크북에는 그런 페이지가 없습니다.</h1>
+          <h1 className={styles.title}>이 엑셀 파일에는 그런 페이지가 없습니다.</h1>
           <p className={styles.body}>
             따라오신 URL이 xl3.io의 어떤 페이지와도 맞지 않습니다. 아래
             카드 중 하나를 눌러 사이트의 주요 영역으로 이동하세요.
