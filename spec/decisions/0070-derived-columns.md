@@ -76,6 +76,14 @@ A new reserved sheet `__derived__`, parallel to `__lists__`/`__sources__`:
   columns of its own row and other reserved sheets; it MUST NOT
   reference another derived column (no forward/inter-derived refs in
   1.x — keeps evaluation a single pass; revisit if needed).
+- **Row-local only:** a derived expression MUST NOT reference an
+  aggregate function (`SUM`, `COUNT`, `AVERAGE`, …). The pre-pass
+  evaluates one row at a time and has no set to aggregate over: it runs
+  *before* `@filter` and grouping, so the row set an aggregate would
+  read does not exist yet. Violation is a declaration-time error
+  (`xl3/derived/aggregate-reference`), detected by inspecting the parsed
+  expression, not at eval time. Resolved 2026-08-03 — see **Resolved
+  before implementation**.
 - **Materialization:** `row[name] = eval(expression, rowCtx)`. The name
   occupies the same namespace as source columns. A derived name MUST be
   unique across the whole bare-resolution surface, enforced at
@@ -201,9 +209,67 @@ ADR's.)
    one — is served by the single `__derived__` declaration site plus the
    uniqueness guard, not by a reference marker.)
 
-## Open questions (for review before implementation)
+## Resolved before implementation (2026-08-03)
 
-- Reserved sheet name: `__derived__` vs `__columns__` vs `__keys__`.
-- Whether to permit a derived column to reference an aggregate
-  (`SUM(...)`) — proposed **no** for 1.x (per-row only), to keep the
-  pre-pass row-local.
+Both open questions are closed. The alternatives are kept visible rather
+than deleted, so a re-proposal argues against a recorded reason instead of
+a blank.
+
+### Reserved sheet name — `__derived__`
+
+Kept, over `__columns__` and `__keys__`.
+
+The existing four reserved sheets name their contents with a plural noun
+(`__config__`, `__inputs__`, `__sources__`, `__lists__`), and `__derived__`
+is an adjective, so it does break the pattern. The alternatives break
+something worse:
+
+- `__columns__` reads as "the columns", but source columns are not
+  declared there — only the computed ones. A sheet named for the general
+  case that holds the special case invites the reader to look for source
+  columns in it.
+- `__keys__` collides conceptually with **group keys**, which is exactly
+  the neighbouring idea a derived column is most often used for
+  (ADR-0054's bare sheet-name chain). Two meanings of "key" one hop
+  apart is worse than one broken naming pattern.
+
+Precision about what the sheet holds beats consistency of part-of-speech.
+
+### Aggregate references — not permitted in 1.x
+
+Confirmed as proposed. `SUM([Amount])` in a derived expression is a
+declaration error, not a runtime one.
+
+The reason is structural rather than a scope judgement: the pre-pass runs
+**after** `@join` but **before** `@filter` and grouping, so at the moment a
+derived expression is evaluated there is no row set for an aggregate to
+read. The rows that survive filtering, and the partitions grouping will
+form, are both still undetermined. An aggregate here would have to mean
+"over the unfiltered source", which is almost never what an author means
+and cannot be told apart from what they do mean.
+
+Deferring is cheap and reversible: the restriction is a MUST NOT on a
+surface that does not exist yet, so lifting it later is additive. Opening
+it now would fix an evaluation order before anyone has asked for it — the
+ADR-0043 small-surface bar, and the ADR-0045 pattern of rejecting a
+capability until a real template needs it.
+
+The error code `xl3/derived/aggregate-reference` follows the
+`xl3/inputs/forward-reference` pattern: name the offending construct, not
+the rule it breaks. Nothing enters the error catalog until the
+implementation lands, so this costs no G3 surface today.
+
+## Still required for `accepted`
+
+`GOVERNANCE.md` § Acceptance sets three conditions: a conformance fixture
+demonstrating the behavior, the reference-impl change, and maintainer
+sign-off. None of the first two exist — no `*derived*` fixture, and no
+`derived` reference anywhere in `impl/js/src` — so the status stays
+**proposed**. Resolving these two questions removes the design blockers;
+it does not promote the ADR.
+
+The work that would: `parser.ts` reads and validates the `__derived__`
+declaration (both guards above), the grouper pre-pass materializes the
+values, and at least one fixture exercises a lookup-driven sheet name.
+Per the **Spec target** above this lands after the 1.0 freeze, so the
+sequencing is deliberate, not neglect.
