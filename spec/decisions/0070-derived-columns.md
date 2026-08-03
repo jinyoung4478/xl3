@@ -148,6 +148,41 @@ of false collisions or a gap versus the resolver. (Engine-wide
 case/Unicode folding, if ever wanted, is a separate decision, not this
 ADR's.)
 
+### When the guard can run
+
+"Declaration-time" above means *before evaluation*, not *from the template
+alone*. Buckets 2-5 are template-only. Bucket 1 compares against the
+post-`@join` source schema, so it needs the source.
+
+Three consequences worth pinning before implementation:
+
+- **Both source paths must feed the same schema into the check.** The
+  `.xlsx` reader and `xl3-source-json/0.1` (ADR-0075) produce the same
+  `SourceData`, and the guard must run off that, not off one path's
+  reader. Otherwise `convertJson` accepts a template `convert` rejects,
+  breaking ADR-0075's identical-render promise. The existing reserved /
+  dunder **header** guards (`reader.ts`, `json-source.ts`) do not help
+  here: a derived name is an ordinary name like `RegionName`, not a
+  dunder.
+- **Template-only analysis can report buckets 2-5 only.** `analyze()`,
+  `analyzeModel()`, and `readTemplateInputs()` take no source. A host
+  that wants the full answer has to supply one.
+- **A source can be incompatible by providing too much.** Bucket 1 fails
+  on a source that *has* a column colliding with a derived name — a
+  different failure from a missing column, and a new diagnostic class for
+  a source-compatibility check (#109).
+
+The required-column set also grows: columns referenced **inside**
+`__derived__` expressions are required of the source. Today
+`parsed.variables[].columns` is collected from sheet-name and
+cell/directive expressions only (`parser.ts`), and no reserved-sheet
+expression has ever had source-column dependencies — `__inputs__` XTL
+defaults are restricted to `__config__` plus pure functions, no source
+data. Derived expressions are the first, so there is no existing pattern
+to copy. The inverse matters too: a bare name in a sheet-name pattern
+that resolves to a *derived* column must not be reported as a required
+source column, or the requirement is invented.
+
 ## Scope
 
 - **In scope (this ADR, the #54(A) slice):** derived columns +
