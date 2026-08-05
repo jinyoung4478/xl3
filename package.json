@@ -18,6 +18,7 @@
   ],
   "scripts": {
     "build": "npm -w @xl3-lang/xl3 run build",
+    "sync:version": "npm -w @xl3-lang/xl3 run sync:version",
     "build:bundle": "npm -w @xl3-lang/xl3 run build:bundle",
     "typecheck": "npm -w @xl3-lang/xl3 run typecheck",
     "test": "npm -w @xl3-lang/xl3 run test",

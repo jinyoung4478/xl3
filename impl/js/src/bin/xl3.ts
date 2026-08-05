@@ -16,8 +16,8 @@
 
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { basename, isAbsolute, resolve } from 'node:path';
-import { createRequire } from 'node:module';
 import {
+  VERSION,
   convert,
   convertJson,
   packageZip,
@@ -69,14 +69,6 @@ function die(msg: string): never {
   process.exit(2);
 }
 
-function packageVersion(): string {
-  // dist/bin/xl3.js → dist/bin/../../package.json is this package's own
-  // manifest, both in the build output and when run from src in tests.
-  const req = createRequire(import.meta.url);
-  const pkg = req('../../package.json') as { version?: string };
-  return pkg.version ?? 'unknown';
-}
-
 function parseArgs(argv: string[]): Cli {
   const args = argv.slice(2);
   if (args.length === 0 || args[0] === '--help' || args[0] === '-h') {
@@ -84,7 +76,7 @@ function parseArgs(argv: string[]): Cli {
     process.exit(args.length === 0 ? 2 : 0);
   }
   if (args[0] === '--version' || args[0] === '-v') {
-    process.stdout.write(packageVersion() + '\n');
+    process.stdout.write(VERSION + '\n');
     process.exit(0);
   }
 

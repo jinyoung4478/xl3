@@ -37,6 +37,9 @@ const EXPECTED_RUNTIME_EXPORTS = [
   // Error helpers (ADR-0015)
   'xtlError',
   'isXtlError',
+  // Runtime metadata (xl3#103)
+  'VERSION',
+  'getEngineInfo',
 ] as const;
 
 describe('public API surface', () => {
@@ -44,6 +47,13 @@ describe('public API surface', () => {
     const actual = Object.keys(api).sort();
     const expected = [...EXPECTED_RUNTIME_EXPORTS].sort();
     expect(actual).toEqual(expected);
+  });
+
+  it('VERSION is a non-empty string, not a function (xl3#103)', () => {
+    // The one non-function export on the surface — a host that prints it
+    // must not get `[object Function]`.
+    expect(typeof api.VERSION).toBe('string');
+    expect(api.VERSION.length).toBeGreaterThan(0);
   });
 
   it('every documented runtime export resolves to a callable / value', () => {

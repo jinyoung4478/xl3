@@ -6,6 +6,51 @@ separately in [spec/STABILITY.md](./spec/STABILITY.md).
 
 ## [Unreleased]
 
+### Added
+
+- **`VERSION` and `getEngineInfo()` — which xl3 is loaded, at runtime**
+  (#103). A host that gets "this conversion looks wrong" is always asked
+  which version produced it, and there was no way to answer from inside
+  the process: the main entry exported no version, `version.ts` holds
+  semver *helpers* only, and `exports` did not expose `./package.json`,
+  so the only route left was reading
+  `node_modules/@xl3-lang/xl3/package.json` off disk and injecting it at
+  build time — a hardcoded path into another package's internals.
+
+  ```ts
+  import { VERSION, getEngineInfo } from '@xl3-lang/xl3';
+  console.info(`xl3 v${VERSION}`);
+  const { backend } = await getEngineInfo(); // 'wasm' | 'js'
+  ```
+
+  `getEngineInfo()` also answers the second question that had no runtime
+  route — whether the optional `xl3-wasm` dependency is actually being
+  used, which matters when a bundler is configured to exclude it. It is
+  async because that dependency resolves through a runtime `import()`;
+  the probe is cached, and an `engine: 'auto'` conversion pays the same
+  cost anyway. It reports which backend is *available*, not which one
+  ran: `'auto'` still falls back per-call on templates outside the wasm
+  engine's support matrix.
+
+  `VERSION` comes from `src/pkg-version.ts`, generated from
+  `package.json` by `scripts/gen-version.mjs` (`npm run sync:version`)
+  and committed. Generated rather than read at runtime because neither
+  build path can read the manifest: `tsc` has no `define`, and the
+  browser IIFE bundle has no `package.json` at all. Committed rather
+  than git-ignored so `npm run typecheck` and `npm test` work on a fresh
+  clone; `src/__tests__/pkg-version.test.ts` fails if the constant and
+  the manifest disagree. The `xl3` CLI's `--version` now reads the same
+  constant instead of resolving `package.json` relative to `dist/bin/`.
+
+  Additive: the frozen export surface goes 15 → 17 (recorded in
+  `spec/STABILITY.md`), no existing export is removed or re-signed, and
+  no error code changes — so ROADMAP gates G3/G6 and the G24 quarter
+  clock are undisturbed.
+
+  Not done, deliberately: `exports: { "./package.json": ... }` (option B
+  in the issue). Once `VERSION` exists it buys nothing, and it would add
+  a resolvable subpath whose consumers must each configure JSON imports.
+
 ## [0.12.0] - 2026-08-02
 
 Renders are now reproducible down to the bytes, and any language can drive

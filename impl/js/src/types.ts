@@ -58,6 +58,27 @@ export interface ConvertOptions {
   signal?: AbortSignal;
 }
 
+/**
+ * Which engine build is loaded, for diagnostics (xl3#103). Hosts report
+ * this alongside a bad conversion so "which xl3 produced this?" has an
+ * answer that does not depend on the host tracking it separately.
+ */
+export interface EngineInfo {
+  /** The package version — same value as the `VERSION` export. */
+  version: string;
+  /**
+   * Which backend an `engine: 'auto'` call resolves to right now:
+   * `'wasm'` when the optional `xl3-wasm` dependency loads and
+   * instantiates, `'js'` otherwise.
+   *
+   * This reports what is *available*, not what ran. `'auto'` still falls
+   * back to the JS path per-call when a template uses a feature outside
+   * the wasm engine's support matrix, so a `'wasm'` answer does not mean
+   * every conversion took that path.
+   */
+  backend: 'wasm' | 'js';
+}
+
 // ADR-0012: an external data source declaration parsed from
 // `__sources__`. The implicit default source uses the special name
 // "default" and is configured via `__config__.source_sheet` and

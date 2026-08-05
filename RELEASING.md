@@ -48,6 +48,18 @@ a pure impl refactor can ship as `xl3` patch with no spec change.
 4. Bump `impl/js/package.json` version to the rc form
    (e.g., `1.0.0-rc.1`). Do NOT publish a `1.0.0` directly without
    an rc cycle for any major / new-spec-minor release.
+
+   Then sync the runtime constant, which is generated from the
+   manifest and committed (xl3#103):
+
+   ```bash
+   npm run sync:version   # rewrites impl/js/src/pkg-version.ts
+   ```
+
+   Commit the result with the bump. Forgetting this ships a `VERSION`
+   export that disagrees with the package — `pkg-version.test.ts` fails
+   loudly rather than letting it out, so a red test here means this step
+   was skipped, not that the test is wrong.
 5. Move `[Unreleased]` to `[1.0.0-rc.1] - YYYY-MM-DD` and re-create
    an empty `[Unreleased]` section.
 6. Tag and push:

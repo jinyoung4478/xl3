@@ -49,6 +49,8 @@ const EXPECTED_RUNTIME_EXPORTS = [
   'toTemplateModel',
   'xtlError',
   'isXtlError',
+  'VERSION',
+  'getEngineInfo',
 ] as const;
 
 function loadBundleContext(): { ctx: vm.Context; xl3: Record<string, unknown> } {
@@ -109,7 +111,7 @@ describeIfBuilt('IIFE bundle smoke', () => {
     expect(size).toBeLessThan(BUNDLE_SIZE_LIMIT_BYTES);
   });
 
-  it('exposes all 13 expected runtime exports on the global', () => {
+  it('exposes every expected runtime export on the global', () => {
     const { xl3 } = loadBundleContext();
     const actual = Object.keys(xl3).sort();
     const expected = [...EXPECTED_RUNTIME_EXPORTS].sort();

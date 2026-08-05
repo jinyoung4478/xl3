@@ -161,6 +161,18 @@ describeCli('xl3 CLI', () => {
     expect(JSON.parse(stderr).error.code).toBe('xl3/source-json/invalid');
   });
 
+  it('prints the package version on --version and exits 0', async () => {
+    // xl3#103 made `VERSION` the single source for this; before that the
+    // CLI read package.json off disk relative to dist/bin/, which the
+    // library path could not do at all (no package.json in a browser).
+    const pkg = JSON.parse(readFileSync(join(PKG_ROOT, 'package.json'), 'utf8')) as {
+      version: string;
+    };
+    const { code, stdout } = await cli(['--version']);
+    expect(code).toBe(0);
+    expect(stdout.trim()).toBe(pkg.version);
+  });
+
   it('exits 2 on a usage error, distinct from a conversion failure', async () => {
     const { code, stderr } = await cli(['render', TEMPLATE]);
     expect(code).toBe(2);

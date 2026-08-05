@@ -15,11 +15,14 @@ import type {
   ParsedTemplate,
   TemplateModel,
   ConvertOptions,
+  EngineInfo,
   InputSpec,
   XtlWarning,
   Xl3SourceJsonInput,
 } from './types.js';
+import { VERSION } from './pkg-version.js';
 
+export { VERSION } from './pkg-version.js';
 export type {
   TemplateMeta,
   TemplateModel,
@@ -41,6 +44,7 @@ export type {
   SourceDirective,
   JoinDirective,
   ConvertOptions,
+  EngineInfo,
   InputSpec,
   InputType,
   SourceSpec,
@@ -557,6 +561,32 @@ export async function analyzeModel(
 ): Promise<TemplateModel> {
   const parsed = await parseTemplate(templateBuffer);
   return toTemplateModel(parsed);
+}
+
+/**
+ * Report which engine build is loaded — the package version plus the
+ * backend an `engine: 'auto'` call resolves to (xl3#103).
+ *
+ * Async because the backend answer is: `xl3-wasm` is an optional
+ * dependency resolved with a runtime `import()`, so whether it is there
+ * cannot be known synchronously. The probe is cached and idempotent, so
+ * the first call pays for it and later calls are free — and a conversion
+ * with the default `engine: 'auto'` would have paid the same cost anyway.
+ *
+ * For the version alone, the `VERSION` export is synchronous and does
+ * not touch the wasm path.
+ *
+ * @stable Added in XTL 1.x (xl3#103); additive.
+ *
+ * @example
+ * ```ts
+ * const info = await getEngineInfo();
+ * console.info(`xl3 v${info.version} (${info.backend})`);
+ * ```
+ */
+export async function getEngineInfo(): Promise<EngineInfo> {
+  const engine = await tryLoadWasmEngine();
+  return { version: VERSION, backend: engine ? 'wasm' : 'js' };
 }
 
 /**

@@ -28,7 +28,7 @@ XTL 当前版本为 **0.1**。参考实现以 `@xl3-lang/xl3` 的形式把 XTL 0
 
 ### 公开 API 表面（xl3 参考实现）
 
-TypeScript 参考实现在 1.0 时冻结以下 15 个运行时导出（截至 0.10.0 为 13 个，另加 0.11.0 按 ADR-0075 新增的 `convertJson` / `previewJson`）。新增导出向后兼容；移除或重命名其中任何一个属于 2.0 才允许的变更。
+TypeScript 参考实现在 1.0 时冻结以下 17 个运行时导出（截至 0.10.0 为 13 个，另加 0.11.0 按 ADR-0075 新增的 `convertJson` / `previewJson`，以及未发布版本按 xl3#103 新增的 `VERSION` / `getEngineInfo`）。新增导出向后兼容；移除或重命名其中任何一个属于 2.0 才允许的变更。
 
 **转换入口**
 
@@ -55,11 +55,18 @@ TypeScript 参考实现在 1.0 时冻结以下 15 个运行时导出（截至 0.
 - `xtlError(code, message) → XtlError`
 - `isXtlError(value) → boolean`
 
+**运行时元数据（xl3#103）**
+
+- `VERSION → string`——本包自身的版本号。冻结的是这个导出本身，而不是它的值：值每次发布都会变，这正是它存在的意义。
+- `getEngineInfo() → Promise<EngineInfo>`——返回 `{ version, backend }`，其中 `backend` 是 `engine: 'auto'` 调用会解析到的那一个：可选依赖 `xl3-wasm` 能够加载时为 `'wasm'`，否则为 `'js'`。之所以是异步的，是因为该依赖通过运行时 `import()` 解析，其可用性无法同步得到答案。它报告的是*可用的*后端，而不是实际运行的那个——对于超出 wasm 引擎支持矩阵的模板，`'auto'` 仍会按调用逐次回退。
+
+其他语言的一致实现应当（**SHOULD**）按其生态的惯例暴露自身的版本与后端；此处的形态对移植者并非规范性的，因为“我是哪个版本”是打包问题，而不是语言问题。
+
 **稳定类型重导出**——在 1.0 冻结：
 `TemplateMeta`、`TemplateModel`、`OutputFile`、`PreviewResult`、
 `PreviewSource`、`PreviewFile`、`PreviewSheet`、`ConvertOptions`、
-`InputSpec`、`InputType`、`SourceSpec`、`XtlError`、`XtlErrorCode`、
-`XtlWarning`、`XtlWarningCode`。
+`EngineInfo`、`InputSpec`、`InputType`、`SourceSpec`、`XtlError`、
+`XtlErrorCode`、`XtlWarning`、`XtlWarningCode`。
 
 **实验性类型重导出**（ROADMAP G22）——为工具链导出，但其形态可能（**MAY**）在 minor 版本之间变化：
 `ParsedTemplate`、`SheetTemplate`、`TemplateVariable`、`DataBlock`、

@@ -28,7 +28,7 @@ XTL のバージョンは **0.1** です。リファレンス実装は npm 上�
 
 ### 公開 API サーフェス（xl3 リファレンス実装）
 
-TypeScript リファレンス実装は、1.0 時点で次の 15 個のランタイムエクスポートを凍結します(0.10.0 までで 13 個、加えて 0.11.0 で ADR-0075 により `convertJson` / `previewJson` が追加)。新しいエクスポートを追加するのは後方互換ですが、これらのいずれかを削除・改名することは 2.0 でのみ許される変更です。
+TypeScript リファレンス実装は、1.0 時点で次の 17 個のランタイムエクスポートを凍結します(0.10.0 までで 13 個、加えて 0.11.0 で ADR-0075 により `convertJson` / `previewJson`、さらに未リリースで xl3#103 により `VERSION` / `getEngineInfo` が追加)。新しいエクスポートを追加するのは後方互換ですが、これらのいずれかを削除・改名することは 2.0 でのみ許される変更です。
 
 **変換エントリポイント**
 
@@ -54,8 +54,15 @@ TypeScript リファレンス実装は、1.0 時点で次の 15 個のランタ�
 - `xtlError(code, message) → XtlError`
 - `isXtlError(value) → boolean`
 
+**ランタイムメタデータ（xl3#103）**
+
+- `VERSION → string` — このパッケージ自身のバージョン。凍結されるのは値ではなくエクスポートそのものです。値はリリースごとに変わり、それこそがこのエクスポートの目的です。
+- `getEngineInfo() → Promise<EngineInfo>` — `{ version, backend }` を返します。`backend` は `engine: 'auto'` の呼び出しが解決する先で、オプショナル依存の `xl3-wasm` がロードできれば `'wasm'`、できなければ `'js'` です。その依存はランタイムの `import()` で解決するため可用性を同期的に answer できず、したがって async です。報告するのは*利用可能な*バックエンドであり、実際に走ったものではありません — `'auto'` は wasm エンジンのサポートマトリクス外のテンプレートでは呼び出しごとにフォールバックします。
+
+他言語の適合実装は、自身のバージョンとバックエンドをそのエコシステムの慣習に沿った形で公開すべきです（**SHOULD**）。ここでの形状は porter に対して規範的ではありません — 「自分は何バージョンか」は言語の問題ではなくパッケージングの問題です。
+
 **安定型の再エクスポート** — 1.0 時点で凍結：
-`TemplateMeta`、`TemplateModel`、`OutputFile`、`PreviewResult`、`PreviewSource`、`PreviewFile`、`PreviewSheet`、`ConvertOptions`、`InputSpec`、`InputType`、`SourceSpec`、`XtlError`、`XtlErrorCode`、`XtlWarning`、`XtlWarningCode`。
+`TemplateMeta`、`TemplateModel`、`OutputFile`、`PreviewResult`、`PreviewSource`、`PreviewFile`、`PreviewSheet`、`ConvertOptions`、`EngineInfo`、`InputSpec`、`InputType`、`SourceSpec`、`XtlError`、`XtlErrorCode`、`XtlWarning`、`XtlWarningCode`。
 
 **Experimental（試験的）型の再エクスポート**（ROADMAP G22）— ツール用にエクスポートされていますが、その形状は minor バージョン間で変更される可能性があります（**MAY**）：
 `ParsedTemplate`、`SheetTemplate`、`TemplateVariable`、`DataBlock`、`Directive`、`FilterDirective`、`FilterOp`、`SortDirective`、`TopDirective`、`RepeatDirective`、`SourceDirective`、`JoinDirective`。

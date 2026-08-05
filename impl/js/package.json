@@ -56,6 +56,7 @@
   ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
+    "sync:version": "node scripts/gen-version.mjs",
     "build:bundle": "tsup && MINIFY=1 tsup",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",

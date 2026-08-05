@@ -37,9 +37,10 @@ corpus, on any host timezone, locale, or byte order.
 
 ### Public API surface (xl3 reference impl)
 
-The TypeScript reference impl freezes the following 15 runtime
+The TypeScript reference impl freezes the following 17 runtime
 exports at 1.0 (13 through 0.10.0, plus `convertJson` / `previewJson`
-added in 0.11.0 per ADR-0075). Adding a new export is backwards-compatible;
+added in 0.11.0 per ADR-0075, plus `VERSION` / `getEngineInfo` added
+unreleased per xl3#103). Adding a new export is backwards-compatible;
 removing or renaming any of them is a 2.0-only change.
 
 **Conversion entry points**
@@ -68,11 +69,28 @@ removing or renaming any of them is a 2.0-only change.
 - `xtlError(code, message) → XtlError`
 - `isXtlError(value) → boolean`
 
+**Runtime metadata (xl3#103)**
+
+- `VERSION → string` — this package's own version. What is frozen is the
+  export, not the value: it changes every release, which is the point.
+- `getEngineInfo() → Promise<EngineInfo>` — `{ version, backend }`, where
+  `backend` is the one an `engine: 'auto'` call resolves to (`'wasm'` when
+  the optional `xl3-wasm` dependency loads, else `'js'`). Async because
+  that dependency is resolved with a runtime `import()`, so availability
+  cannot be answered synchronously. It reports what is *available*, not
+  what ran — `'auto'` still falls back per-call on templates outside the
+  wasm engine's support matrix.
+
+A conforming implementation in another language SHOULD expose its own
+version and backend by whatever its ecosystem's convention is; the shape
+here is not normative for porters, because "what version am I" is a
+packaging question, not a language one.
+
 **Stable type re-exports** — frozen at 1.0:
 `TemplateMeta`, `TemplateModel`, `OutputFile`, `PreviewResult`,
 `PreviewSource`, `PreviewFile`, `PreviewSheet`, `ConvertOptions`,
-`InputSpec`, `InputType`, `SourceSpec`, `XtlError`, `XtlErrorCode`,
-`XtlWarning`, `XtlWarningCode`.
+`EngineInfo`, `InputSpec`, `InputType`, `SourceSpec`, `XtlError`,
+`XtlErrorCode`, `XtlWarning`, `XtlWarningCode`.
 
 **Additive changes log.** ROADMAP gates G3 and G6 allow additions and
 require them recorded here. Adding an optional option property or an
@@ -86,9 +104,14 @@ one is 2.0-only and resets both gates.
 | 0.11.0 | `xl3/source-json/invalid` error code | ADR-0075 |
 | unreleased | `ConvertOptions.signal` (`AbortSignal`) | ROADMAP G21, `spec/evaluation.md` "AbortSignal" |
 | unreleased | `xl3/abort/cancelled` error code | ROADMAP G21 |
+| unreleased | `VERSION`, `getEngineInfo` exports + `EngineInfo` type | xl3#103 |
 
 The export count is unchanged by the G21 work — `signal` is a property on
-the already-frozen `ConvertOptions`, not a new export.
+the already-frozen `ConvertOptions`, not a new export. It goes 15 → 17
+with xl3#103. Both changes are additive under the breaking-change
+definition in ROADMAP.md, so G3, G6, and the G24 quarter clock are
+undisturbed: nothing existing was removed, renamed, or re-signed, and no
+error code changed.
 
 **Experimental type re-exports** (ROADMAP G22) — exported for
 tooling, but their shape MAY change between minor versions:
