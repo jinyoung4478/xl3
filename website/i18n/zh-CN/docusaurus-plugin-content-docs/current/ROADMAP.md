@@ -198,6 +198,14 @@ G23 启动后，G24 的季度时钟开始（它必须在 G3/G6/G7 等关卡关�
 - **PDF / HTML 输出。** 范围外；xl3 的契约是 xlsx-in、xlsx-out。
 - **超出 `093` 的跨写入器 Stage 2 fixture** ——
   [ADR-0006](https://xl3.io/spec/decisions/stage-2-ooxml-conformance) 修订。
+- **输出侧模板 schema（`produces`）与设计时链接** —— xl3#109 中的输入校验提案
+  （`validateSource()`：复用既有的 `xl3/source/*` 错误码来回答“这份源数据是否满足
+  这个模板”）先只限定在**输入侧**。与之对应的输出侧 —— 携带输出列标签的
+  `TemplateModel.produces`，也就是能让宿主在不执行一次转换的前提下校验
+  `templateA → templateB` 这条边的东西 —— 延期。它需要一项本项目尚未确定的约定：
+  工作表模板中**哪一行字面量行**才是输出表头。与 `requires` 不同，这一点无法从解析器
+  已解析的结果中推导出来，因此必须明确决定并写下来，而不是让每个引擎各自推测。
+  目前还没有 ADR；设计讨论在 xl3#109。
 
 这些仍然是 **XTL 1.1、1.2、1.x** 的候选项，取决于需求强度。
 

@@ -445,6 +445,18 @@ These are intentionally deferred. Each has an ADR explaining why:
 - **PDF / HTML output.** Out of scope; xl3 is xlsx-in, xlsx-out.
 - **Cross-writer Stage 2 fixtures beyond `093`** —
   [ADR-0006](./spec/decisions/0006-stage-2-ooxml-conformance.md) amendment.
+- **Output-side template schema (`produces`) and design-time chaining** —
+  the input-validation proposal in xl3#109 (`validateSource()`: "does
+  this source satisfy this template?", reusing the existing
+  `xl3/source/*` codes) is scoped to the **input side first**. Its output
+  counterpart — `TemplateModel.produces` carrying output column labels,
+  which is what would let a host verify a `templateA → templateB` edge
+  without running a conversion — is deferred. It needs a convention the
+  project has not fixed: *which* literal row of a sheet template is the
+  output header. Unlike `requires`, that is not derivable from what the
+  parser resolved, so it has to be decided and written down rather than
+  inferred independently by each engine. No ADR yet; the design
+  discussion is in xl3#109.
 
 These remain candidates for **XTL 1.1, 1.2, 1.x** based on demand.
 
