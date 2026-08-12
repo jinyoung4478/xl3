@@ -39,8 +39,8 @@ corpus, on any host timezone, locale, or byte order.
 
 The TypeScript reference impl freezes the following 17 runtime
 exports at 1.0 (13 through 0.10.0, plus `convertJson` / `previewJson`
-added in 0.11.0 per ADR-0075, plus `VERSION` / `getEngineInfo` added
-unreleased per xl3#103). Adding a new export is backwards-compatible;
+added in 0.11.0 per ADR-0075, plus `VERSION` / `getEngineInfo` added in
+0.13.0 per xl3#103). Adding a new export is backwards-compatible;
 removing or renaming any of them is a 2.0-only change.
 
 **Conversion entry points**
@@ -79,7 +79,8 @@ removing or renaming any of them is a 2.0-only change.
   that dependency is resolved with a runtime `import()`, so availability
   cannot be answered synchronously. It reports what is *available*, not
   what ran — `'auto'` still falls back per-call on templates outside the
-  wasm engine's support matrix.
+  wasm engine's support matrix, and it describes the `.xlsx` path only
+  (the JSON source entry points always run the JS engine).
 
 A conforming implementation in another language SHOULD expose its own
 version and backend by whatever its ecosystem's convention is; the shape
@@ -102,9 +103,9 @@ one is 2.0-only and resets both gates.
 | 0.6.0 | `readInputsSheet` optional `configVars` argument | ADR-0050 |
 | 0.11.0 | `convertJson`, `previewJson` exports | ADR-0075 |
 | 0.11.0 | `xl3/source-json/invalid` error code | ADR-0075 |
-| unreleased | `ConvertOptions.signal` (`AbortSignal`) | ROADMAP G21, `spec/evaluation.md` "AbortSignal" |
-| unreleased | `xl3/abort/cancelled` error code | ROADMAP G21 |
-| unreleased | `VERSION`, `getEngineInfo` exports + `EngineInfo` type | xl3#103 |
+| 0.12.0 | `ConvertOptions.signal` (`AbortSignal`) | ROADMAP G21, `spec/evaluation.md` "AbortSignal" |
+| 0.12.0 | `xl3/abort/cancelled` error code | ROADMAP G21 |
+| 0.13.0 | `VERSION`, `getEngineInfo` exports + `EngineInfo` type | xl3#103 |
 
 The export count is unchanged by the G21 work — `signal` is a property on
 the already-frozen `ConvertOptions`, not a new export. It goes 15 → 17

@@ -28,7 +28,7 @@ XTL 当前版本为 **0.1**。参考实现以 `@xl3-lang/xl3` 的形式把 XTL 0
 
 ### 公开 API 表面（xl3 参考实现）
 
-TypeScript 参考实现在 1.0 时冻结以下 17 个运行时导出（截至 0.10.0 为 13 个，另加 0.11.0 按 ADR-0075 新增的 `convertJson` / `previewJson`，以及未发布版本按 xl3#103 新增的 `VERSION` / `getEngineInfo`）。新增导出向后兼容；移除或重命名其中任何一个属于 2.0 才允许的变更。
+TypeScript 参考实现在 1.0 时冻结以下 17 个运行时导出（截至 0.10.0 为 13 个，另加 0.11.0 按 ADR-0075 新增的 `convertJson` / `previewJson`，以及 0.13.0 按 xl3#103 新增的 `VERSION` / `getEngineInfo`）。新增导出向后兼容；移除或重命名其中任何一个属于 2.0 才允许的变更。
 
 **转换入口**
 

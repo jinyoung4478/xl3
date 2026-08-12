@@ -74,7 +74,10 @@ export interface EngineInfo {
    * This reports what is *available*, not what ran. `'auto'` still falls
    * back to the JS path per-call when a template uses a feature outside
    * the wasm engine's support matrix, so a `'wasm'` answer does not mean
-   * every conversion took that path.
+   * every conversion took that path. It describes the `.xlsx` source path
+   * only: `convertJson` / `previewJson` always run the JS engine (they
+   * reject `engine: 'wasm'` outright), so a JSON-source host can see
+   * `'wasm'` here while none of its conversions use it.
    */
   backend: 'wasm' | 'js';
 }

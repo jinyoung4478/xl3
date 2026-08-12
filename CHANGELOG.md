@@ -6,6 +6,15 @@ separately in [spec/STABILITY.md](./spec/STABILITY.md).
 
 ## [Unreleased]
 
+## [0.13.0] - 2026-08-12
+
+A host can now ask which engine is loaded. `VERSION` and
+`getEngineInfo()` answer "which xl3 produced this output?" and "is the
+optional wasm backend actually in use?" from inside the process — two
+questions that had no runtime route at all, which left consumers reading
+`node_modules/@xl3-lang/xl3/package.json` off disk at build time to
+reconstruct the first one.
+
 ### Added
 
 - **`VERSION` and `getEngineInfo()` — which xl3 is loaded, at runtime**
@@ -1436,7 +1445,15 @@ Initial public draft.
 - Single-expression cells preserve source value types and use template cell
   number/date/text formats for coercion.
 
-[Unreleased]: https://github.com/xl3-lang/xl3/compare/v0.8.0...HEAD
+[Unreleased]: https://github.com/xl3-lang/xl3/compare/v0.13.0...HEAD
+[0.13.0]: https://github.com/xl3-lang/xl3/compare/v0.12.0...v0.13.0
+[0.12.0]: https://github.com/xl3-lang/xl3/compare/v0.11.0...v0.12.0
+[0.11.0]: https://github.com/xl3-lang/xl3/compare/v0.10.0...v0.11.0
+[0.10.0]: https://github.com/xl3-lang/xl3/compare/v0.9.0...v0.10.0
+[0.9.0]: https://github.com/xl3-lang/xl3/compare/v0.8.3...v0.9.0
+[0.8.3]: https://github.com/xl3-lang/xl3/compare/v0.8.2...v0.8.3
+[0.8.2]: https://github.com/xl3-lang/xl3/compare/v0.8.1...v0.8.2
+[0.8.1]: https://github.com/xl3-lang/xl3/compare/v0.8.0...v0.8.1
 [0.8.0]: https://github.com/xl3-lang/xl3/compare/v0.7.0...v0.8.0
 [0.7.0]: https://github.com/xl3-lang/xl3/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/xl3-lang/xl3/compare/v0.5.1...v0.6.0

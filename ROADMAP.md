@@ -41,7 +41,7 @@ milestone. Per-version step plan below references these gates by ID.
 | G3 | Error code catalog frozen | maintainer | `impl/js/src/__tests__/error-codes.test.ts` snapshot | no breaking catalog change for 30 days (additions allowed, logged — see "Frozen vs unchanged") | — | ✅ **DONE** — held through 0.11.0 under the amended criterion. `cabe0e1` added `xl3/source-json/invalid` (62→65 codes since `v0.9.0`); additive, so the gate stands. Last breaking catalog change: none since the gate ticked 2026-06-23 | ✅ ticked 2026-06-23 (last catalog change 2026-05-24 `a8f7ad3` +3 codes `xl3/block/overlap`·`xl3/block/empty-table`·`xl3/directive/orphan`; `89bee51` added `xl3/expression/bracket-outside-block` 2026-05-23; 30-day freeze elapsed — post-05-24 commits touched the file with comments/JSDoc only, `EXPECTED_CODES` unchanged) |
 | G4 | JXLS boundary published | maintainer | ADR-0048 | file exists, references PORTERS_GUIDE | — | ✅ **DONE** | DONE |
 | G5 | Deferred-impl ADRs landed | maintainer | ADR-0038 impl ✅ (2026-05-18) + ADR-0040 PE impl | ADR-0038 portion shipped (fixtures 132-135); ADR-0040 CF/DV range-extension still pending | — | 🟡 **PARTIAL** — ADR-0040's outline-level half shipped 0.6.0. CF/DV range extension: the rule is implemented and unit-tested as a pure module (`impl/js/src/range-extension.ts`, 30 cases covering containment, whole-column, max-row idiom, absolute markers, multi-range, partial overlap). Renderer integration and a Stage 2 fixture are the remaining steps — measured current behavior: a 1-row block expanding to 3 leaves CF at `A2:A2` and DV on `B2` alone | 0.6 (partial) / 0.7.1 |
-| G6 | Public API surface frozen | maintainer | `impl/js/src/__tests__/api-surface.test.ts` snapshot | no breaking surface change for 30 days (additions allowed, logged — see "Frozen vs unchanged") | — | ✅ **DONE** — held through 0.11.0 under the amended criterion. `cabe0e1` added `convertJson`/`previewJson`; additive, so the gate stands. Last breaking surface change: none since the gate ticked 2026-06-17 | ✅ ticked 2026-06-17 (snapshot unchanged since 2026-05-18 `16f0608`) |
+| G6 | Public API surface frozen | maintainer | `impl/js/src/__tests__/api-surface.test.ts` snapshot | no breaking surface change for 30 days (additions allowed, logged — see "Frozen vs unchanged") | — | ✅ **DONE** — held through 0.13.0 under the amended criterion. `cabe0e1` added `convertJson`/`previewJson` (0.11.0) and `30742f3` added `VERSION`/`getEngineInfo` (0.13.0, #103), taking the snapshot 13 → 15 → 17; both additive, so the gate stands. Last breaking surface change: none since the gate ticked 2026-06-17 | ✅ ticked 2026-06-17 (snapshot unchanged since 2026-05-18 `16f0608`) |
 | G7 | JSDoc examples on @stable exports | maintainer | TypeDoc output | every `@stable` symbol has `@example` block | — | ✅ **DONE** — re-verified 15/15 `@stable` declarations carry `@example` | ✅ DONE 2026-06-21 — 13/13 `@stable` callables carried `@example` (PR #59); re-verified at **15/15** after 0.11.0 added `convertJson` / `previewJson` (`previewJson` shipped without one and was fixed 2026-07-27) |
 | G8 | Performance characterized | maintainer | `scripts/BENCH.md` | 1k/10k/100k row × 5/10/20 col matrix + memory-ceiling + parse/eval/write split published | — | ✅ **DONE** 2026-07-28 — `npm run bench:matrix` sweeps 1k/10k/100k × 5/10/20 (9 cells, all completing), with a parse/eval/write split and per-cell peak RSS. Published in `scripts/BENCH.md`. Headline: write is 61–82% of wall clock, parse is data-independent (~3 ms), and memory is the binding constraint at ~2.2 KB/cell (2M cells → 4.2 GB) | 0.7.1 |
 | G9 | Perf regression guards | maintainer | `impl/js/src/__tests__/perf-regression.test.ts` | ≥ 2 large scenarios with a ratio-based assertion, running in CI | — | ✅ **DONE** 2026-07-28 — row scaling and `@join` scaling, each asserting 10× the rows costs < 20× the time. Observed 6.2× and 6.9×; a quadratic regression lands near 100× | 0.7.1 |
@@ -391,6 +391,40 @@ Gate impact:
 
   The one consumer-visible consequence: a golden-file test baselined on
   0.11.0 bytes needs re-baselining. Documented in CHANGELOG under Fixed.
+
+### 0.13.0 — Runtime engine identity (shipped 2026-08-12)
+
+`VERSION` and `getEngineInfo()` (#103). A host fielding "this conversion
+looks wrong" is always asked which xl3 produced it, and there was no way
+to answer from inside the process: the main entry exported no version,
+`version.ts` holds semver *helpers* only, and `exports` did not expose
+`./package.json` — so the remaining route was reading
+`node_modules/@xl3-lang/xl3/package.json` off disk and injecting it at
+build time. `getEngineInfo()` also answers whether the optional
+`xl3-wasm` backend is the one in use, which had no runtime route either.
+
+Gate impact:
+
+- **G3** — no error code added, renamed, or repurposed.
+- **G6** — the frozen surface gains two exports (`VERSION`,
+  `getEngineInfo`) plus the `EngineInfo` type, recorded in
+  `spec/STABILITY.md`: 15 → 17. Additive, so the gate stands. Nothing
+  existing was removed or re-signed.
+- **G8 / G9** — render path untouched. `VERSION` is a compile-time
+  constant and `getEngineInfo()` is never called during a conversion;
+  `bench` sat at 240 / 71 / 71 ms, inside the <10% run-to-run band
+  `scripts/BENCH.md` documents.
+- **G24 window** — additive under the breaking-change definition above,
+  so the quarter that started 2026-06-23 is undisturbed and still
+  completes ≈ 2026-09-21.
+
+One correction landed with this cut: the `spec/STABILITY.md` additive log
+carried `ConvertOptions.signal` and `xl3/abort/cancelled` as
+`unreleased`, but both shipped in 0.12.0 — `impl/js/src/abort.ts` and the
+catalog entry are present at tag `v0.12.0`. The rows now say so. The
+0.12.0 CHANGELOG section still has no entry for the G21 abort work
+itself; that section is published history and is left as-is rather than
+backfilled.
 
 ### 1.0.0 — Final cut
 

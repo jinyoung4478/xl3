@@ -22,8 +22,15 @@ const pkgPath = resolve(PKG_ROOT, 'package.json');
 const outPath = resolve(PKG_ROOT, 'src/pkg-version.ts');
 
 const { version } = JSON.parse(readFileSync(pkgPath, 'utf8'));
-if (typeof version !== 'string' || version.length === 0) {
-  console.error('gen-version: package.json has no version string');
+// Shape-check before emitting. The value is interpolated into a TypeScript
+// string literal below, so a version carrying a quote or a backslash would
+// produce a file that does not compile — or worse, one that compiles into
+// something other than a version. npm validates semver on publish, but this
+// script also runs against hand-edited manifests. This guard is what makes
+// the interpolation safe: do not loosen it without switching the emit to
+// JSON.stringify.
+if (typeof version !== 'string' || !/^\d+\.\d+\.\d+(-[0-9A-Za-z.-]+)?(\+[0-9A-Za-z.-]+)?$/.test(version)) {
+  console.error(`gen-version: package.json version is not a semver string: ${JSON.stringify(version)}`);
   process.exit(1);
 }
 
