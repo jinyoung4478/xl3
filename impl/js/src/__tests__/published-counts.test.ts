@@ -19,6 +19,14 @@ import { fileURLToPath } from 'node:url';
 // Not covered on purpose: ROADMAP.md, CHANGELOG.md, and the conformance
 // reports. Those record what was true at a past moment — a gate note
 // saying "DONE (160 fixtures)" is history, not a claim about today.
+//
+// The same split applies to the *version* claims checked at the bottom of
+// this file. "shipped in 0.12.0" and the `### 0.12.0` release sections are
+// history and stay put; "The current version is 0.12.0" is a claim about
+// today and goes stale the moment a release lands. Two of those survived
+// the 0.13.0 cut — the release updated the four READMEs and the CDN pins
+// but not these, and RELEASING's post-publish check greps for
+// `@xl3-lang/xl3@N` pins, which is a shape neither of them has.
 
 // This test file lives at impl/js/src/__tests__/; the repo root
 // (spec/, conformance/, README.md, …) is four levels up.
@@ -164,5 +172,50 @@ describe('published ADR and fixture counts', () => {
         `${file} claims ${claimed} ${kind}, but the repo has ${expected[kind]}.`,
       ).toBe(expected[kind]);
     });
+  });
+});
+
+/**
+ * Prose that names the currently published npm version. Unlike the
+ * `@xl3-lang/xl3@0.13.0` pins RELEASING already greps for, these are
+ * sentences, so nothing catches them drifting except this test.
+ */
+const VERSION_CLAIMS: readonly Claim[] = [
+  {
+    file: 'ROADMAP.md',
+    what: 'intro — "The current version is X"',
+    re: /The current version is \*\*(\d+\.\d+\.\d+)\*\* \(npm\)/,
+    kinds: [],
+  },
+  {
+    file: 'site/llms-full.txt',
+    what: 'llms-full.txt Version line (served to AI crawlers)',
+    re: /^Version: (\d+\.\d+\.\d+) \(pre-1\.0\)/m,
+    kinds: [],
+  },
+];
+
+describe('published version claims', () => {
+  const packaged = (
+    JSON.parse(
+      readFileSync(join(REPO_ROOT, 'impl', 'js', 'package.json'), 'utf8'),
+    ) as { version: string }
+  ).version;
+
+  it.each(VERSION_CLAIMS)('$file — $what', ({ file, re }) => {
+    const body = readFileSync(join(REPO_ROOT, file), 'utf8');
+    const match = re.exec(body);
+
+    expect(
+      match,
+      `No match for ${re} in ${file}. The sentence was probably reworded — ` +
+        `update the pattern here so the version stays checked.`,
+    ).not.toBeNull();
+
+    expect(
+      match![1],
+      `${file} says the current version is ${match![1]}, but impl/js/package.json ` +
+        `is at ${packaged}. Bump the prose with the release, or drop the claim.`,
+    ).toBe(packaged);
   });
 });

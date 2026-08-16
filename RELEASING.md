@@ -108,7 +108,7 @@ a pure impl refactor can ship as `xl3` patch with no spec change.
    | Remote git tag | `git ls-remote --tags origin \| grep v1.0.0-rc.1` returns a row |
    | GitHub Release | `gh release view v1.0.0-rc.1` resolves; appears in `gh release list` |
    | CHANGELOG | `[Unreleased]` is empty; the cut version has its own dated section |
-   | Version refs in docs | `git grep -n '@xl3-lang/xl3@[0-9]'` returns only versions that exist on npm, and the four READMEs' status line names the cut |
+   | Version refs in docs | `git grep -n '@xl3-lang/xl3@[0-9]'` returns only versions that exist on npm, and the four READMEs' status line names the cut. Prose claims (`ROADMAP.md` "The current version is …", `site/llms-full.txt` `Version:`) are covered by `published-counts.test.ts` instead — that grep does not match them, and the 0.13.0 cut left both stale |
 
    If any row fails, fix that row before announcing the release.
 

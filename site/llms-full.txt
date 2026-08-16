@@ -2,7 +2,7 @@
 
 > xl3 is an open-source declarative Excel template engine. It is not a workbook API: the layout and transformation rules live in an ordinary `.xlsx` template, data comes from a second workbook, and `convert(template, data)` executes the template to produce the same workbook every time. The reference implementation is published on npm as `@xl3-lang/xl3`.
 
-Version: 0.12.0 (pre-1.0). 1.0 earliest target: ~September 21, 2026.
+Version: 0.13.0 (pre-1.0). 1.0 earliest target: ~September 21, 2026.
 Spec: 77 ADRs, 169 conformance fixtures, MIT license.
 Repository: https://github.com/xl3-lang/xl3
 Website: https://xl3.io

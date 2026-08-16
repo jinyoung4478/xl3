@@ -3,7 +3,7 @@
 What needs to happen for **XTL 1.0** (spec) and **xl3 1.0** (reference
 implementation).
 
-The current version is **0.12.0** (npm) targeting **XTL 0.1 (draft)**.
+The current version is **0.13.0** (npm) targeting **XTL 0.1 (draft)**.
 Breaking changes are still possible during 0.x. The 1.0 cut is gated on
 the items below, not on a calendar date.
 
