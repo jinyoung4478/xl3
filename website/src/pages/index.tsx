@@ -44,7 +44,7 @@ function useStepPreviews(): Workbook[] {
       description: 'Excel preview window subtitle — raw data step',
     }),
     formula: 'Acme Logistics',
-    sheetName: 'Raw',
+    sheetName: 'Sheet1',
     rows: [
       ['Account', 'Region', 'Renewal', 'Owner'],
       ['Acme Logistics', 'Seoul', '18400', 'Mina'],
@@ -83,7 +83,7 @@ function useStepPreviews(): Workbook[] {
         formula: 'source_table = 1',
         rows: [
           ['key', 'value', 'notes'],
-          ['source_sheet', 'Raw', 'worksheet to read'],
+          ['source_sheet', 'Sheet1', 'worksheet to read'],
           ['source_table', '1', 'column names and data rows'],
           ...blankRows(5),
         ],
